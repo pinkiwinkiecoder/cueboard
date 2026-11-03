@@ -13,7 +13,7 @@ export const SITE = {
    * Vul in zodra de repository bestaat, bv. 'https://github.com/jouwnaam/cueboard'.
    * Leeg = de links naar code en forum worden verborgen.
    */
-  repoUrl: '',
+  repoUrl: 'https://github.com/pinkiwinkiecoder/cueboard',
   license: 'MIT',
   year: 2026,
 };

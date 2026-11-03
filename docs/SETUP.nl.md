@@ -158,7 +158,7 @@ Test ze: tab **Actions** → **Keep-alive Supabase** → **Run workflow**. Een g
 Nieuwe versies van Cueboard haal je binnen door de originele repository als `upstream` toe te voegen en te mergen:
 
 ```bash
-git remote add upstream https://github.com/ORIGINEEL/cueboard.git
+git remote add upstream https://github.com/pinkiwinkiecoder/cueboard.git
 ```
 
 ```bash

@@ -103,7 +103,7 @@ Add three repository secrets (**Settings** → **Secrets and variables** → **A
 ## Updating
 
 ```bash
-git remote add upstream https://github.com/ORIGINAL/cueboard.git
+git remote add upstream https://github.com/pinkiwinkiecoder/cueboard.git
 ```
 
 ```bash
