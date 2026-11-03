@@ -33,7 +33,7 @@ jobs:
           supabase db dump --db-url "$SUPABASE_DB_URL" -f backup/data.sql --data-only --use-copy
           supabase db dump --db-url "$SUPABASE_DB_URL" -f backup/data-auth.sql --data-only --use-copy --schema auth
           ls -la backup
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: db-backup-${{ github.run_id }}
           path: backup/
