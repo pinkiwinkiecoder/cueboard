@@ -1,23 +1,34 @@
 import { useState } from 'react';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
-import { LogOut, Menu, Moon, SunMedium, X } from 'lucide-react';
+import { LogOut, Menu, Moon, Palette, SunMedium, X } from 'lucide-react';
 import { navFor } from './nav';
 import { useAuth } from '@/lib/auth';
-import { useTheme } from '@/lib/theme';
+import { usePrefs } from '@/lib/usePrefs';
 import { ConnectionBanner } from './ConnectionBanner';
+import { TopBar } from './TopBar';
 
 export function Layout() {
   const { profile, signOut } = useAuth();
-  const { theme, toggle } = useTheme();
+  const { prefs, toggleTheme, backgroundUrl } = usePrefs();
   const [moreOpen, setMoreOpen] = useState(false);
   const location = useLocation();
   const items = navFor(profile?.role === 'beheerder');
   const tabItems = items.filter((i) => i.inTabbar);
   const moreItems = items.filter((i) => !i.inTabbar);
-  const moreActive = moreItems.some((i) => location.pathname.startsWith(i.to));
+  const moreActive =
+    location.pathname === '/weergave' || moreItems.some((i) => location.pathname.startsWith(i.to));
+  const ThemeIcon = prefs.theme === 'dark' ? SunMedium : Moon;
+  const themeLabel = prefs.theme === 'dark' ? 'Licht thema' : 'Donker thema';
 
   return (
     <div className="shell">
+      {backgroundUrl && (
+        <div
+          className="bg-photo"
+          aria-hidden
+          style={{ backgroundImage: `url(${backgroundUrl})` }}
+        />
+      )}
       <a className="skip-link" href="#main">
         Naar de inhoud
       </a>
@@ -34,22 +45,23 @@ export function Layout() {
         </nav>
         <div className="sidebar-foot">
           <div className="muted small">{profile?.full_name}</div>
-          <button type="button" className="btn btn-ghost" onClick={toggle}>
-            {theme === 'dark' ? (
-              <SunMedium aria-hidden size={20} />
-            ) : (
-              <Moon aria-hidden size={20} />
-            )}
-            {theme === 'dark' ? 'Licht thema' : 'Donker thema'}
+          <NavLink to="/weergave" className="nav-link">
+            <Palette aria-hidden size={20} />
+            <span>Weergave</span>
+          </NavLink>
+          <button type="button" className="nav-link" onClick={toggleTheme}>
+            <ThemeIcon aria-hidden size={20} />
+            <span>{themeLabel}</span>
           </button>
-          <button type="button" className="btn btn-ghost" onClick={() => void signOut()}>
+          <button type="button" className="nav-link" onClick={() => void signOut()}>
             <LogOut aria-hidden size={20} />
-            Afmelden
+            <span>Afmelden</span>
           </button>
         </div>
       </aside>
 
       <div className="content">
+        <TopBar />
         <ConnectionBanner />
         <main id="main" tabIndex={-1}>
           <Outlet />
@@ -83,13 +95,13 @@ export function Layout() {
               <span>{label}</span>
             </NavLink>
           ))}
-          <button type="button" className="nav-link" onClick={toggle}>
-            {theme === 'dark' ? (
-              <SunMedium aria-hidden size={22} />
-            ) : (
-              <Moon aria-hidden size={22} />
-            )}
-            <span>{theme === 'dark' ? 'Licht thema' : 'Donker thema'}</span>
+          <NavLink to="/weergave" className="nav-link" onClick={() => setMoreOpen(false)}>
+            <Palette aria-hidden size={22} />
+            <span>Weergave</span>
+          </NavLink>
+          <button type="button" className="nav-link" onClick={toggleTheme}>
+            <ThemeIcon aria-hidden size={22} />
+            <span>{themeLabel}</span>
           </button>
           <button type="button" className="nav-link" onClick={() => void signOut()}>
             <LogOut aria-hidden size={22} />

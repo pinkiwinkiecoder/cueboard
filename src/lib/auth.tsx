@@ -65,6 +65,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
+    // Enkel tijdens lokale ontwikkeling (npm run dev): bekijk de app zonder server.
+    // import.meta.env.DEV is false in elke build, dus dit zit nooit in productie.
+    if (import.meta.env.DEV && import.meta.env.VITE_DEMO_LOGIN === '1') {
+      setSession({ user: { id: 'demo', email: 'demo@demo.test' } } as Session);
+      setProfile({
+        id: 'demo',
+        full_name: 'Demo Beheerder',
+        email: 'demo@demo.test',
+        phone: null,
+        department_id: null,
+        role: 'beheerder',
+        active: true,
+      });
+      setLoading(false);
+      return;
+    }
     let cancelled = false;
     void supabase.auth.getSession().then(async ({ data }) => {
       if (cancelled) return;

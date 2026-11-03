@@ -8,6 +8,7 @@ import { LoginPage } from '@/features/auth/LoginPage';
 import { ForgotPasswordPage } from '@/features/auth/ForgotPasswordPage';
 import { SetPasswordPage } from '@/features/auth/SetPasswordPage';
 import { PrivacyPage } from '@/features/auth/PrivacyPage';
+import { AppearancePage } from '@/features/me/AppearancePage';
 import type { ReactNode } from 'react';
 
 function RequireAuth({ children, adminOnly }: { children: ReactNode; adminOnly?: boolean }) {
@@ -58,6 +59,7 @@ export function App() {
           </RequireAuth>
         }
       >
+        <Route path="/weergave" element={<AppearancePage />} />
         {NAV_ITEMS.map((item) => (
           <Route
             key={item.to}
