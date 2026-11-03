@@ -1,0 +1,32 @@
+name: Keep-alive Supabase
+
+# Gratis Supabase-projecten pauzeren na 7 dagen zonder activiteit.
+# Deze workflow roept om de 2 dagen de lichte functie `ping` aan.
+# Mislukt hij, dan stuurt GitHub je een e-mail: kijk dan in het Supabase-dashboard.
+on:
+  schedule:
+    - cron: '23 7 */2 * *' # om 07:23 UTC, om de 2 dagen (niet op het volle uur: minder vertraging)
+  workflow_dispatch: {}
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Ping
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          if [ -z "$SUPABASE_URL" ] || [ -z "$SUPABASE_ANON_KEY" ]; then
+            echo "::error::Secrets SUPABASE_URL en/of SUPABASE_ANON_KEY ontbreken (zie README stap 6)."
+            exit 1
+          fi
+          code=$(curl -s -o /tmp/out -w '%{http_code}' -X POST \
+            -H "apikey: $SUPABASE_ANON_KEY" -H "Content-Type: application/json" \
+            "$SUPABASE_URL/rest/v1/rpc/ping" -d '{}')
+          echo "HTTP $code: $(cat /tmp/out)"
+          if [ "$code" != "200" ]; then
+            echo "::error::Supabase antwoordt niet (HTTP $code). Mogelijk gepauzeerd: open het dashboard en klik op Restore."
+            exit 1
+          fi
