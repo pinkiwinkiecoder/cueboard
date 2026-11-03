@@ -5,7 +5,7 @@ import { itemTimes, type ScheduleKind } from './schedule';
 
 /** Splitst tekst in rijen en cellen. Herkent tab, puntkomma of komma en "aanhalingstekens". */
 export function parseDelimited(text: string): string[][] {
-  const clean = text.replace(/^﻿/, '').replace(/\r\n?/g, '\n');
+  const clean = text.replace(/^\uFEFF/, '').replace(/\r\n?/g, '\n');
   const firstLine = clean.split('\n', 1)[0] ?? '';
   const count = (ch: string) => firstLine.split(ch).length - 1;
   const delim = count('\t') > 0 ? '\t' : count(';') >= count(',') && count(';') > 0 ? ';' : ',';
