@@ -202,6 +202,7 @@ export const nl: Dictionary = {
     myData: 'Mijn gegevens',
     myDataHint: 'Download alles wat dit evenement over jou bewaart.',
     myDataButton: 'Mijn gegevens downloaden',
+    changePassword: 'Wachtwoord wijzigen',
   },
   people: {
     title: 'Mensen',

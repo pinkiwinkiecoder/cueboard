@@ -6,6 +6,15 @@ const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
 /** True als de app geen Supabase-gegevens heeft gekregen bij de build. */
 export const configMissing = !url || !anonKey;
 
+/**
+ * Kwam de gebruiker binnen via een uitnodigings- of resetlink? Lezen vóór de client
+ * de tokens uit de URL haalt: het PASSWORD_RECOVERY-event kan anders al voorbij zijn
+ * voordat de app luistert, en dan zou je ingelogd raken zonder een wachtwoord te kiezen.
+ */
+export const arrivedViaSetPasswordLink =
+  typeof window !== 'undefined' &&
+  /(?:^|[#&?])type=(recovery|invite|signup)(?:&|$)/.test(window.location.hash + '&' + window.location.search.slice(1));
+
 // Bij ontbrekende config maken we een client met dummywaarden, zodat de app
 // een uitlegscherm kan tonen in plaats van een witte pagina.
 export const supabase: SupabaseClient = createClient(

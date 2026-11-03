@@ -1,15 +1,24 @@
 import { en } from './en';
 import { nl } from './nl';
-import type { Dictionary, Lang, MsgKey, Vars } from './types';
+import { fr } from './fr';
+import { de } from './de';
+import type { ContentLang, Dictionary, Lang, MsgKey, Vars } from './types';
 
-export type { Lang, MsgKey, Vars } from './types';
+export type { ContentLang, Lang, MsgKey, Vars } from './types';
 
 export const LANGUAGES: { id: Lang; label: string; locale: string }[] = [
   { id: 'en', label: 'English', locale: 'en-GB' }, // en-GB: 24-uursklok en dag/maand
   { id: 'nl', label: 'Nederlands', locale: 'nl-BE' },
+  { id: 'fr', label: 'Français', locale: 'fr-BE' },
+  { id: 'de', label: 'Deutsch', locale: 'de-DE' },
 ];
 
-const DICTS: Record<Lang, Dictionary> = { en, nl };
+const DICTS: Record<Lang, Dictionary> = { en, nl, fr, de };
+
+/** Taal voor de langere inhoud: Nederlands of anders Engels. */
+export function contentLang(lang: Lang): ContentLang {
+  return lang === 'nl' ? 'nl' : 'en';
+}
 
 export function localeFor(lang: Lang): string {
   return LANGUAGES.find((l) => l.id === lang)?.locale ?? 'en-GB';
@@ -36,5 +45,5 @@ export class AppError extends Error {
 }
 
 export function isLang(v: unknown): v is Lang {
-  return v === 'en' || v === 'nl';
+  return typeof v === 'string' && LANGUAGES.some((l) => l.id === v);
 }

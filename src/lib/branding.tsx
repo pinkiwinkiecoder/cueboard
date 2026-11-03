@@ -1,3 +1,4 @@
+import { isDemo } from './demoMode';
 import { supabase } from './supabase';
 import { useCachedQuery } from './query';
 import { compressImage } from './image';
@@ -15,8 +16,8 @@ export function logoUrl(path: string | null | undefined): string | null {
 /** Naam + logo van het evenement, ook zonder in te loggen (inlogscherm). */
 export function useBranding() {
   return useCachedQuery('branding', async () => {
-    if (import.meta.env.DEV && import.meta.env.VITE_DEMO_LOGIN === '1') {
-      return { name: 'Art of Faith', logo_path: null as string | null, needs_setup: false };
+    if (isDemo()) {
+      return { name: 'Summer Sound Festival', logo_path: null as string | null, needs_setup: false };
     }
     const { data, error } = await supabase.rpc('public_branding');
     if (error) throw new AppError('errors.network');

@@ -7,6 +7,7 @@ import { useAuth } from '@/lib/auth';
 import { useEvent } from '@/lib/refdata';
 import { usePrefs } from '@/lib/usePrefs';
 import { ConnectionBanner } from './ConnectionBanner';
+import { DemoBanner } from './DemoBanner';
 import { TopBar } from './TopBar';
 import { Avatar } from './Avatar';
 import { AnnouncementAlerts } from './AnnouncementAlerts';
@@ -111,6 +112,7 @@ export function Layout() {
 
       <div className="content">
         <TopBar />
+        <DemoBanner />
         <ConnectionBanner />
         <AnnouncementAlerts />
         <main id="main" tabIndex={-1}>

@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { en } from './en';
 import { nl } from './nl';
-import { translate } from './index';
+import { LANGUAGES, translate } from './index';
+import type { Lang } from './types';
 
 function keys(obj: object, prefix = ''): string[] {
   return Object.entries(obj).flatMap(([k, v]) =>
@@ -19,10 +20,18 @@ describe('vertalingen', () => {
   });
 
   it('gebruikt dezelfde plaatshouders in elke taal', () => {
-    for (const k of keys(en)) {
-      const e = translate('en', k as never);
-      const n = translate('nl', k as never);
-      expect(placeholders(n), k).toEqual(placeholders(e));
+    for (const { id } of LANGUAGES) {
+      for (const k of keys(en)) {
+        const e = translate('en', k as never);
+        const other = translate(id as Lang, k as never);
+        expect(placeholders(other), `${id}: ${k}`).toEqual(placeholders(e));
+      }
+    }
+  });
+
+  it('elke taal vertaalt echt (geen lege teksten)', () => {
+    for (const { id } of LANGUAGES) {
+      for (const k of keys(en)) expect(translate(id as Lang, k as never).trim(), `${id}: ${k}`).not.toBe('');
     }
   });
 

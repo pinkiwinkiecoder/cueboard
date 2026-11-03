@@ -203,6 +203,7 @@ export const en = {
     myData: 'My data',
     myDataHint: 'Download everything this event stores about you.',
     myDataButton: 'Download my data',
+    changePassword: 'Change password',
   },
   people: {
     title: 'People',

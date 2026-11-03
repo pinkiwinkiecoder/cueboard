@@ -1,3 +1,4 @@
+import { isDemo } from './demoMode';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { kvGet, kvSet } from './localdb';
 import { supabase } from './supabase';
@@ -13,6 +14,9 @@ export interface QueryState<T> {
   fromCache: boolean;
   reload: () => Promise<void>;
 }
+
+/** De demo krijgt een eigen cache, zodat echte en voorbeeldgegevens nooit mengen. */
+const cacheKey = (key: string) => (isDemo() ? `demo:${key}` : `q:${key}`);
 
 interface CacheRow<T> {
   at: number;
@@ -40,15 +44,15 @@ export function useCachedQuery<T>(
     try {
       // Lokale demo (enkel npm run dev met VITE_DEMO_LOGIN=1): vaste voorbeelddata.
       const fresh =
-        import.meta.env.DEV && import.meta.env.VITE_DEMO_LOGIN === '1'
-          ? (((await import('./demo')).DEMO[key] as T | undefined) ?? (await fetcherRef.current()))
+        isDemo()
+          ? await demoData<T>(key, fetcherRef.current)
           : await fetcherRef.current();
       const at = Date.now();
       setData(fresh);
       setFetchedAt(at);
       setFromCache(false);
       setError(null);
-      void kvSet(`q:${key}`, { at, data: fresh } satisfies CacheRow<T>).catch(() => undefined);
+      void kvSet(cacheKey(key), { at, data: fresh } satisfies CacheRow<T>).catch(() => undefined);
     } catch (e) {
       setError(e instanceof AppError ? e : new AppError('errors.network'));
       setFromCache(true);
@@ -59,7 +63,7 @@ export function useCachedQuery<T>(
 
   useEffect(() => {
     let cancelled = false;
-    void kvGet<CacheRow<T>>(`q:${key}`).then((cached) => {
+    void kvGet<CacheRow<T>>(cacheKey(key)).then((cached) => {
       if (cancelled || !cached) return;
       setData((d) => d ?? cached.data);
       setFetchedAt((f) => f ?? cached.at);
@@ -76,7 +80,7 @@ export function useCachedQuery<T>(
   // Live bijwerken als iemand anders iets wijzigt.
   const tables = options.realtime?.join(',') ?? '';
   useEffect(() => {
-    if (!tables) return;
+    if (!tables || isDemo()) return;
     let timer: number | undefined;
     // Unieke naam per gebruik: hetzelfde kanaal twee keer openen geeft een fout in supabase-js.
     const channel = supabase.channel(`rt:${key}:${crypto.randomUUID()}`);
@@ -94,6 +98,12 @@ export function useCachedQuery<T>(
   }, [key, tables, reload]);
 
   return { data, error, loading, fetchedAt, fromCache, reload };
+}
+
+/** Demo: vaste voorbeelddata; sleutels zonder voorbeeld (event, branding) regelen het zelf. */
+async function demoData<T>(key: string, fetcher: () => Promise<T>): Promise<T> {
+  const { DEMO } = await import('./demo');
+  return key in DEMO ? (DEMO[key] as T) : fetcher();
 }
 
 /** Gooit een vertaalbare AppError bij een Supabase-fout. */
@@ -125,6 +135,7 @@ const DB_CODES: Record<string, MsgKey> = {
 };
 
 export function dbError(err: { message: string; code?: string }): AppError {
+  if (isDemo()) return new AppError('demo.readOnly');
   const own = DB_CODES[err.message];
   if (own) return new AppError(own);
   if (err.code === '42501' || /row-level security|permission denied/i.test(err.message)) {

@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom';
+import { startDemo } from '@/lib/demoMode';
+import { useT } from '@/lib/usePrefs';
 import {
   ArrowRight,
   BellRing,
@@ -7,6 +9,7 @@ import {
   Circle,
   CircleDot,
   Clapperboard,
+  FlaskConical,
   FileSpreadsheet,
   LayoutTemplate,
   ListChecks,
@@ -39,6 +42,7 @@ const FEATURE_ICON: Record<string, { icon: LucideIcon; color: string }> = {
 /** Publieke showcase: wat is Cueboard, voor wie, en hoe begin je. */
 export function LandingPage() {
   const tx = useTx();
+  const { t } = useT();
   const s = LANDING.showcase;
 
   return (
@@ -48,7 +52,11 @@ export function LandingPage() {
         <h1>{tx(LANDING.hero.title)}</h1>
         <p className="lead">{tx(LANDING.hero.body)}</p>
         <div className="row hero-ctas">
-          <Link to="/help/own-copy" className="btn btn-primary">
+          <button type="button" className="btn btn-primary" onClick={startDemo}>
+            <FlaskConical aria-hidden size={18} />
+            {t('demo.start')}
+          </button>
+          <Link to="/help/own-copy" className="btn">
             {tx(LANDING.hero.ctaPrimary)}
             <ArrowRight aria-hidden size={18} />
           </Link>
@@ -230,6 +238,10 @@ export function LandingPage() {
         <h2 id="h-cta">{tx(LANDING.cta.title)}</h2>
         <p className="lead">{tx(LANDING.cta.body)}</p>
         <div className="row" style={{ justifyContent: 'center' }}>
+          <button type="button" className="btn" onClick={startDemo}>
+            <FlaskConical aria-hidden size={18} />
+            {t('demo.start')}
+          </button>
           <Link to="/help/own-copy" className="btn btn-primary">
             {tx(LANDING.hero.ctaPrimary)}
             <ArrowRight aria-hidden size={18} />

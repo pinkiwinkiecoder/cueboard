@@ -1,3 +1,4 @@
+import { isDemo } from './demoMode';
 import { supabase } from './supabase';
 import { must, useCachedQuery } from './query';
 import type { Profile, RoleRow } from './types';
@@ -78,7 +79,7 @@ export function useEventDays() {
 }
 
 const DEMO_EVENT: EventInfo = {
-  name: 'Art of Faith',
+  name: 'Summer Sound Festival',
   venue: null,
   modules: [...MODULES],
   retention_until: null,
@@ -90,7 +91,7 @@ export function useEvent() {
   return useCachedQuery(
     'event',
     async () => {
-      if (import.meta.env.DEV && import.meta.env.VITE_DEMO_LOGIN === '1') return DEMO_EVENT;
+      if (isDemo()) return DEMO_EVENT;
       return must(
         await supabase
           .from('event')

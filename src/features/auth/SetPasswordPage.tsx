@@ -9,7 +9,7 @@ import type { MsgKey } from '@/i18n';
 
 /** Gebruikt na een uitnodigingslink én na een resetlink. */
 export function SetPasswordPage() {
-  const { session, loading } = useAuth();
+  const { session, loading, clearRecovery } = useAuth();
   const { t } = useT();
   const navigate = useNavigate();
   const [pw, setPw] = useState('');
@@ -46,6 +46,7 @@ export function SetPasswordPage() {
       setError(/weak|pwned|length/i.test(err.message) ? 'auth.pwWeak' : 'auth.pwSaveFailed');
       return;
     }
+    clearRecovery();
     navigate('/', { replace: true });
   }
 

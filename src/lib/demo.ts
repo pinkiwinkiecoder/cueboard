@@ -1,5 +1,5 @@
-// Demo-gegevens, ENKEL voor lokale ontwikkeling met VITE_DEMO_LOGIN=1 (npm run dev).
-// Wordt nooit in een build geladen (import.meta.env.DEV is daar false).
+// Voorbeeldgegevens voor de publieke demo (knop op de startpagina) en lokaal met VITE_DEMO_LOGIN=1.
+// Wordt pas geladen als iemand de demo opent, dus het maakt de gewone app niet zwaarder.
 import { ALL_PERMISSIONS } from './permissions';
 
 const now = Date.now();
@@ -402,3 +402,196 @@ export const DEMO_ACCESS = {
   is_admin: true,
   permissions: [...ALL_PERMISSIONS],
 };
+
+// --- Artiesten, documenten, meldingen (ook voor de publieke demo) --------------
+const check = (id: string, titles: string[], done: number) =>
+  titles.map((title, i) => ({
+    id: `${id}-c${i}`,
+    title,
+    done: i < done,
+    done_by: i < done ? 'p1' : null,
+    done_at: i < done ? at(-600 + i * 30) : null,
+    sort_order: i + 1,
+  }));
+const CHECK = [
+  'Contract signed',
+  'Rider received',
+  'Tech rider checked',
+  'Travel and parking arranged',
+  'Hospitality arranged',
+  'Guest list received',
+  'Set times confirmed',
+];
+const artist = (
+  id: string,
+  name: string,
+  extra: Record<string, unknown>,
+  done: number,
+): Record<string, unknown> => ({
+  id,
+  name,
+  genre: null,
+  status: 'advancing',
+  color: 'pink',
+  day_id: 'day-1',
+  location_id: 'l-main',
+  schedule_item_id: null,
+  contact_name: null,
+  contact_phone: null,
+  contact_email: null,
+  arrival_at: null,
+  departure_at: null,
+  party_size: null,
+  hospitality: null,
+  technical: null,
+  notes: null,
+  liaison_id: null,
+  artist_checklist: check(id, CHECK, done),
+  ...extra,
+});
+
+DEMO.artists = [
+  artist(
+    'a1',
+    'The Lanterns',
+    {
+      genre: 'Indie pop',
+      status: 'on_site',
+      color: 'gold',
+      schedule_item_id: 's4',
+      contact_name: 'Mila (tour manager)',
+      contact_phone: '+32 470 11 22 33',
+      contact_email: 'tour@example.com',
+      arrival_at: at(-180),
+      departure_at: at(120),
+      party_size: 7,
+      hospitality: 'Dressing room 2. Vegetarian dinner for 7 at 18:00. Still water, oat milk.',
+      technical: '5-piece band. Own in-ear rack. Needs 2 extra DI boxes for keys.',
+      liaison_id: 'p4',
+    },
+    7,
+  ),
+  artist(
+    'a2',
+    'Nova Ray',
+    {
+      genre: 'Electronic',
+      status: 'ready',
+      color: 'violet',
+      schedule_item_id: 's7',
+      contact_name: 'Jonas',
+      contact_phone: '+32 470 44 55 66',
+      arrival_at: at(30),
+      party_size: 4,
+      technical: 'Pyro at the end of the set: safety officer on stage from 21:10.',
+      notes: 'Interview with local radio before the show (Press tent).',
+      liaison_id: 'p4',
+    },
+    6,
+  ),
+  artist(
+    'a3',
+    'DJ Saffron',
+    { genre: 'House', status: 'on_site', color: 'peach', location_id: 'l-tent', schedule_item_id: 's8', party_size: 1 },
+    5,
+  ),
+  artist(
+    'a4',
+    'Headliner (to be announced)',
+    { status: 'booked', color: 'rose', day_id: 'day-2', schedule_item_id: 's11', arrival_at: at(60 * 24), party_size: 12 },
+    2,
+  ),
+  artist('a5', 'Choir of Light', { genre: 'Gospel', status: 'advancing', color: 'teal', day_id: 'day-2', party_size: 24 }, 3),
+];
+
+const doc = (
+  id: string,
+  title: string,
+  category: string,
+  extra: Record<string, unknown> = {},
+): Record<string, unknown> => ({
+  id,
+  title,
+  description: null,
+  category,
+  department_ids: [],
+  artist_id: null,
+  file_path: null,
+  file_name: null,
+  mime_type: null,
+  size_bytes: null,
+  external_url: 'https://example.com/',
+  version: 1,
+  requires_read: false,
+  created_by: 'demo',
+  updated_at: at(-300),
+  document_reads: [],
+  ...extra,
+});
+
+DEMO.documents = [
+  doc('doc1', 'Safety plan 2027', 'Safety', {
+    requires_read: true,
+    version: 3,
+    description: 'Evacuation routes, meeting points and who to call.',
+    document_reads: [{ profile_id: 'p1', version: 3, read_at: at(-100) }],
+  }),
+  doc('doc2', 'Site map', 'Site map', { version: 2, updated_at: at(-60) }),
+  doc('doc3', 'Rider The Lanterns', 'Rider', { artist_id: 'a1', department_ids: ['d-hosp', 'd-stage'] }),
+  doc('doc4', 'Tech rider Nova Ray', 'Rider', { artist_id: 'a2', department_ids: ['d-prod'] }),
+  doc('doc5', 'Run sheet Main Stage', 'Run sheet', { department_ids: ['d-stage'], requires_read: true }),
+  doc('doc6', 'Radio channels and call signs', 'Production'),
+];
+
+const issue = (
+  id: string,
+  title: string,
+  extra: Record<string, unknown>,
+): Record<string, unknown> => ({
+  id,
+  title,
+  description: null,
+  severity: 'normal',
+  status: 'open',
+  location_id: 'l-main',
+  department_id: null,
+  assigned_to: null,
+  photo_path: null,
+  reported_by: 'p2',
+  resolution: null,
+  resolved_at: null,
+  resolved_by: null,
+  created_at: at(-30),
+  issue_notes: [],
+  ...extra,
+});
+
+DEMO.issues = [
+  issue('i1', 'Cable across the walkway at the entrance', {
+    severity: 'high',
+    location_id: 'l-tent',
+    department_id: 'd-prod',
+    assigned_to: 'p3',
+    status: 'in_progress',
+    created_at: at(-12),
+    description: 'Power cable for the food trucks runs across the main walkway. People trip over it.',
+    issue_notes: [{ id: 'n1', body: 'On my way with a cable ramp.', created_by: 'p3', created_at: at(-8) }],
+  }),
+  issue('i2', 'Monitor wedge 3 crackles', {
+    department_id: 'd-audio',
+    created_at: at(-25),
+    reported_by: 'p4',
+  }),
+  issue('i3', 'Toilets near Small Stage need cleaning', { severity: 'low', created_at: at(-50) }),
+  issue('i4', 'Fence panel loose behind the bar', {
+    status: 'resolved',
+    severity: 'normal',
+    resolution: 'Fixed with two extra clamps.',
+    resolved_by: 'p1',
+    resolved_at: at(-90),
+    created_at: at(-140),
+  }),
+];
+
+DEMO.custom_templates = [];
+DEMO.stage_timers = [];

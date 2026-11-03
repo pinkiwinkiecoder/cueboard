@@ -1,7 +1,7 @@
 // Kant-en-klare opzetten per soort evenement. Namen in het Engels en Nederlands;
 // de preset wordt toegepast in de taal die de beheerder op dat moment gebruikt.
 // Toepassen voegt enkel toe wat nog niet bestaat (zie public.apply_setup).
-import type { Lang } from '@/i18n';
+import { contentLang, type Lang } from '@/i18n';
 import type { ModuleKey, PaletteColor, Permission } from './permissions';
 
 type T = { en: string; nl: string };
@@ -602,7 +602,8 @@ export function presetCounts(p: Preset) {
 }
 
 /** Zet een preset om naar de jsonb die public.apply_setup verwacht, in één taal. */
-export function buildSetup(p: Preset, lang: Lang) {
+export function buildSetup(p: Preset, uiLang: Lang) {
+  const lang = contentLang(uiLang);
   // Teamnamen voor pakketten verwijzen naar de Engelse naam: vertaal mee.
   const teamName = (en: string | undefined) => {
     if (!en) return undefined;

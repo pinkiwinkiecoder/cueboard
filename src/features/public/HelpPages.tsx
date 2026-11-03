@@ -1,3 +1,4 @@
+import { contentLang } from '@/i18n';
 import { useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import {
@@ -97,7 +98,7 @@ export function HelpIndexPage() {
   const tx = useTx();
   const { prefs } = usePrefs();
   const [q, setQ] = useState('');
-  const results = useMemo(() => searchArticles(q, prefs.lang), [q, prefs.lang]);
+  const results = useMemo(() => searchArticles(q, contentLang(prefs.lang)), [q, prefs.lang]);
 
   return (
     <PublicLayout title={tx(T.title)}>

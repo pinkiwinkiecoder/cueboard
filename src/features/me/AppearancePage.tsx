@@ -1,5 +1,6 @@
 import { useRef, useState, type ChangeEvent } from 'react';
-import { Check, Download, ImagePlus, Lightbulb, Trash2 } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Check, Download, ImagePlus, KeyRound, Lightbulb, Trash2 } from 'lucide-react';
 import { downloadJson, exportPerson } from '@/lib/system';
 import { usePrefs } from '@/lib/usePrefs';
 import { ACCENTS, type TextSize } from '@/lib/prefs';
@@ -194,6 +195,10 @@ export function AppearancePage() {
             <Download aria-hidden size={20} />
             {t('appearance.myDataButton')}
           </button>
+          <Link to="/new-password" className="btn">
+            <KeyRound aria-hidden size={20} />
+            {t('appearance.changePassword')}
+          </Link>
         </div>
       </section>{' '}
     </div>

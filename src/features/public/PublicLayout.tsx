@@ -1,3 +1,4 @@
+import { contentLang } from '@/i18n';
 import { useEffect, type ReactNode } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { ArrowRight, Github, MessagesSquare } from 'lucide-react';
@@ -12,7 +13,7 @@ import { LANDING, type Text } from '@/content/landing';
 export function useTx() {
   const { prefs } = usePrefs();
   return (t: Text, vars: Record<string, string> = {}) =>
-    t[prefs.lang].replace(/\{(\w+)\}/g, (m, k: string) => vars[k] ?? m);
+    t[contentLang(prefs.lang)].replace(/\{(\w+)\}/g, (m, k: string) => vars[k] ?? m);
 }
 
 export function PublicLayout(props: { title?: string; children: ReactNode }) {

@@ -1,3 +1,4 @@
+import { exitDemo, isDemo } from './demoMode';
 import {
   createContext,
   useCallback,
@@ -8,7 +9,7 @@ import {
   type ReactNode,
 } from 'react';
 import type { Session } from '@supabase/supabase-js';
-import { supabase } from './supabase';
+import { arrivedViaSetPasswordLink, supabase } from './supabase';
 import type { Access, Profile } from './types';
 import { ALL_PERMISSIONS, type Permission } from './permissions';
 import type { MsgKey } from '@/i18n';
@@ -28,6 +29,8 @@ interface AuthState {
   isAdmin: boolean;
   signOut: () => Promise<void>;
   reloadProfile: () => Promise<void>;
+  /** Na het kiezen van een wachtwoord: niet langer naar het wachtwoordscherm sturen. */
+  clearRecovery: () => void;
 }
 
 const AuthContext = createContext<AuthState | null>(null);
@@ -39,7 +42,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [access, setAccess] = useState<Access | null>(null);
   const [loading, setLoading] = useState(true);
   const [problem, setProblem] = useState<MsgKey | null>(null);
-  const [recovery, setRecovery] = useState(false);
+  const [recovery, setRecovery] = useState(arrivedViaSetPasswordLink);
 
   const loadProfile = useCallback(async (s: Session | null) => {
     if (!s) {
@@ -88,7 +91,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     // Enkel tijdens lokale ontwikkeling (npm run dev): bekijk de app zonder server.
     // import.meta.env.DEV is false in elke build, dus dit zit nooit in productie.
-    if (import.meta.env.DEV && import.meta.env.VITE_DEMO_LOGIN === '1') {
+    if (isDemo()) {
       setSession({ user: { id: 'demo', email: 'demo@demo.test' } } as Session);
       setProfile({
         id: 'demo',
@@ -148,6 +151,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [userId, session, loadProfile]);
 
   const signOut = useCallback(async () => {
+    if (isDemo()) return exitDemo();
     await supabase.auth.signOut();
     setProfile(null);
     setAccess(null);
@@ -159,6 +163,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     (perm: Permission) => !!access && (access.is_admin || access.permissions.includes(perm)),
     [access],
   );
+
+  const clearRecovery = useCallback(() => setRecovery(false), []);
 
   const value = useMemo(
     () => ({
@@ -172,8 +178,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       isAdmin: !!access?.is_admin,
       signOut,
       reloadProfile,
+      clearRecovery,
     }),
-    [session, profile, access, loading, problem, recovery, can, signOut, reloadProfile],
+    [session, profile, access, loading, problem, recovery, can, signOut, reloadProfile, clearRecovery],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Building2, ChevronDown, Music, PartyPopper, Presentation, Sparkles } from 'lucide-react';
-import { LANGUAGES } from '@/i18n';
+import { contentLang, LANGUAGES } from '@/i18n';
 import { usePrefs } from '@/lib/usePrefs';
 import { dbError } from '@/lib/query';
 import { supabase } from '@/lib/supabase';
@@ -11,7 +11,7 @@ const ICONS = { festival: Sparkles, stage: Music, conference: Presentation, part
 /** Sjablonen per soort evenement. Toepassen voegt enkel toe, verwijdert nooit. */
 export function PresetsPanel(props: { onApplied: () => void }) {
   const { t, errText, prefs } = usePrefs();
-  const lang = prefs.lang;
+  const lang = contentLang(prefs.lang);
   const [open, setOpen] = useState<string | null>(null);
   const [busy, setBusy] = useState<string | null>(null);
   const [result, setResult] = useState<string | null>(null);

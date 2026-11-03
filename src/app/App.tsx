@@ -144,6 +144,7 @@ function RequirePerm({ perm, children }: { perm: Permission; children: ReactNode
 export function App() {
   const { session, profile, recovery } = useAuth();
   const { t } = useT();
+  const { pathname } = useLocation();
 
   if (configMissing) {
     return (
@@ -158,6 +159,8 @@ export function App() {
 
   return (
     <Suspense fallback={<div className="auth-page">{t('app.loading')}</div>}>
+      {/* Via een reset- of uitnodigingslink binnen: eerst een wachtwoord kiezen, waar je ook landt. */}
+      {recovery && session && pathname !== '/new-password' && <Navigate to="/new-password" replace />}
       <Routes>
         <Route
           path="/sign-in"

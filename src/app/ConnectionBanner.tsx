@@ -1,3 +1,4 @@
+import { isDemo } from '@/lib/demoMode';
 import { CloudOff, ServerCrash } from 'lucide-react';
 import { useConnection } from '@/lib/connection';
 import { useT } from '@/lib/usePrefs';
@@ -5,7 +6,7 @@ import { useT } from '@/lib/usePrefs';
 export function ConnectionBanner() {
   const state = useConnection();
   const { t } = useT();
-  if (state === 'live') return null;
+  if (state === 'live' || isDemo()) return null;
 
   if (state === 'offline') {
     return (
