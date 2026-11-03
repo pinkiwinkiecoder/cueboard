@@ -35,7 +35,7 @@ export function SettingsPage() {
   return (
     <div className="stack">
       <div className="page-head">
-        <span className="bubble bubble-lg" data-color="lime" aria-hidden>
+        <span className="bubble bubble-lg" data-color="violet" aria-hidden>
           {(() => {
             const Icon = NAV_ITEMS.find((n) => n.to === '/instellingen')?.icon;
             return Icon ? <Icon size={24} /> : null;

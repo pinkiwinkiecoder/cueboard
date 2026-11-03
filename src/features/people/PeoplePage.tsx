@@ -43,7 +43,7 @@ export function PeoplePage() {
   return (
     <div className="stack">
       <div className="row">
-        <span className="bubble bubble-lg" data-color="peach" aria-hidden>
+        <span className="bubble bubble-lg" data-color="teal" aria-hidden>
           <Users size={24} />
         </span>
         <h1 className="spacer" style={{ margin: 0 }}>

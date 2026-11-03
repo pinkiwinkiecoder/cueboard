@@ -44,6 +44,7 @@ export function permKey(p: Permission): string {
 export const MODULES = [
   'schedule',
   'tasks',
+  'announcements',
   'artists',
   'documents',
   'people',

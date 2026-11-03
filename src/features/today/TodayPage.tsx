@@ -7,6 +7,8 @@ import { useT } from '@/lib/usePrefs';
 import { progress, sortTasks, useTaskGroups, useTasks } from '@/lib/tasks';
 import type { Profile } from '@/lib/types';
 import { TaskRow } from '@/features/tasks/TaskRow';
+import { PinnedList } from '@/features/announcements/PinnedList';
+import { useAnnouncements } from '@/lib/announcements';
 
 function greetingKey(d: Date) {
   const h = Number(
@@ -31,6 +33,9 @@ export function TodayPage() {
   const groups = useTaskGroups();
   const people = usePeople();
   const [error, setError] = useState<unknown>(null);
+  const announcements = useAnnouncements();
+  const showAnnouncements = event.data?.modules.includes('announcements') ?? true;
+  const pinned = announcements.items.filter((a) => a.pinned);
   const peopleMap = useMemo(
     () => new Map<string, Profile>((people.data ?? []).map((p) => [p.id, p])),
     [people.data],
@@ -64,6 +69,7 @@ export function TodayPage() {
           </div>
         )}
       </div>
+      {showAnnouncements && pinned.length > 0 && <PinnedList items={pinned} compact />}
 
       {error !== null && (
         <div className="alert alert-error" role="alert">

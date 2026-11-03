@@ -1,6 +1,7 @@
 import { lazy, type ReactElement, type ReactNode } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { useAuth } from '@/lib/auth';
+import { AnnouncementsProvider } from '@/lib/announcements';
 import { useEvent } from '@/lib/refdata';
 import { configMissing } from '@/lib/supabase';
 import { useT } from '@/lib/usePrefs';
@@ -25,6 +26,11 @@ const SettingsPage = lazy(() =>
 const TasksPage = lazy(() =>
   import('@/features/tasks/TasksPage').then((m) => ({ default: m.TasksPage })),
 );
+const AnnouncementsPage = lazy(() =>
+  import('@/features/announcements/AnnouncementsPage').then((m) => ({
+    default: m.AnnouncementsPage,
+  })),
+);
 const TodayPage = lazy(() =>
   import('@/features/today/TodayPage').then((m) => ({ default: m.TodayPage })),
 );
@@ -33,6 +39,7 @@ const TodayPage = lazy(() =>
 const PAGES: Record<string, ReactElement> = {
   '/': <TodayPage />,
   '/taken': <TasksPage />,
+  '/mededelingen': <AnnouncementsPage />,
   '/mensen': <PeoplePage />,
   '/instellingen': <SettingsPage />,
 };
@@ -88,7 +95,9 @@ export function App() {
       <Route
         element={
           <RequireAuth>
-            <Layout />
+            <AnnouncementsProvider>
+              <Layout />
+            </AnnouncementsProvider>
           </RequireAuth>
         }
       >

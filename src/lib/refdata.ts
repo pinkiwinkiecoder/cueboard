@@ -1,7 +1,7 @@
 import { supabase } from './supabase';
 import { must, useCachedQuery } from './query';
 import type { Profile, RoleRow } from './types';
-import type { ModuleKey, PaletteColor } from './permissions';
+import { MODULES, type ModuleKey, type PaletteColor } from './permissions';
 
 export interface Department {
   id: string;
@@ -70,7 +70,7 @@ export function useEventDays() {
 const DEMO_EVENT: EventInfo = {
   name: 'Art of Faith',
   venue: null,
-  modules: ['schedule', 'tasks', 'artists', 'documents', 'people', 'issues', 'dashboard'],
+  modules: [...MODULES],
   retention_until: null,
   max_pdf_mb: 15,
 };

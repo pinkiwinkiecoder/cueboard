@@ -8,10 +8,19 @@ import { usePrefs } from '@/lib/usePrefs';
 import { ConnectionBanner } from './ConnectionBanner';
 import { TopBar } from './TopBar';
 import { Avatar } from './Avatar';
+import { AnnouncementAlerts } from './AnnouncementAlerts';
+import { useAnnouncements } from '@/lib/announcements';
 
 export function Layout() {
   const { profile, access, can, isAdmin, signOut } = useAuth();
   const event = useEvent();
+  const { unread } = useAnnouncements();
+  const badge = (to: string) =>
+    to === '/mededelingen' && unread > 0 ? (
+      <span className="count-badge" aria-label={t('announcements.unread', { n: unread })}>
+        {unread > 9 ? '9+' : unread}
+      </span>
+    ) : null;
   const { prefs, toggleTheme, backgroundUrl, t } = usePrefs();
   const [moreOpen, setMoreOpen] = useState(false);
   const location = useLocation();
@@ -51,7 +60,8 @@ export function Layout() {
               <span className="bubble" data-color={color} aria-hidden>
                 <Icon size={20} />
               </span>
-              <span>{t(label)}</span>
+              <span className="grow">{t(label)}</span>
+              {badge(to)}
             </NavLink>
           ))}
         </nav>
@@ -91,6 +101,7 @@ export function Layout() {
       <div className="content">
         <TopBar />
         <ConnectionBanner />
+        <AnnouncementAlerts />
         <main id="main" tabIndex={-1}>
           <Suspense fallback={<p className="muted">{t('app.loading')}</p>}>
             <Outlet />
@@ -104,6 +115,7 @@ export function Layout() {
             <span className="tab-icon" aria-hidden>
               <Icon size={22} />
             </span>
+            {badge(to)}
             <span>{t(label)}</span>
           </NavLink>
         ))}

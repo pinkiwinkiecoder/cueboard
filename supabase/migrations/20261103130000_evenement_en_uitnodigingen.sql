@@ -6,7 +6,7 @@
 create function public.module_keys() returns text[]
 language sql immutable set search_path = ''
 as $$
-  select array['schedule', 'tasks', 'artists', 'documents', 'people', 'issues', 'dashboard']::text[]
+  select array['schedule', 'tasks', 'announcements', 'artists', 'documents', 'people', 'issues', 'dashboard']::text[]
 $$;
 grant execute on function public.module_keys() to authenticated;
 
