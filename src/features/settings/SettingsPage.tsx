@@ -11,9 +11,11 @@ import { useT } from '@/lib/usePrefs';
 import { formatDayLong } from '@/lib/time';
 import { NamedListEditor } from './NamedListEditor';
 import { RolesEditor } from './RolesEditor';
+import { TeamsEditor } from './TeamsEditor';
+import { PresetsPanel } from './PresetsPanel';
 import { LogoUploader } from './LogoUploader';
 
-type Tab = 'event' | 'roles' | 'departments' | 'locations' | 'days';
+type Tab = 'presets' | 'event' | 'roles' | 'departments' | 'locations' | 'days';
 
 export function SettingsPage() {
   const { t } = useT();
@@ -25,6 +27,7 @@ export function SettingsPage() {
   const canSettings = can('settings.manage');
   const tabs: { id: Tab; label: Parameters<typeof t>[0]; show: boolean }[] = [
     { id: 'event', label: 'settings.tabEvent', show: canSettings },
+    { id: 'presets', label: 'presets.tab', show: isAdmin },
     { id: 'roles', label: 'settings.tabRoles', show: isAdmin },
     { id: 'departments', label: 'settings.tabDepartments', show: canSettings },
     { id: 'locations', label: 'settings.tabLocations', show: canSettings },
@@ -76,17 +79,16 @@ export function SettingsPage() {
           />
         )}
         {tab === 'roles' && <RolesEditor />}
-        {tab === 'departments' && (
-          <NamedListEditor
-            table="departments"
-            rows={departments.data}
-            title="settings.departments"
-            hint="settings.departmentsHint"
-            fieldLabel="settings.departmentName"
-            addLabel="settings.addDepartment"
-            onChanged={() => void departments.reload()}
+        {tab === 'presets' && (
+          <PresetsPanel
+            onApplied={() => {
+              void departments.reload();
+              void locations.reload();
+              void event.reload();
+            }}
           />
         )}
+        {tab === 'departments' && <TeamsEditor />}
         {tab === 'locations' && (
           <NamedListEditor
             table="locations"

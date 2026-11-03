@@ -9,6 +9,7 @@ import { supabase } from '@/lib/supabase';
 import { useT } from '@/lib/usePrefs';
 import type { Profile } from '@/lib/types';
 import { ShareLink } from './ShareLink';
+import { PersonTeams } from './PersonTeams';
 
 export function PersonDialog(props: {
   person: Profile | null;
@@ -85,7 +86,7 @@ export function PersonDialog(props: {
       )}
       <div className="grid-2">
         <div className="field">
-          <label htmlFor="p-dept">{t('people.department')}</label>
+          <label htmlFor="p-dept">{t('teams.primary')}</label>
           <select id="p-dept" value={dept} onChange={(e) => setDept(e.target.value)}>
             <option value="">{t('people.noDepartment')}</option>
             {(departments.data ?? []).map((d) => (
@@ -136,6 +137,7 @@ export function PersonDialog(props: {
             </button>
           ))}
       </div>
+      <PersonTeams profileId={p.id} primaryId={p.department_id} />
       {p.active && !isMe && (
         <section className="stack">
           <h3>{t('people.loginLink')}</h3>

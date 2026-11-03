@@ -13,7 +13,15 @@ import {
 import { EmptyState } from '@/app/EmptyState';
 import { StaleNotice } from '@/app/StaleNotice';
 import { useAuth } from '@/lib/auth';
-import { useEventDays, useLocations, usePeople } from '@/lib/refdata';
+import {
+  teamTree,
+  useDepartments,
+  useEventDays,
+  useLocations,
+  useMemberships,
+  usePeople,
+  withChildren,
+} from '@/lib/refdata';
 import { useT } from '@/lib/usePrefs';
 import { isoToLocal } from '@/lib/time';
 import {
@@ -34,8 +42,9 @@ import { TimelineView } from './TimelineView';
 import { NowNextView } from './NowNextView';
 import { ItemDialog } from './ItemDialog';
 import { ShiftDialog } from './ShiftDialog';
+import { OverviewView } from './OverviewView';
 
-type View = 'list' | 'timeline' | 'now';
+type View = 'list' | 'timeline' | 'now' | 'overview';
 type Mode = 'draft' | 'published';
 
 const KEYS: (keyof ScheduleItem)[] = [
@@ -70,8 +79,11 @@ function differs(draft: ScheduleItem[], published: ScheduleItem[]): boolean {
 
 export function SchedulePage() {
   const { t, errText } = useT();
-  const { can } = useAuth();
+  const { can, profile } = useAuth();
   const manager = can('schedule.manage');
+  const departments = useDepartments();
+  const memberships = useMemberships();
+  const [teamFilter, setTeamFilter] = useState<string>('all');
   const days = useEventDays();
   const locations = useLocations();
   const people = usePeople();
@@ -109,7 +121,28 @@ export function SchedulePage() {
     const source = mode === 'draft' ? (draft.data ?? []) : (published.data ?? []);
     return sortByStart(source.filter((i) => i.day_id === dayId));
   }, [mode, draft.data, published.data, dayId]);
-  const shown = dayItems.filter((i) => locFilter === 'all' || i.location_id === locFilter);
+  // Teamfilter: "mijn teams" = mijn teams + hun subteams; een hoofdteam toont ook zijn subteams.
+  const allDepts = departments.data ?? [];
+  const myScope = new Set(
+    (memberships.data ?? [])
+      .filter((m) => m.profile_id === profile?.id)
+      .flatMap((m) => [...withChildren(allDepts, m.department_id)]),
+  );
+  const teamScope =
+    teamFilter === 'all'
+      ? null
+      : teamFilter === 'mine'
+        ? myScope
+        : withChildren(allDepts, teamFilter);
+  const matches = (i: ScheduleItem) =>
+    (locFilter === 'all' || i.location_id === locFilter) &&
+    (!teamScope ||
+      i.department_ids.some((d) => teamScope.has(d)) ||
+      (teamFilter === 'mine' && i.responsible_id === profile?.id));
+  const shown = dayItems.filter(matches);
+  const overviewItems = (mode === 'draft' ? (draft.data ?? []) : (published.data ?? [])).filter(
+    matches,
+  );
   const depConflicts = dependencyConflicts(dayItems);
   const overlap = overlaps(dayItems);
   const pubDay = (published.data ?? []).filter((i) => i.day_id === dayId);
@@ -200,23 +233,25 @@ export function SchedulePage() {
 
       {days.data && days.data.length > 0 && (
         <>
-          <div className="tabs" role="tablist" aria-label={t('schedule.day')}>
-            {days.data.map((d) => (
-              <button
-                key={d.id}
-                type="button"
-                role="tab"
-                aria-selected={d.id === dayId}
-                onClick={() => setDayId(d.id)}
-              >
-                {d.label}
-              </button>
-            ))}
-          </div>
+          {view !== 'overview' && (
+            <div className="tabs" role="tablist" aria-label={t('schedule.day')}>
+              {days.data.map((d) => (
+                <button
+                  key={d.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={d.id === dayId}
+                  onClick={() => setDayId(d.id)}
+                >
+                  {d.label}
+                </button>
+              ))}
+            </div>
+          )}
 
           <div className="row">
             <div className="segmented" role="group" aria-label={t('schedule.title')}>
-              {(['list', 'timeline', 'now'] as const).map((v) => (
+              {(['list', 'timeline', 'now', 'overview'] as const).map((v) => (
                 <button
                   key={v}
                   type="button"
@@ -229,7 +264,9 @@ export function SchedulePage() {
                       ? 'schedule.viewList'
                       : v === 'timeline'
                         ? 'schedule.viewTimeline'
-                        : 'schedule.viewNow',
+                        : v === 'now'
+                          ? 'schedule.viewNow'
+                          : 'schedule.viewOverview',
                   )}
                 </button>
               ))}
@@ -257,6 +294,43 @@ export function SchedulePage() {
               </div>
             )}
           </div>
+
+          {allDepts.length > 0 && (
+            <div className="segmented" role="group" aria-label={t('teams.title')}>
+              <button
+                type="button"
+                className="chip"
+                aria-pressed={teamFilter === 'all'}
+                onClick={() => setTeamFilter('all')}
+              >
+                {t('schedule.allTeams')}
+              </button>
+              {myScope.size > 0 && (
+                <button
+                  type="button"
+                  className="chip"
+                  data-color="gold"
+                  aria-pressed={teamFilter === 'mine'}
+                  onClick={() => setTeamFilter('mine')}
+                >
+                  {t('schedule.myTeams')}
+                </button>
+              )}
+              {teamTree(allDepts).map(({ team }) => (
+                <button
+                  key={team.id}
+                  type="button"
+                  className="chip"
+                  data-color={team.color}
+                  aria-pressed={teamFilter === team.id}
+                  onClick={() => setTeamFilter(team.id)}
+                >
+                  <span className="dot" aria-hidden />
+                  {team.name}
+                </button>
+              ))}
+            </div>
+          )}
 
           {(locations.data?.length ?? 0) > 1 && (
             <div className="segmented" role="group" aria-label={t('schedule.location')}>
@@ -328,7 +402,16 @@ export function SchedulePage() {
             </div>
           )}
 
-          {shown.length === 0 ? (
+          {view === 'overview' ? (
+            <OverviewView
+              items={overviewItems}
+              days={days.data}
+              locations={locations.data ?? []}
+              {...(manager && mode === 'draft'
+                ? { onOpen: (i: ScheduleItem) => setEditing(i) }
+                : {})}
+            />
+          ) : shown.length === 0 ? (
             <EmptyState icon={CalendarClock} color="violet" title={t('schedule.emptyTitle')}>
               <p>{t(manager ? 'schedule.emptyManager' : 'schedule.emptyCrew')}</p>
             </EmptyState>

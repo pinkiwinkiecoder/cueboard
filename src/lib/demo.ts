@@ -51,9 +51,79 @@ const task = (
 
 export const DEMO: Record<string, unknown> = {
   departments: [
-    { id: 'd-stage', name: 'Stage', color: 'violet', sort_order: 1 },
-    { id: 'd-audio', name: 'Audio', color: 'sky', sort_order: 2 },
-    { id: 'd-light', name: 'Lighting', color: 'gold', sort_order: 3 },
+    {
+      id: 'd-core',
+      name: 'Core team',
+      color: 'gold',
+      sort_order: 1,
+      parent_id: null,
+      description: null,
+    },
+    {
+      id: 'd-prod',
+      name: 'Production',
+      color: 'sky',
+      sort_order: 2,
+      parent_id: null,
+      description: null,
+    },
+    {
+      id: 'd-stage',
+      name: 'Main Stage',
+      color: 'pink',
+      sort_order: 3,
+      parent_id: 'd-prod',
+      description: null,
+    },
+    {
+      id: 'd-small',
+      name: 'Small Stage',
+      color: 'violet',
+      sort_order: 4,
+      parent_id: 'd-prod',
+      description: null,
+    },
+    {
+      id: 'd-audio',
+      name: 'Audio',
+      color: 'sky',
+      sort_order: 5,
+      parent_id: 'd-prod',
+      description: null,
+    },
+    {
+      id: 'd-light',
+      name: 'Lighting',
+      color: 'gold',
+      sort_order: 6,
+      parent_id: 'd-prod',
+      description: null,
+    },
+    {
+      id: 'd-hosp',
+      name: 'Hospitality',
+      color: 'peach',
+      sort_order: 7,
+      parent_id: null,
+      description: null,
+    },
+    {
+      id: 'd-marcom',
+      name: 'MarCom',
+      color: 'rose',
+      sort_order: 8,
+      parent_id: null,
+      description: null,
+    },
+  ],
+  department_members: [
+    { department_id: 'd-core', profile_id: 'demo', title: 'Coordinator', is_lead: false },
+    { department_id: 'd-stage', profile_id: 'demo', title: 'Stage manager', is_lead: true },
+    { department_id: 'd-prod', profile_id: 'p1', title: 'Head of Production', is_lead: true },
+    { department_id: 'd-core', profile_id: 'p1', title: null, is_lead: false },
+    { department_id: 'd-audio', profile_id: 'p2', title: 'Audio engineer', is_lead: false },
+    { department_id: 'd-light', profile_id: 'p3', title: 'Light operator', is_lead: false },
+    { department_id: 'd-stage', profile_id: 'p4', title: 'Stage crew', is_lead: false },
   ],
   locations: [
     { id: 'l-main', name: 'Main Stage', color: 'pink', sort_order: 1 },
@@ -290,7 +360,10 @@ const sched = (
 
 DEMO.schedule_items = [
   sched('s1', 'Crew briefing', 'briefing', -240, 30, { status: 'done', actual_start: at(-238) }),
-  sched('s2', 'Arrival The Lanterns', 'arrival', -180, 30, { status: 'done' }),
+  sched('s2', 'Arrival The Lanterns', 'arrival', -180, 30, {
+    status: 'done',
+    department_ids: ['d-hosp'],
+  }),
   sched('s3', 'Soundcheck The Lanterns', 'soundcheck', -120, 45, {
     status: 'done',
     depends_on: 's2',
@@ -300,8 +373,16 @@ DEMO.schedule_items = [
     actual_start: at(-16),
     responsible_id: 'p1',
   }),
-  sched('s5', 'Changeover', 'changeover', 40, 30),
-  sched('s6', 'Press: Nova Ray', 'interview', 50, 20, { location_id: 'l-tent' }),
+  sched('s5', 'Changeover', 'changeover', 40, 30, { department_ids: ['d-stage'] }),
+  {
+    ...sched('s10', 'Load-in Nova Ray', 'arrival', 60 * 20, 60, { department_ids: ['d-prod'] }),
+    day_id: 'day-2',
+  },
+  { ...sched('s11', 'Headliner', 'performance', 60 * 26, 90), day_id: 'day-2' },
+  sched('s6', 'Press: Nova Ray', 'interview', 50, 20, {
+    location_id: 'l-tent',
+    department_ids: ['d-marcom'],
+  }),
   sched('s7', 'Nova Ray', 'performance', 70, 75, {
     status: 'confirmed',
     notes: 'Pyro at the end of the set.',

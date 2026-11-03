@@ -1,7 +1,14 @@
 import { useMemo, useState } from 'react';
 import { Phone, Search, UserPlus, Users } from 'lucide-react';
 import { useAuth } from '@/lib/auth';
-import { useDepartments, usePeople, useRoles } from '@/lib/refdata';
+import {
+  teamTree,
+  useDepartments,
+  useMemberships,
+  usePeople,
+  useRoles,
+  withChildren,
+} from '@/lib/refdata';
 import { useT } from '@/lib/usePrefs';
 import type { Profile } from '@/lib/types';
 import { EmptyState } from '@/app/EmptyState';
@@ -16,6 +23,7 @@ export function PeoplePage() {
   const people = usePeople();
   const departments = useDepartments();
   const roles = useRoles();
+  const members = useMemberships();
   const [query, setQuery] = useState('');
   const [dept, setDept] = useState<string>('alle');
   const [inviteOpen, setInviteOpen] = useState(false);
@@ -30,14 +38,36 @@ export function PeoplePage() {
   }, [departments.data, t]);
 
   const q = query.trim().toLowerCase();
+  const teamsOf = (id: string) => (members.data ?? []).filter((m) => m.profile_id === id);
+  // Filter op een hoofdteam toont ook de mensen in de subteams.
+  const scope = dept === 'alle' ? null : withChildren(departments.data ?? [], dept);
   const filtered = (people.data ?? []).filter((p) => {
-    if (dept !== 'alle' && p.department_id !== dept) return false;
+    const mine = teamsOf(p.id);
+    if (
+      scope &&
+      !(p.department_id && scope.has(p.department_id)) &&
+      !mine.some((m) => scope.has(m.department_id))
+    )
+      return false;
     return (
       !q ||
       p.full_name.toLowerCase().includes(q) ||
-      deptName(p.department_id).toLowerCase().includes(q)
+      deptName(p.department_id).toLowerCase().includes(q) ||
+      mine.some(
+        (m) =>
+          (m.title ?? '').toLowerCase().includes(q) ||
+          deptName(m.department_id).toLowerCase().includes(q),
+      )
     );
   });
+  const subline = (p: Profile) => {
+    const mine = teamsOf(p.id);
+    const titles = mine.map((m) => m.title).filter(Boolean);
+    const extra = mine
+      .filter((m) => m.department_id !== p.department_id)
+      .map((m) => deptName(m.department_id));
+    return [titles.join(', '), deptName(p.department_id), ...extra].filter(Boolean).join(' · ');
+  };
   const nobodyYet = (people.data?.length ?? 0) <= 1;
 
   return (
@@ -80,7 +110,7 @@ export function PeoplePage() {
         >
           {t('people.everyone')}
         </button>
-        {(departments.data ?? []).map((d) => (
+        {teamTree(departments.data ?? []).map(({ team: d }) => (
           <button
             key={d.id}
             type="button"
@@ -129,7 +159,7 @@ export function PeoplePage() {
               <Avatar name={p.full_name} />
               <span>
                 <span className="title">{p.full_name}</span>
-                <span className="sub">{deptName(p.department_id)}</span>
+                <span className="sub">{subline(p)}</span>
               </span>
             </button>
             {roleOf(p.role_id) && (

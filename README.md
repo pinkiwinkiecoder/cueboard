@@ -5,11 +5,12 @@ Eén plek voor wat, wie, waar en wanneer tijdens je evenement. Het eerste evenem
 > **Stand van zaken.** Dit werkt nu:
 >
 > - **Vandaag:** begroeting, vastgepinde info, mijn taken, pakketten in uitvoering
-> - **Planning:** run of show per dag en locatie, als lijst, tijdlijn of Nu & hierna; concept en gepubliceerde versie (de crew ziet enkel wat jij publiceert), "wat is er gewijzigd sinds je laatst keek", planning verschuiven met voorbeeld en melding naar het team, waarschuwingen bij overlap en afhankelijkheden, en een **showcaller-modus** (grote klok, Start/Klaar, gepland vs. werkelijk)
+> - **Planning:** run of show per dag en locatie, als lijst, tijdlijn, Nu & hierna of **festivaloverzicht** (alle dagen en locaties samen), te filteren per team of "Mijn teams"; concept en gepubliceerde versie (de crew ziet enkel wat jij publiceert), "wat is er gewijzigd sinds je laatst keek", planning verschuiven met voorbeeld en melding naar het team, waarschuwingen bij overlap en afhankelijkheden, en een **showcaller-modus** (grote klok, Start/Klaar, gepland vs. werkelijk)
 > - **Taken:** status in één tik, blokkeren met reden, aftekenen, pool/claimen, en **takenpakketten** (sjablonen) toepassen
 > - **Nieuws:** mededelingen naar iedereen of een afdeling, **vastgepinde berichten** (portofoonkanalen, nummers…), dringende berichten die blijven staan tot "Begrepen", meldingen
 > - **Mensen:** uitnodigen via WhatsApp-link of e-mail, rol en afdeling, deactiveren
-> - **Instellingen:** evenement (naam, **logo**, onderdelen aan/uit), **rollen & rechten**, afdelingen, locaties, dagen
+> - **Instellingen:** evenement (naam, **logo**, onderdelen aan/uit), **sjablonen** per soort evenement (festival met meerdere podia, concert/één podium, congres, bedrijfsevent), **rollen & rechten**, **teams met subteams** (bv. Productie → Main Stage, Small Stage), locaties, dagen
+> - **Teams:** iemand kan in meerdere teams zitten, met een functie (bv. _Head of Production_, _Audio Engineer_) en eventueel als teamleider. De **rol** bepaalt wat iemand mag, de **teams** bepalen waar: wie in Productie zit, ziet ook de taken van Main Stage en Small Stage; een bericht aan Productie bereikt ook de subteams
 > - **Weergave:** taal, thema, accentkleur, achtergrondfoto, tekstgrootte, scherm blijft aan
 >
 > Documenten, artiesten, meldingen (incidenten) en het dashboard volgen.
@@ -161,7 +162,7 @@ Test ze: tab **Actions** → **Keep-alive Supabase** → **Run workflow**. Een g
 
 3. Open je pages.dev-adres op je iPad, log in en tik in Safari op **Deel** → **Zet op beginscherm**.
 
-**Testen:** inloggen werkt, je ziet je naam en "Admin", Instellingen staat in het menu. Ga naar **Instellingen → Evenement** en upload het logo van je evenement. Kijk bij **Rollen & rechten** welke rollen er zijn (Admin, Team lead, Crew, Guest) en pas ze aan naar jouw evenement.
+**Testen:** inloggen werkt, je ziet je naam en "Admin", Instellingen staat in het menu. Kies onder **Instellingen → Sjablonen** het sjabloon dat bij je evenement past (voor Art of Faith: _Festival met meerdere podia_); dat zet teams, rollen, locaties en takenpakketten klaar. Ga naar **Instellingen → Evenement** en upload het logo van je evenement. Kijk bij **Rollen & rechten** welke rollen er zijn (Admin, Team lead, Crew, Guest) en pas ze aan naar jouw evenement.
 
 ---
 
