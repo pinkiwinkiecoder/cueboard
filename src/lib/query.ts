@@ -116,6 +116,9 @@ const DB_CODES: Record<string, MsgKey> = {
   'AOF:reason_required': 'errors.reasonRequired',
   'AOF:cannot_claim': 'errors.cannotClaim',
   'AOF:unknown_package': 'errors.unknownPackage',
+  'AOF:invalid_shift': 'errors.invalidShift',
+  'AOF:unknown_item': 'errors.unknownItem',
+  'AOF:invalid_request': 'errors.invalidRequest',
 };
 
 export function dbError(err: { message: string; code?: string }): AppError {

@@ -739,3 +739,225 @@ dialog.sheet::backdrop {
   border-radius: var(--radius);
   background: var(--surface-2);
 }
+
+/* Planning */
+.sched-list {
+  list-style: none;
+  margin: 0;
+  padding: var(--space-2) var(--space-4);
+  display: grid;
+}
+.sched-row + .sched-row {
+  border-top: 1px solid var(--border);
+}
+.sched-btn {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  width: 100%;
+  min-height: 64px;
+  padding: var(--space-3) 0;
+  text-align: left;
+  background: none;
+  border: 0;
+  color: inherit;
+  font: inherit;
+}
+button.sched-btn {
+  cursor: pointer;
+}
+.sched-time {
+  display: grid;
+  min-width: 3.6rem;
+}
+.sched-time .time {
+  font-size: 1.25rem;
+  line-height: 1.1;
+}
+.sched-live .sched-btn {
+  box-shadow: inset 4px 0 0 var(--c);
+  padding-left: var(--space-3);
+  background: color-mix(in srgb, var(--c) 8%, transparent);
+  border-radius: var(--radius);
+}
+.shift-row {
+  min-height: 40px;
+}
+
+/* Tijdlijn */
+.timeline-scroll {
+  overflow-x: auto;
+  padding: var(--space-3);
+}
+.timeline {
+  display: grid;
+  gap: 0 var(--space-2);
+  min-width: min-content;
+}
+.timeline-head {
+  position: sticky;
+  top: 0;
+  padding: var(--space-2);
+  font-weight: 750;
+  text-align: center;
+}
+.timeline-axis,
+.timeline-col {
+  position: relative;
+}
+.timeline-axis span {
+  position: absolute;
+  right: 6px;
+  transform: translateY(-50%);
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.timeline-col {
+  background: var(--surface-2);
+  border-radius: var(--radius);
+}
+.timeline-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-top: 1px dashed var(--border-strong);
+}
+.timeline-now {
+  position: absolute;
+  left: -4px;
+  right: 0;
+  height: 2px;
+  background: var(--danger);
+  z-index: 2;
+}
+.timeline-now::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: -4px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--danger);
+}
+.timeline-block {
+  position: absolute;
+  left: 4px;
+  right: 4px;
+  display: grid;
+  align-content: start;
+  gap: 2px;
+  padding: 6px 8px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 0;
+  border-left: 4px solid var(--c);
+  background: color-mix(in srgb, var(--c) calc(var(--tint) + 8%), var(--surface));
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+  z-index: 1;
+}
+button.timeline-block {
+  cursor: pointer;
+}
+.timeline-block.is-live {
+  outline: 2px solid var(--c);
+}
+.timeline-block.is-done {
+  opacity: 0.55;
+}
+.timeline-block-time {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.78rem;
+  color: var(--c);
+}
+.timeline-block-title {
+  font-weight: 700;
+  font-size: 0.9rem;
+  line-height: 1.2;
+}
+
+/* Nu & hierna */
+.nn-block {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--c) 9%, transparent);
+}
+.nn-label {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--c);
+}
+.nn-title {
+  font-size: 1.15rem;
+}
+
+/* Showcaller */
+.showcaller {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  overflow-y: auto;
+  display: grid;
+  align-content: start;
+  gap: var(--space-4);
+  padding: max(var(--space-4), env(safe-area-inset-top)) var(--space-5)
+    max(var(--space-5), env(safe-area-inset-bottom));
+  background: var(--bg);
+}
+.sc-clock {
+  font-size: clamp(4rem, 14vw, 9rem);
+  line-height: 1;
+  text-align: center;
+}
+.sc-seconds {
+  font-size: 0.4em;
+  color: var(--muted);
+}
+.sc-card {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  border-radius: var(--radius-xl);
+  background: color-mix(in srgb, var(--c) 10%, var(--surface));
+  border: 2px solid color-mix(in srgb, var(--c) 40%, transparent);
+}
+.sc-title {
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  margin: 0;
+}
+.sc-count {
+  font-size: clamp(1.6rem, 5vw, 2.6rem);
+  color: var(--c);
+}
+.sc-over {
+  color: var(--danger);
+}
+.sc-btn {
+  min-height: 72px;
+  min-width: 200px;
+  font-size: 1.4rem;
+  border-radius: var(--radius-lg);
+}
+.sc-upcoming {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-2);
+}
+.sc-upcoming li {
+  display: flex;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius);
+  background: var(--surface);
+  font-size: 1.1rem;
+}

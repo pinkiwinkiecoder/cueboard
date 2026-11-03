@@ -6,6 +6,7 @@ import { useEvent } from '@/lib/refdata';
 import { configMissing } from '@/lib/supabase';
 import { useT } from '@/lib/usePrefs';
 import { NAV_ITEMS, visibleNav, type NavItem } from './nav';
+import type { Permission } from '@/lib/permissions';
 import { Layout } from './Layout';
 import { PlaceholderPage } from '@/features/placeholders';
 import { LoginPage } from '@/features/auth/LoginPage';
@@ -31,6 +32,12 @@ const AnnouncementsPage = lazy(() =>
     default: m.AnnouncementsPage,
   })),
 );
+const SchedulePage = lazy(() =>
+  import('@/features/schedule/SchedulePage').then((m) => ({ default: m.SchedulePage })),
+);
+const ShowcallerPage = lazy(() =>
+  import('@/features/schedule/ShowcallerPage').then((m) => ({ default: m.ShowcallerPage })),
+);
 const TodayPage = lazy(() =>
   import('@/features/today/TodayPage').then((m) => ({ default: m.TodayPage })),
 );
@@ -38,6 +45,7 @@ const TodayPage = lazy(() =>
 /** Echte schermen; de rest toont voorlopig een "in opbouw"-scherm. */
 const PAGES: Record<string, ReactElement> = {
   '/': <TodayPage />,
+  '/planning': <SchedulePage />,
   '/taken': <TasksPage />,
   '/mededelingen': <AnnouncementsPage />,
   '/mensen': <PeoplePage />,
@@ -60,6 +68,11 @@ function RequireNav({ item, children }: { item: NavItem; children: ReactNode }) 
   if (!event.data) return children; // nog aan het laden: RLS beschermt de data toch
   const allowed = visibleNav(can, event.data.modules, isAdmin).includes(item);
   return allowed ? children : <Navigate to="/" replace />;
+}
+
+function RequirePerm({ perm, children }: { perm: Permission; children: ReactNode }) {
+  const { can } = useAuth();
+  return can(perm) ? children : <Navigate to="/" replace />;
 }
 
 export function App() {
@@ -102,6 +115,14 @@ export function App() {
         }
       >
         <Route path="/weergave" element={<AppearancePage />} />
+        <Route
+          path="/planning/showcaller"
+          element={
+            <RequirePerm perm="schedule.manage">
+              <ShowcallerPage />
+            </RequirePerm>
+          }
+        />
         {NAV_ITEMS.map((item) => (
           <Route
             key={item.to}

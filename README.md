@@ -5,13 +5,14 @@ Eén plek voor wat, wie, waar en wanneer tijdens je evenement. Het eerste evenem
 > **Stand van zaken.** Dit werkt nu:
 >
 > - **Vandaag:** begroeting, vastgepinde info, mijn taken, pakketten in uitvoering
+> - **Planning:** run of show per dag en locatie, als lijst, tijdlijn of Nu & hierna; concept en gepubliceerde versie (de crew ziet enkel wat jij publiceert), "wat is er gewijzigd sinds je laatst keek", planning verschuiven met voorbeeld en melding naar het team, waarschuwingen bij overlap en afhankelijkheden, en een **showcaller-modus** (grote klok, Start/Klaar, gepland vs. werkelijk)
 > - **Taken:** status in één tik, blokkeren met reden, aftekenen, pool/claimen, en **takenpakketten** (sjablonen) toepassen
 > - **Nieuws:** mededelingen naar iedereen of een afdeling, **vastgepinde berichten** (portofoonkanalen, nummers…), dringende berichten die blijven staan tot "Begrepen", meldingen
 > - **Mensen:** uitnodigen via WhatsApp-link of e-mail, rol en afdeling, deactiveren
 > - **Instellingen:** evenement (naam, **logo**, onderdelen aan/uit), **rollen & rechten**, afdelingen, locaties, dagen
 > - **Weergave:** taal, thema, accentkleur, achtergrondfoto, tekstgrootte, scherm blijft aan
 >
-> Planning (run of show), documenten, artiesten, meldingen (incidenten) en het dashboard volgen.
+> Documenten, artiesten, meldingen (incidenten) en het dashboard volgen.
 >
 > **Meldingen op het toestel:** zolang de app open is (of op de achtergrond draait) krijg je een melding bij nieuws, als je dat toestaat. Meldingen terwijl de app helemaal dicht is (Web Push) komen in een volgende stap. Op iPhone/iPad werkt dit enkel als de app op het beginscherm staat.
 >

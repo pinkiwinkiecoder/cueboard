@@ -60,8 +60,8 @@ export const DEMO: Record<string, unknown> = {
     { id: 'l-tent', name: 'Tent', color: 'teal', sort_order: 2 },
   ],
   event_days: [
-    { id: 'day-1', date: '2027-07-16', label: 'Friday' },
-    { id: 'day-2', date: '2027-07-17', label: 'Saturday' },
+    { id: 'day-1', date: new Date().toISOString().slice(0, 10), label: 'Friday' },
+    { id: 'day-2', date: new Date(now + 86_400_000).toISOString().slice(0, 10), label: 'Saturday' },
   ],
   roles: [
     {
@@ -262,6 +262,58 @@ DEMO.announcements = [
     announcement_reads: [{ profile_id: 'demo', read_at: at(-40), acknowledged_at: null }],
   },
 ];
+
+const sched = (
+  id: string,
+  title: string,
+  kind: string,
+  startMin: number,
+  lengthMin: number,
+  extra: Record<string, unknown> = {},
+) => ({
+  id,
+  day_id: 'day-1',
+  location_id: 'l-main',
+  title,
+  kind,
+  starts_at: at(startMin),
+  ends_at: at(startMin + lengthMin),
+  status: 'planned',
+  notes: null,
+  responsible_id: null,
+  department_ids: [],
+  depends_on: null,
+  actual_start: null,
+  actual_end: null,
+  ...extra,
+});
+
+DEMO.schedule_items = [
+  sched('s1', 'Crew briefing', 'briefing', -240, 30, { status: 'done', actual_start: at(-238) }),
+  sched('s2', 'Arrival The Lanterns', 'arrival', -180, 30, { status: 'done' }),
+  sched('s3', 'Soundcheck The Lanterns', 'soundcheck', -120, 45, {
+    status: 'done',
+    depends_on: 's2',
+  }),
+  sched('s4', 'The Lanterns', 'performance', -20, 60, {
+    status: 'live',
+    actual_start: at(-16),
+    responsible_id: 'p1',
+  }),
+  sched('s5', 'Changeover', 'changeover', 40, 30),
+  sched('s6', 'Press: Nova Ray', 'interview', 50, 20, { location_id: 'l-tent' }),
+  sched('s7', 'Nova Ray', 'performance', 70, 75, {
+    status: 'confirmed',
+    notes: 'Pyro at the end of the set.',
+  }),
+  sched('s8', 'DJ set', 'performance', -30, 90, { location_id: 'l-tent', status: 'live' }),
+  sched('s9', 'Clear stage', 'changeover', 145, 30),
+];
+DEMO.schedule_published = (DEMO.schedule_items as Record<string, unknown>[]).map((i) => ({
+  ...i,
+  changed_at: i.id === 's7' ? at(-5) : at(-600),
+}));
+DEMO.schedule_publications = [];
 
 export const DEMO_ACCESS = {
   role_id: 'r-admin',
