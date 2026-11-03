@@ -15,6 +15,12 @@ export const arrivedViaSetPasswordLink =
   typeof window !== 'undefined' &&
   /(?:^|[#&?])type=(recovery|invite|signup)(?:&|$)/.test(window.location.hash + '&' + window.location.search.slice(1));
 
+/** Foutcode van Supabase in de URL na een ongeldige of verlopen e-maillink (bv. otp_expired). */
+export const linkError =
+  typeof window !== 'undefined'
+    ? (/[#&?]error_code=([a-z_]+)/.exec(window.location.hash + '&' + window.location.search)?.[1] ?? null)
+    : null;
+
 // Bij ontbrekende config maken we een client met dummywaarden, zodat de app
 // een uitlegscherm kan tonen in plaats van een witte pagina.
 export const supabase: SupabaseClient = createClient(

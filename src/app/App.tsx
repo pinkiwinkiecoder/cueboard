@@ -1,9 +1,9 @@
-import { lazy, Suspense, type ReactElement, type ReactNode } from 'react';
+import { lazy, Suspense, useEffect, useState, type ReactElement, type ReactNode } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { useAuth } from '@/lib/auth';
 import { AnnouncementsProvider } from '@/lib/announcements';
 import { useEvent } from '@/lib/refdata';
-import { configMissing } from '@/lib/supabase';
+import { configMissing, linkError } from '@/lib/supabase';
 import { useT } from '@/lib/usePrefs';
 import { NAV_ITEMS, visibleNav, type NavItem } from './nav';
 import type { Permission } from '@/lib/permissions';
@@ -145,6 +145,11 @@ export function App() {
   const { session, profile, recovery } = useAuth();
   const { t } = useT();
   const { pathname } = useLocation();
+  // Ongeldige of verlopen e-maillink: één keer naar het scherm met uitleg en "nieuwe link".
+  const [badLink, setBadLink] = useState(!!linkError);
+  useEffect(() => {
+    if (badLink && pathname === '/new-password') setBadLink(false);
+  }, [badLink, pathname]);
 
   if (configMissing) {
     return (
@@ -160,7 +165,8 @@ export function App() {
   return (
     <Suspense fallback={<div className="auth-page">{t('app.loading')}</div>}>
       {/* Via een reset- of uitnodigingslink binnen: eerst een wachtwoord kiezen, waar je ook landt. */}
-      {recovery && session && pathname !== '/new-password' && <Navigate to="/new-password" replace />}
+      {badLink && pathname !== '/new-password' && <Navigate to="/new-password" replace />}
+      {!badLink && recovery && session && pathname !== '/new-password' && <Navigate to="/new-password" replace />}
       <Routes>
         <Route
           path="/sign-in"

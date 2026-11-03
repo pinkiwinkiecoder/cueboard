@@ -1,11 +1,21 @@
-import { useState, type FormEvent } from 'react';
+import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { KeyRound } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
+import { linkError, supabase } from '@/lib/supabase';
 import { useAuth } from '@/lib/auth';
 import { useT } from '@/lib/usePrefs';
 import { MIN_PASSWORD_LENGTH, passwordProblem } from '@/lib/password';
 import type { MsgKey } from '@/i18n';
+
+/** ?token_hash=…&type=recovery|invite uit de e-mail, of niets. */
+function readTokenHash(): { hash: string; type: 'recovery' | 'invite' | 'signup' | 'email' } | null {
+  const q = new URLSearchParams(window.location.search);
+  const hash = q.get('token_hash');
+  const type = q.get('type');
+  if (!hash || !type) return null;
+  if (type !== 'recovery' && type !== 'invite' && type !== 'signup' && type !== 'email') return null;
+  return { hash, type };
+}
 
 /** Gebruikt na een uitnodigingslink én na een resetlink. */
 export function SetPasswordPage() {
@@ -16,8 +26,24 @@ export function SetPasswordPage() {
   const [pw2, setPw2] = useState('');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<MsgKey | null>(null);
+  // Link uit de e-mail met token_hash: de app bevestigt hem zelf (werkt ook als een
+  // virusscanner de link vooraf opent, want die voert geen JavaScript uit).
+  const [verifying, setVerifying] = useState(() => !!readTokenHash());
+  const [, setLinkBad] = useState(!!linkError);
+  const started = useRef(false);
 
-  if (loading) return <div className="auth-page">{t('app.loading')}</div>;
+  useEffect(() => {
+    const link = readTokenHash();
+    if (!link || started.current) return;
+    started.current = true;
+    void supabase.auth.verifyOtp({ token_hash: link.hash, type: link.type }).then(({ error: err }) => {
+      window.history.replaceState(null, '', '/new-password');
+      if (err) setLinkBad(true);
+      setVerifying(false);
+    });
+  }, []);
+
+  if (loading || verifying) return <div className="auth-page">{t('app.loading')}</div>;
 
   if (!session) {
     return (
