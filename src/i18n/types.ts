@@ -12,7 +12,7 @@ type Leaves<T, P extends string = ''> = {
 export type MsgKey = Leaves<typeof en>;
 export type Vars = Record<string, string | number>;
 
-export type Lang = 'en' | 'nl' | 'fr' | 'de';
+export type Lang = 'en' | 'nl' | 'fr' | 'de' | 'es' | 'it' | 'pt';
 
 /** Talen waarin de langere teksten (helpcentrum, sjablonen, startpagina) bestaan. Andere talen tonen die in het Engels. */
 export type ContentLang = 'en' | 'nl';

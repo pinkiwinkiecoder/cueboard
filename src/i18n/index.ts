@@ -2,6 +2,9 @@ import { en } from './en';
 import { nl } from './nl';
 import { fr } from './fr';
 import { de } from './de';
+import { es } from './es';
+import { it } from './it';
+import { pt } from './pt';
 import type { ContentLang, Dictionary, Lang, MsgKey, Vars } from './types';
 
 export type { ContentLang, Lang, MsgKey, Vars } from './types';
@@ -11,9 +14,12 @@ export const LANGUAGES: { id: Lang; label: string; locale: string }[] = [
   { id: 'nl', label: 'Nederlands', locale: 'nl-BE' },
   { id: 'fr', label: 'Français', locale: 'fr-BE' },
   { id: 'de', label: 'Deutsch', locale: 'de-DE' },
+  { id: 'es', label: 'Español', locale: 'es-ES' },
+  { id: 'it', label: 'Italiano', locale: 'it-IT' },
+  { id: 'pt', label: 'Português', locale: 'pt-PT' },
 ];
 
-const DICTS: Record<Lang, Dictionary> = { en, nl, fr, de };
+const DICTS: Record<Lang, Dictionary> = { en, nl, fr, de, es, it, pt };
 
 /** Taal voor de langere inhoud: Nederlands of anders Engels. */
 export function contentLang(lang: Lang): ContentLang {
