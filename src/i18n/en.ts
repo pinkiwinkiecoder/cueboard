@@ -4,7 +4,8 @@
 
 export const en = {
   app: {
-    name: 'Art of Faith',
+    name: 'Backstage Hub',
+    tagline: 'Plan, assign and run your event with your crew.',
     loading: 'Loading…',
     skipToContent: 'Skip to content',
     notConfiguredTitle: 'App not connected yet',
@@ -61,6 +62,7 @@ export const en = {
   },
   auth: {
     signInTitle: 'Sign in',
+    signInTo: 'Sign in to {app}',
     email: 'Email address',
     password: 'Password',
     signIn: 'Sign in',
@@ -136,6 +138,7 @@ export const en = {
     rolePartial: 'Account created, but role/department not saved. Adjust them in People.',
     photoInvalid: 'Choose a photo (JPG, PNG or HEIC).',
     photoFailed: 'This photo could not be used. Try another photo.',
+    logoFailed: 'The logo could not be uploaded. Use a PNG, JPG or WebP image under 1 MB.',
     adminRoleLocked: 'The admin role always has full access and cannot be removed.',
     unknownTask: 'This task no longer exists.',
     reasonRequired: 'Say why the task is blocked.',
@@ -244,6 +247,12 @@ export const en = {
     event: 'Event',
     eventName: 'Event name',
     venue: 'Venue',
+    logo: 'Event logo',
+    logoHint: 'Shown in the menu and on the sign-in screen. Square images work best.',
+    uploadLogo: 'Upload logo',
+    replaceLogo: 'Replace logo',
+    removeLogo: 'Remove logo',
+    logoAlt: 'Logo of {name}',
     modules: 'Modules',
     modulesHint:
       'Switch off what you do not need for this event. A module that is off is hidden for everyone.',

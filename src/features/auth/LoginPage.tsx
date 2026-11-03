@@ -6,10 +6,12 @@ import { useAuth } from '@/lib/auth';
 import { useT } from '@/lib/usePrefs';
 import type { MsgKey } from '@/i18n';
 import { LanguagePicker } from '@/features/me/LanguagePicker';
+import { APP_NAME, EventLogo, useBranding } from '@/lib/branding';
 
 export function LoginPage() {
   const { problem } = useAuth();
   const { t } = useT();
+  const branding = useBranding();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [busy, setBusy] = useState(false);
@@ -30,11 +32,20 @@ export function LoginPage() {
   return (
     <div className="auth-page">
       <form className="auth-card panel" onSubmit={onSubmit} noValidate>
-        <div className="row">
-          <div className="brand-big display spacer">{t('app.name')}</div>
+        <div className="row" style={{ justifyContent: 'flex-end' }}>
           <LanguagePicker compact />
         </div>
-        <h1>{t('auth.signInTitle')}</h1>
+        <div className="login-brand">
+          <EventLogo
+            path={branding.data?.logo_path}
+            size={96}
+            alt={branding.data ? t('settings.logoAlt', { name: branding.data.name }) : APP_NAME}
+          />
+          {branding.data?.name && <div className="brand-big display">{branding.data.name}</div>}
+          <p className="sub" style={{ margin: 0 }}>
+            {t('auth.signInTo', { app: APP_NAME })}
+          </p>
+        </div>
         {problem && <div className="alert alert-warning">{t(problem)}</div>}
         {error && (
           <div className="alert alert-error" role="alert">

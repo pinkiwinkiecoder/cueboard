@@ -11,6 +11,7 @@ import { useT } from '@/lib/usePrefs';
 import { formatDayLong } from '@/lib/time';
 import { NamedListEditor } from './NamedListEditor';
 import { RolesEditor } from './RolesEditor';
+import { LogoUploader } from './LogoUploader';
 
 type Tab = 'event' | 'roles' | 'departments' | 'locations' | 'days';
 
@@ -70,6 +71,7 @@ export function SettingsPage() {
             name={event.data?.name ?? ''}
             venue={event.data?.venue ?? ''}
             modules={event.data?.modules ?? [...MODULES]}
+            logoPath={event.data?.logo_path ?? null}
             onSaved={() => void event.reload()}
           />
         )}
@@ -106,6 +108,7 @@ function EventForm(props: {
   name: string;
   venue: string;
   modules: ModuleKey[];
+  logoPath: string | null;
   onSaved: () => void;
 }) {
   const { t, errText } = useT();
@@ -149,6 +152,7 @@ function EventForm(props: {
       )}
       <section className="card" aria-labelledby="h-event">
         <h2 id="h-event">{t('settings.event')}</h2>
+        <LogoUploader path={props.logoPath} eventName={props.name} onChanged={props.onSaved} />
         <div className="grid-2">
           <div className="field">
             <label htmlFor="f-name">{t('settings.eventName')}</label>

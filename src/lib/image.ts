@@ -3,7 +3,12 @@
  * Wordt gebruikt voor achtergrondfoto's en later voor foto's bij meldingen,
  * zodat we zuinig blijven met opslag en mobiele data.
  */
-export async function compressImage(file: Blob, maxSide = 1600, quality = 0.8): Promise<Blob> {
+export async function compressImage(
+  file: Blob,
+  maxSide = 1600,
+  quality = 0.8,
+  type: 'image/jpeg' | 'image/png' = 'image/jpeg',
+): Promise<Blob> {
   const bitmap = await createImageBitmap(file);
   const scale = Math.min(1, maxSide / Math.max(bitmap.width, bitmap.height));
   const w = Math.round(bitmap.width * scale);
@@ -18,7 +23,7 @@ export async function compressImage(file: Blob, maxSide = 1600, quality = 0.8): 
   return new Promise((resolve, reject) =>
     canvas.toBlob(
       (blob) => (blob ? resolve(blob) : reject(new Error('Foto omzetten mislukt'))),
-      'image/jpeg',
+      type,
       quality,
     ),
   );

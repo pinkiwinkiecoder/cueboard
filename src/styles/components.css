@@ -709,3 +709,33 @@ dialog.sheet::backdrop {
     transform: translate(-50%, -12px);
   }
 }
+
+/* Logo's */
+.event-logo {
+  flex: none;
+  border-radius: 22%;
+  object-fit: contain;
+  background: var(--surface-2);
+}
+.brand-app {
+  display: block;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 650;
+}
+.login-brand {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  gap: var(--space-2);
+  margin: var(--space-2) 0 var(--space-5);
+}
+.logo-uploader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-3);
+  margin-bottom: var(--space-4);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}

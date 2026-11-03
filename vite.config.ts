@@ -12,21 +12,31 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'prompt',
-      includeAssets: ['icon.svg'],
+      includeAssets: ['logo.svg', 'favicon.ico', 'apple-touch-icon-180x180.png'],
       manifest: {
-        name: 'Art of Faith Production Hub',
-        short_name: 'AoF Hub',
-        description: 'Productieplatform voor het Art of Faith-festivalweekend',
-        lang: 'nl-BE',
+        name: 'Backstage Hub',
+        short_name: 'Backstage Hub',
+        description: 'Plan, assign and run your event with your crew.',
+        lang: 'en',
         start_url: '/',
         display: 'standalone',
         orientation: 'any',
         background_color: '#14112a',
         theme_color: '#14112a',
-        icons: [{ src: 'icon.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'any' }],
+        icons: [
+          { src: 'pwa-64x64.png', sizes: '64x64', type: 'image/png' },
+          { src: 'pwa-192x192.png', sizes: '192x192', type: 'image/png' },
+          { src: 'pwa-512x512.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
+          {
+            src: 'maskable-icon-512x512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'maskable',
+          },
+        ],
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,svg,woff2}'],
+        globPatterns: ['**/*.{js,css,html,svg,png,ico,woff2}'],
         navigateFallback: '/index.html',
         // Supabase-verkeer nooit door de service worker laten cachen: data gaat via IndexedDB.
         navigateFallbackDenylist: [/^\/auth\//],

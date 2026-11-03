@@ -1,8 +1,19 @@
-# Art of Faith Production Hub
+# Backstage Hub
 
-Eén plek voor wat, wie, waar en wanneer tijdens het Art of Faith-festivalweekend. De app werkt op iPad, iPhone en laptop, ook met een slechte verbinding.
+Eén plek voor wat, wie, waar en wanneer tijdens je evenement. Het eerste evenement is het Art of Faith-festivalweekend, maar alles is per evenement in te stellen: naam, logo, rollen en rechten, afdelingen, locaties, dagen en welke onderdelen aanstaan. De app werkt op iPad, iPhone en laptop, ook met een slechte verbinding.
 
-> **Stand van zaken:** fase 0 is klaar (skelet, inloggen, rollen, database met beveiliging, CI, keep-alive, back-up). Van fase 1 werken nu Mensen (uitnodigen via WhatsApp-link of e-mail, rollen, deactiveren), Instellingen (festival, dagen, podia, afdelingen) en Weergave (taal, thema, accentkleur, achtergrondfoto, tekstgrootte, scherm blijft aan). Planning, taken en de andere modules volgen.
+> **Stand van zaken.** Dit werkt nu:
+>
+> - **Vandaag:** begroeting, vastgepinde info, mijn taken, pakketten in uitvoering
+> - **Taken:** status in één tik, blokkeren met reden, aftekenen, pool/claimen, en **takenpakketten** (sjablonen) toepassen
+> - **Nieuws:** mededelingen naar iedereen of een afdeling, **vastgepinde berichten** (portofoonkanalen, nummers…), dringende berichten die blijven staan tot "Begrepen", meldingen
+> - **Mensen:** uitnodigen via WhatsApp-link of e-mail, rol en afdeling, deactiveren
+> - **Instellingen:** evenement (naam, **logo**, onderdelen aan/uit), **rollen & rechten**, afdelingen, locaties, dagen
+> - **Weergave:** taal, thema, accentkleur, achtergrondfoto, tekstgrootte, scherm blijft aan
+>
+> Planning (run of show), documenten, artiesten, meldingen (incidenten) en het dashboard volgen.
+>
+> **Meldingen op het toestel:** zolang de app open is (of op de achtergrond draait) krijg je een melding bij nieuws, als je dat toestaat. Meldingen terwijl de app helemaal dicht is (Web Push) komen in een volgende stap. Op iPhone/iPad werkt dit enkel als de app op het beginscherm staat.
 >
 > **Talen:** de app is standaard in het **Engels**, en elke gebruiker kan in _Appearance_ overschakelen naar **Nederlands**. Een taal toevoegen (bv. Frans) = één bestand `src/i18n/fr.ts` naast `en.ts`; de test controleert dat geen enkele tekst ontbreekt. Zie [docs/adr/001-architectuur.md](docs/adr/001-architectuur.md) voor de keuzes en de gratis limieten.
 
@@ -58,13 +69,15 @@ npx supabase link --project-ref JOUW-PROJECT-ID
 npx supabase db push
 ```
 
-Bij `link` vraagt het om het databasewachtwoord van stap 2. `db push` zet alle tabellen en beveiligingsregels klaar. Daarna maak je de standaardafdelingen aan: open in het dashboard **SQL Editor**, plak het volgende en klik **Run**:
+Bij `link` vraagt het om het databasewachtwoord van stap 2. `db push` zet alle tabellen en beveiligingsregels klaar. Daarna geef je het evenement een naam en maak je de startafdelingen aan (alles is later in de app aan te passen): open in het dashboard **SQL Editor**, plak het volgende en klik **Run**:
 
 ```sql
-insert into public.departments (name, sort_order) values
-  ('Stage', 1), ('Licht', 2), ('Audio', 3), ('Video', 4),
-  ('Backline', 5), ('Productie', 6), ('Artist liaison', 7), ('Runners', 8)
+update public.event set name = 'Art of Faith';
+insert into public.departments (name, color, sort_order) values
+  ('Stage', 'violet', 1), ('Lighting', 'gold', 2), ('Audio', 'sky', 3), ('Video', 'pink', 4),
+  ('Backline', 'peach', 5), ('Production', 'mint', 6), ('Artist liaison', 'rose', 7), ('Runners', 'lime', 8)
 on conflict (name) do nothing;
+insert into public.locations (name, sort_order) values ('Main Stage', 1) on conflict (name) do nothing;
 ```
 
 ### Stap 4: E-mail via Brevo
@@ -141,13 +154,13 @@ Test ze: tab **Actions** → **Keep-alive Supabase** → **Run workflow**. Een g
 
    ```sql
    update public.profiles
-      set role = 'beheerder', full_name = 'Je Naam'
+      set role_id = (select id from public.roles where is_admin), full_name = 'Je Naam'
     where email = 'jij@voorbeeld.be';
    ```
 
 3. Open je pages.dev-adres op je iPad, log in en tik in Safari op **Deel** → **Zet op beginscherm**.
 
-**Testen na fase 0:** inloggen werkt, je ziet je naam en "Beheerder", Dashboard en Instellingen staan in het menu, en uitloggen werkt. Bij een fout wachtwoord krijg je een duidelijke melding.
+**Testen:** inloggen werkt, je ziet je naam en "Admin", Instellingen staat in het menu. Ga naar **Instellingen → Evenement** en upload het logo van je evenement. Kijk bij **Rollen & rechten** welke rollen er zijn (Admin, Team lead, Crew, Guest) en pas ze aan naar jouw evenement.
 
 ---
 
@@ -170,7 +183,7 @@ Zet eerst een bestand `.env.local` klaar (kopie van `.env.example`). Handige com
 | `npm run db:test`                    | dezelfde tests op een echte lokale Supabase (vraagt Docker Desktop) |
 | `npm run lint` / `npm run typecheck` | codecontrole                                                        |
 
-Lokale demo-accounts (enkel met Docker, `npx supabase start`): `beheerder@demo.test`, `hoofd.audio@demo.test`, `crew.audio@demo.test`, `crew.licht@demo.test`, `gast@demo.test`. Het wachtwoord staat in `supabase/seed.sql`.
+Lokale demo-accounts (enkel met Docker, `npx supabase start`): `admin@demo.test`, `lead.audio@demo.test`, `crew.audio@demo.test`, `crew.lighting@demo.test`, `guest@demo.test`. Zonder server kun je de schermen bekijken met `VITE_DEMO_LOGIN=1` in `.env.local` (enkel `npm run dev`, met voorbeelddata). Het wachtwoord staat in `supabase/seed.sql`.
 
 ---
 

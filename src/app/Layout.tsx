@@ -1,6 +1,7 @@
-import { Suspense, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
-import { LogOut, Menu, Moon, Palette, Sparkles, SunMedium, X } from 'lucide-react';
+import { LogOut, Menu, Moon, Palette, SunMedium, X } from 'lucide-react';
+import { APP_NAME, EventLogo } from '@/lib/branding';
 import { visibleNav } from './nav';
 import { useAuth } from '@/lib/auth';
 import { useEvent } from '@/lib/refdata';
@@ -33,6 +34,9 @@ export function Layout() {
   const ThemeIcon = prefs.theme === 'dark' ? SunMedium : Moon;
   const themeLabel = t(prefs.theme === 'dark' ? 'nav.lightTheme' : 'nav.darkTheme');
   const eventName = event.data?.name ?? t('app.name');
+  useEffect(() => {
+    document.title = event.data?.name ? `${event.data.name} · ${APP_NAME}` : APP_NAME;
+  }, [event.data?.name]);
 
   return (
     <div className="shell">
@@ -49,10 +53,11 @@ export function Layout() {
 
       <aside className="sidebar" aria-label={t('nav.mainNav')}>
         <div className="brand">
-          <span className="bubble bubble-lg" data-color="gold" aria-hidden>
-            <Sparkles size={24} />
+          <EventLogo path={event.data?.logo_path} size={44} alt="" />
+          <span className="grow">
+            <span className="brand-name">{eventName}</span>
+            <span className="brand-app">{APP_NAME}</span>
           </span>
-          <span className="brand-name">{eventName}</span>
         </div>
         <nav>
           {items.map(({ to, label, icon: Icon, color }) => (

@@ -26,6 +26,7 @@ export interface EventInfo {
   modules: ModuleKey[];
   retention_until: string | null;
   max_pdf_mb: number;
+  logo_path: string | null;
 }
 
 export function useDepartments() {
@@ -73,6 +74,7 @@ const DEMO_EVENT: EventInfo = {
   modules: [...MODULES],
   retention_until: null,
   max_pdf_mb: 15,
+  logo_path: null,
 };
 
 export function useEvent() {
@@ -83,7 +85,7 @@ export function useEvent() {
       return must(
         await supabase
           .from('event')
-          .select('name, venue, modules, retention_until, max_pdf_mb')
+          .select('name, venue, modules, retention_until, max_pdf_mb, logo_path')
           .single(),
       ) as EventInfo;
     },

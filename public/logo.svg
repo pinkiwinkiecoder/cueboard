@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <title>Backstage Hub</title>
+  <rect width="512" height="512" rx="116" fill="#5b4bd6"/>
+  <!-- koord van de backstagepas -->
+  <path d="M196 40 L256 150 L316 40" fill="none" stroke="#b79cff" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- pas -->
+  <rect x="128" y="132" width="256" height="320" rx="44" fill="#ffffff"/>
+  <rect x="216" y="160" width="80" height="22" rx="11" fill="#5b4bd6" opacity="0.35"/>
+  <!-- ster -->
+  <path d="M256 222 L277 265 L324 271 L290 304 L298 351 L256 329 L214 351 L222 304 L188 271 L235 265 Z" fill="#f0b84f" stroke="#f0b84f" stroke-width="14" stroke-linejoin="round"/>
+  <rect x="190" y="384" width="132" height="20" rx="10" fill="#5b4bd6" opacity="0.25"/>
+</svg>

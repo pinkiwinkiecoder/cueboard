@@ -2,7 +2,8 @@ import type { Dictionary } from './types';
 
 export const nl: Dictionary = {
   app: {
-    name: 'Art of Faith',
+    name: 'Backstage Hub',
+    tagline: 'Plan, verdeel en draai je evenement samen met je crew.',
     loading: 'Bezig met laden…',
     skipToContent: 'Naar de inhoud',
     notConfiguredTitle: 'App nog niet gekoppeld',
@@ -59,6 +60,7 @@ export const nl: Dictionary = {
   },
   auth: {
     signInTitle: 'Inloggen',
+    signInTo: 'Inloggen bij {app}',
     email: 'E-mailadres',
     password: 'Wachtwoord',
     signIn: 'Inloggen',
@@ -135,6 +137,7 @@ export const nl: Dictionary = {
     rolePartial: 'Account gemaakt, maar rol/afdeling niet opgeslagen. Pas ze aan in Mensen.',
     photoInvalid: 'Kies een foto (JPG, PNG of HEIC).',
     photoFailed: 'Deze foto kon niet gebruikt worden. Probeer een andere foto.',
+    logoFailed: 'Het logo kon niet geüpload worden. Gebruik een PNG, JPG of WebP kleiner dan 1 MB.',
     adminRoleLocked: 'De beheerdersrol heeft altijd alle rechten en kan niet weg.',
     unknownTask: 'Deze taak bestaat niet meer.',
     reasonRequired: 'Zeg waarom de taak geblokkeerd is.',
@@ -243,6 +246,13 @@ export const nl: Dictionary = {
     event: 'Evenement',
     eventName: 'Naam van het evenement',
     venue: 'Plaats',
+    logo: 'Logo van het evenement',
+    logoHint:
+      'Zichtbaar in het menu en op het inlogscherm. Een vierkante afbeelding werkt het best.',
+    uploadLogo: 'Logo uploaden',
+    replaceLogo: 'Logo vervangen',
+    removeLogo: 'Logo verwijderen',
+    logoAlt: 'Logo van {name}',
     modules: 'Onderdelen',
     modulesHint:
       'Zet uit wat je voor dit evenement niet nodig hebt. Een onderdeel dat uit staat, is voor niemand zichtbaar.',
