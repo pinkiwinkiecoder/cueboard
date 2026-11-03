@@ -1,0 +1,11 @@
+// Cloudflare Workers (statische site). De naam moet gelijk zijn aan de naam
+// van je Worker in Cloudflare; pas hem aan als je eigen kopie anders heet.
+{
+  "name": "aoff-cueboard",
+  "compatibility_date": "2025-09-01",
+  "assets": {
+    "directory": "./dist",
+    // Elke onbekende URL (bv. /planning) laadt de app: die regelt zelf de routes.
+    "not_found_handling": "single-page-application"
+  }
+}
