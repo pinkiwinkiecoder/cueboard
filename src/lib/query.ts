@@ -119,6 +119,8 @@ const DB_CODES: Record<string, MsgKey> = {
   'AOF:invalid_shift': 'errors.invalidShift',
   'AOF:unknown_item': 'errors.unknownItem',
   'AOF:team_too_deep': 'errors.teamTooDeep',
+  'AOF:admin_exists': 'errors.adminExists',
+  'AOF:not_signed_in': 'errors.notSignedIn',
   'AOF:invalid_request': 'errors.invalidRequest',
 };
 

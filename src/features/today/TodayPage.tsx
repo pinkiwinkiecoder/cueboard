@@ -8,6 +8,7 @@ import { progress, sortTasks, useTaskGroups, useTasks } from '@/lib/tasks';
 import type { Profile } from '@/lib/types';
 import { TaskRow } from '@/features/tasks/TaskRow';
 import { PinnedList } from '@/features/announcements/PinnedList';
+import { SetupChecklist } from './SetupChecklist';
 import { useAnnouncements } from '@/lib/announcements';
 
 function greetingKey(d: Date) {
@@ -69,6 +70,7 @@ export function TodayPage() {
           </div>
         )}
       </div>
+      <SetupChecklist />
       {showAnnouncements && pinned.length > 0 && <PinnedList items={pinned} compact />}
 
       {error !== null && (

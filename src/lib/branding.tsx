@@ -16,11 +16,11 @@ export function logoUrl(path: string | null | undefined): string | null {
 export function useBranding() {
   return useCachedQuery('branding', async () => {
     if (import.meta.env.DEV && import.meta.env.VITE_DEMO_LOGIN === '1') {
-      return { name: 'Art of Faith', logo_path: null as string | null };
+      return { name: 'Art of Faith', logo_path: null as string | null, needs_setup: false };
     }
     const { data, error } = await supabase.rpc('public_branding');
     if (error) throw new AppError('errors.network');
-    return data as { name: string; logo_path: string | null };
+    return data as { name: string; logo_path: string | null; needs_setup: boolean };
   });
 }
 

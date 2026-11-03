@@ -5,6 +5,7 @@ import {
   CalendarPlus,
   Clapperboard,
   Eye,
+  FileUp,
   MoveVertical,
   Plus,
   Send,
@@ -43,6 +44,7 @@ import { NowNextView } from './NowNextView';
 import { ItemDialog } from './ItemDialog';
 import { ShiftDialog } from './ShiftDialog';
 import { OverviewView } from './OverviewView';
+import { ImportDialog } from './ImportDialog';
 
 type View = 'list' | 'timeline' | 'now' | 'overview';
 type Mode = 'draft' | 'published';
@@ -98,6 +100,7 @@ export function SchedulePage() {
     ScheduleItem | { new: true; day_id: string; location_id: string | null } | null
   >(null);
   const [shiftOpen, setShiftOpen] = useState(false);
+  const [importOpen, setImportOpen] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
   const [error, setError] = useState<unknown>(null);
   const [seenAt, setSeenAt] = useState<number | null>(null);
@@ -192,6 +195,10 @@ export function SchedulePage() {
               <Clapperboard aria-hidden size={20} />
               {t('schedule.showcaller')}
             </Link>
+            <button type="button" className="btn" onClick={() => setImportOpen(true)}>
+              <FileUp aria-hidden size={20} />
+              {t('import.button')}
+            </button>
             <button type="button" className="btn" onClick={() => setShiftOpen(true)}>
               <MoveVertical aria-hidden size={20} />
               {t('schedule.shift')}
@@ -451,6 +458,17 @@ export function SchedulePage() {
           allItems={draft.data ?? []}
           onClose={() => setEditing(null)}
           onDone={() => void draft.reload()}
+        />
+      )}
+      {manager && (
+        <ImportDialog
+          open={importOpen}
+          onClose={() => setImportOpen(false)}
+          onDone={(n) => {
+            setMode('draft');
+            setNotice(t('import.done', { n }));
+            void draft.reload();
+          }}
         />
       )}
       {manager && day && (
