@@ -1567,13 +1567,18 @@ button.timeline-block {
 
 /* Demobalk */
 .demo-banner {
+  position: sticky;
+  top: env(safe-area-inset-top, 0);
+  margin-bottom: var(--space-3);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  z-index: 50;
   display: flex;
   align-items: center;
   gap: var(--space-3);
   flex-wrap: wrap;
   padding: var(--space-2) var(--space-4);
   background: color-mix(in srgb, var(--warn, #f5b942) 22%, var(--surface));
-  border-bottom: 1px solid var(--border);
   font-weight: 650;
 }
 
@@ -1583,4 +1588,23 @@ button.timeline-block {
 }
 .team-members .member-row {
   align-items: flex-start;
+}
+
+.demo-banner .btn {
+  white-space: nowrap;
+}
+.demo-short {
+  display: none;
+}
+@media (max-width: 600px) {
+  .demo-banner {
+    flex-wrap: nowrap;
+    padding: var(--space-2) var(--space-3);
+  }
+  .demo-long {
+    display: none;
+  }
+  .demo-short {
+    display: inline;
+  }
 }

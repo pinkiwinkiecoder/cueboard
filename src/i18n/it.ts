@@ -862,8 +862,9 @@ export const it: Dictionary = {
     builtIn: 'Modelli pronti',
   },
   demo: {
+    short: "Modalità demo",
     banner: 'Modalità demo: stai guardando dati di esempio. Nulla di ciò che modifichi viene salvato.',
-    exit: 'Esci dalla demo',
+    exit: "Torna alla home",
     start: 'Prova la demo',
     readOnly: 'Questa è una demo: le modifiche non vengono salvate.',
   },

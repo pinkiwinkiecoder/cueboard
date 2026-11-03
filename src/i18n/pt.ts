@@ -862,8 +862,9 @@ export const pt: Dictionary = {
     builtIn: 'Modelos prontos',
   },
   demo: {
+    short: "Modo demo",
     banner: 'Modo demo: está a ver dados de exemplo. Nada do que alterar é guardado.',
-    exit: 'Sair da demo',
+    exit: "Voltar à página inicial",
     start: 'Experimentar a demo',
     readOnly: 'Isto é uma demo: as alterações não são guardadas.',
   },

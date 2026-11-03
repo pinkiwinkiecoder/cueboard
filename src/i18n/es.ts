@@ -862,8 +862,9 @@ export const es: Dictionary = {
     builtIn: 'Plantillas listas',
   },
   demo: {
+    short: "Modo demo",
     banner: 'Modo demo: estás viendo datos de ejemplo. Nada de lo que cambies se guarda.',
-    exit: 'Salir de la demo',
+    exit: "Volver al inicio",
     start: 'Probar la demo',
     readOnly: 'Esto es una demo: los cambios no se guardan.',
   },

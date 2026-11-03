@@ -863,8 +863,9 @@ export const de: Dictionary = {
     builtIn: 'Fertige Vorlagen',
   },
   demo: {
+    short: "Demo-Modus",
     banner: 'Demo-Modus: Du siehst Beispieldaten. Nichts, was du änderst, wird gespeichert.',
-    exit: 'Demo verlassen',
+    exit: "Zurück zur Startseite",
     start: 'Live-Demo ausprobieren',
     readOnly: 'Das ist eine Demo: Änderungen werden nicht gespeichert.',
   },

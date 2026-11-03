@@ -864,8 +864,9 @@ export const fr: Dictionary = {
     builtIn: 'Modèles prêts à l’emploi',
   },
   demo: {
+    short: "Mode démo",
     banner: 'Mode démo : vous voyez des données d’exemple. Rien de ce que vous modifiez n’est enregistré.',
-    exit: 'Quitter la démo',
+    exit: "Retour à l’accueil",
     start: 'Essayer la démo',
     readOnly: 'Ceci est une démo : les modifications ne sont pas enregistrées.',
   },

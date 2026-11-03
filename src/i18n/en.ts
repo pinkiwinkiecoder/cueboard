@@ -863,8 +863,9 @@ export const en = {
     builtIn: 'Ready-made templates',
   },
   demo: {
+    short: "Demo mode",
     banner: 'Demo mode: you are looking at sample data. Nothing you change is saved.',
-    exit: 'Leave demo',
+    exit: "Back to homepage",
     start: 'Try the live demo',
     readOnly: 'This is a demo: changes are not saved.',
   },

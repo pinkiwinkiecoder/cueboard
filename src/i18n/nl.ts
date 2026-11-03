@@ -867,8 +867,9 @@ export const nl: Dictionary = {
     builtIn: 'Kant-en-klare sjablonen',
   },
   demo: {
+    short: "Demomodus",
     banner: 'Demomodus: je bekijkt voorbeeldgegevens. Wat je wijzigt, wordt niet bewaard.',
-    exit: 'Demo verlaten',
+    exit: "Terug naar de startpagina",
     start: 'Probeer de live demo',
     readOnly: 'Dit is een demo: wijzigingen worden niet bewaard.',
   },
