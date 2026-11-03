@@ -1,52 +1,70 @@
-/* Ontwerp-tokens. Donker is standaard (backstage); licht via data-theme="light". */
+/* Ontwerp-tokens. Vriendelijk en rustig: zachte kleuren, ronde vormen, veel lucht.
+   Donker is standaard (backstage); licht via data-theme="light". */
+
 :root,
 :root[data-theme='dark'] {
   color-scheme: dark;
-  --bg: #14112a;
-  --surface: #1e1a3a;
-  --surface-2: #29244b;
-  --border: #3a3463;
-  --text: #f2effc;
-  --muted: #aaa4cb;
+  --bg: #121027;
+  --bg-elev: #161331;
+  --surface: #1d1938;
+  --surface-2: #262046;
+  --surface-3: #322a5a;
+  --border: rgb(255 255 255 / 0.07);
+  --border-strong: rgb(255 255 255 / 0.16);
+  --text: #f5f2ff;
+  --muted: #aaa3d0;
   --accent: #f0b84f;
-  --accent-text: #14112a;
-  --danger: #ff6b6b;
-  --warning: #ffb547;
-  --success: #5fd68a;
+  --accent-text: #1a1433;
   --focus: #f0b84f;
+  --danger: #ff7a90;
+  --warning: #ffb547;
+  --success: #5fd6a8;
+  --shadow: 0 10px 30px rgb(0 0 0 / 0.28);
+  --shadow-soft: 0 2px 10px rgb(0 0 0 / 0.18);
+  --tint: 18%;
 
-  /* Soortkleuren: altijd samen met icoon + label gebruiken. */
-  --kind-arrival: #5fd6cb;
-  --kind-soundcheck: #b79cff;
-  --kind-interview: #ff8cc4;
-  --kind-show: #f0b84f;
-  --kind-changeover: #ff9a5c;
-  --kind-briefing: #7db4ff;
-  --kind-other: #aaa4cb;
+  /* Palet: voor rollen, afdelingen, locaties en modules. Altijd samen met tekst/icoon. */
+  --violet: #b79cff;
+  --gold: #f0b84f;
+  --mint: #5fd6a8;
+  --sky: #7db4ff;
+  --pink: #ff8cc4;
+  --peach: #ff9a5c;
+  --rose: #ff7a90;
+  --lime: #b5e06a;
+  --teal: #5fd6cb;
 }
 
 :root[data-theme='light'] {
   color-scheme: light;
-  --bg: #f6f3fc;
+  --bg: #f6f4fc;
+  --bg-elev: #ffffff;
   --surface: #ffffff;
-  --surface-2: #ece7f8;
-  --border: #d6cfec;
-  --text: #1a1633;
-  --muted: #5d5683;
-  --accent: #4a3db5;
+  --surface-2: #f2eefb;
+  --surface-3: #e7e1f8;
+  --border: rgb(40 30 90 / 0.08);
+  --border-strong: rgb(40 30 90 / 0.18);
+  --text: #1d1838;
+  --muted: #645e88;
+  --accent: #5b4bd6;
   --accent-text: #ffffff;
-  --danger: #c62828;
+  --focus: #5b4bd6;
+  --danger: #c8304a;
   --warning: #a05a00;
-  --success: #1e7d45;
-  --focus: #4a3db5;
+  --success: #11875a;
+  --shadow: 0 1px 2px rgb(40 30 90 / 0.05), 0 12px 32px rgb(40 30 90 / 0.08);
+  --shadow-soft: 0 1px 2px rgb(40 30 90 / 0.06), 0 4px 12px rgb(40 30 90 / 0.05);
+  --tint: 13%;
 
-  --kind-arrival: #0f7f76;
-  --kind-soundcheck: #6a4fd1;
-  --kind-interview: #b8306f;
-  --kind-show: #9a6400;
-  --kind-changeover: #b5501a;
-  --kind-briefing: #2d63b8;
-  --kind-other: #5d5683;
+  --violet: #6b4fd8;
+  --gold: #a86d00;
+  --mint: #11875a;
+  --sky: #2563c9;
+  --pink: #c02b77;
+  --peach: #c2531a;
+  --rose: #c8304a;
+  --lime: #5c8a12;
+  --teal: #0f7f76;
 }
 
 :root {
@@ -60,10 +78,42 @@
   --space-5: 24px;
   --space-6: 32px;
 
-  --radius: 10px;
+  --radius-sm: 10px;
+  --radius: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 26px;
   --tap: 44px; /* minimale hoogte voor elk aanraakdoel */
-  --tap-lg: 56px;
+  --tap-lg: 52px;
 
-  --sidebar-w: 232px;
-  --tabbar-h: 64px;
+  --sidebar-w: 248px;
+  --tabbar-h: 68px;
+}
+
+/* Elke kleurnaam zet --c, zodat componenten met één regel kunnen kleuren. */
+[data-color='violet'] {
+  --c: var(--violet);
+}
+[data-color='gold'] {
+  --c: var(--gold);
+}
+[data-color='mint'] {
+  --c: var(--mint);
+}
+[data-color='sky'] {
+  --c: var(--sky);
+}
+[data-color='pink'] {
+  --c: var(--pink);
+}
+[data-color='peach'] {
+  --c: var(--peach);
+}
+[data-color='rose'] {
+  --c: var(--rose);
+}
+[data-color='lime'] {
+  --c: var(--lime);
+}
+[data-color='teal'] {
+  --c: var(--teal);
 }

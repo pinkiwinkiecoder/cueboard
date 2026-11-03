@@ -38,7 +38,11 @@ export function useCachedQuery<T>(
 
   const reload = useCallback(async () => {
     try {
-      const fresh = await fetcherRef.current();
+      // Lokale demo (enkel npm run dev met VITE_DEMO_LOGIN=1): vaste voorbeelddata.
+      const fresh =
+        import.meta.env.DEV && import.meta.env.VITE_DEMO_LOGIN === '1'
+          ? (((await import('./demo')).DEMO[key] as T | undefined) ?? (await fetcherRef.current()))
+          : await fetcherRef.current();
       const at = Date.now();
       setData(fresh);
       setFetchedAt(at);
@@ -105,6 +109,13 @@ export function must<T>(res: {
 const DB_CODES: Record<string, MsgKey> = {
   'AOF:not_admin': 'errors.notAdmin',
   'AOF:cannot_demote_self': 'errors.cannotDemoteSelf',
+  'AOF:no_permission': 'errors.noPermission',
+  'AOF:unknown_role': 'errors.unknownRole',
+  'AOF:admin_role_locked': 'errors.adminRoleLocked',
+  'AOF:unknown_task': 'errors.unknownTask',
+  'AOF:reason_required': 'errors.reasonRequired',
+  'AOF:cannot_claim': 'errors.cannotClaim',
+  'AOF:unknown_package': 'errors.unknownPackage',
 };
 
 export function dbError(err: { message: string; code?: string }): AppError {

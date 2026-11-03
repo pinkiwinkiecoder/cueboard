@@ -1,17 +1,22 @@
 import { useState, type FormEvent } from 'react';
 import { Mail, MessageCircle } from 'lucide-react';
 import { Dialog } from '@/app/Dialog';
-import { useDepartments } from '@/lib/refdata';
+import { useDepartments, useRoles } from '@/lib/refdata';
 import { invitePerson } from '@/lib/invite';
+import { useAuth } from '@/lib/auth';
 import { useT } from '@/lib/usePrefs';
-import { ROLES, type Role } from '@/lib/types';
+
 import { ShareLink } from './ShareLink';
 
-const EMPTY = { full_name: '', email: '', phone: '', department_id: '', role: 'crew' as Role };
+const EMPTY = { full_name: '', email: '', phone: '', department_id: '', role_id: '' };
 
 export function InviteDialog(props: { open: boolean; onClose: () => void; onDone: () => void }) {
   const { t, errText } = useT();
   const departments = useDepartments();
+  const roles = useRoles();
+  const { isAdmin } = useAuth();
+  const defaultRole =
+    roles.data?.find((r) => r.is_default)?.id ?? roles.data?.find((r) => !r.is_admin)?.id ?? '';
   const [form, setForm] = useState(EMPTY);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<unknown>(null);
@@ -34,7 +39,7 @@ export function InviteDialog(props: { open: boolean; onClose: () => void; onDone
         email: form.email,
         phone: form.phone || null,
         department_id: form.department_id || null,
-        role: form.role,
+        role_id: form.role_id || defaultRole,
         send_email: sendEmail,
       });
       setResult({ name: form.full_name, link: res.link });
@@ -128,14 +133,16 @@ export function InviteDialog(props: { open: boolean; onClose: () => void; onDone
               <label htmlFor="inv-role">{t('people.role')}</label>
               <select
                 id="inv-role"
-                value={form.role}
-                onChange={(e) => setForm({ ...form, role: e.target.value as Role })}
+                value={form.role_id || defaultRole}
+                onChange={(e) => setForm({ ...form, role_id: e.target.value })}
               >
-                {ROLES.map((r) => (
-                  <option key={r} value={r}>
-                    {t(`roles.${r}`)}
-                  </option>
-                ))}
+                {(roles.data ?? [])
+                  .filter((r) => isAdmin || !r.is_admin)
+                  .map((r) => (
+                    <option key={r.id} value={r.id}>
+                      {r.name}
+                    </option>
+                  ))}
               </select>
             </div>
           </div>

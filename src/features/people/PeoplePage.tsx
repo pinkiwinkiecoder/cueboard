@@ -1,24 +1,27 @@
 import { useMemo, useState } from 'react';
 import { Phone, Search, UserPlus, Users } from 'lucide-react';
 import { useAuth } from '@/lib/auth';
-import { useDepartments, usePeople } from '@/lib/refdata';
+import { useDepartments, usePeople, useRoles } from '@/lib/refdata';
 import { useT } from '@/lib/usePrefs';
 import type { Profile } from '@/lib/types';
 import { EmptyState } from '@/app/EmptyState';
 import { StaleNotice } from '@/app/StaleNotice';
+import { Avatar } from '@/app/Avatar';
 import { InviteDialog } from './InviteDialog';
 import { PersonDialog } from './PersonDialog';
 
 export function PeoplePage() {
-  const { profile: me } = useAuth();
+  const { can } = useAuth();
   const { t, errText } = useT();
   const people = usePeople();
   const departments = useDepartments();
+  const roles = useRoles();
   const [query, setQuery] = useState('');
   const [dept, setDept] = useState<string>('alle');
   const [inviteOpen, setInviteOpen] = useState(false);
   const [selected, setSelected] = useState<Profile | null>(null);
-  const isAdmin = me?.role === 'beheerder';
+  const isAdmin = can('people.manage');
+  const roleOf = (id: string) => roles.data?.find((r) => r.id === id);
 
   const deptName = useMemo(() => {
     const m = new Map((departments.data ?? []).map((d) => [d.id, d.name]));
@@ -40,7 +43,12 @@ export function PeoplePage() {
   return (
     <div className="stack">
       <div className="row">
-        <h1 className="spacer">{t('people.title')}</h1>
+        <span className="bubble bubble-lg" data-color="peach" aria-hidden>
+          <Users size={24} />
+        </span>
+        <h1 className="spacer" style={{ margin: 0 }}>
+          {t('people.title')}
+        </h1>
         {isAdmin && (
           <button type="button" className="btn btn-primary" onClick={() => setInviteOpen(true)}>
             <UserPlus aria-hidden size={20} />
@@ -118,11 +126,17 @@ export function PeoplePage() {
               onClick={() => setSelected(p)}
               aria-label={isAdmin ? t('people.manage', { name: p.full_name }) : undefined}
             >
-              <span className="title">{p.full_name}</span>
-              <span className="sub">
-                {deptName(p.department_id)} · {t(`roles.${p.role}`)}
+              <Avatar name={p.full_name} />
+              <span>
+                <span className="title">{p.full_name}</span>
+                <span className="sub">{deptName(p.department_id)}</span>
               </span>
             </button>
+            {roleOf(p.role_id) && (
+              <span className="badge" data-color={roleOf(p.role_id)?.color}>
+                {roleOf(p.role_id)?.name}
+              </span>
+            )}
             {!p.active && <span className="badge badge-danger">{t('people.deactivated')}</span>}
             {p.phone && (
               <a

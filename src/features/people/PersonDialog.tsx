@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react';
 import { Link2, Save, UserCheck, UserX } from 'lucide-react';
 import { Dialog } from '@/app/Dialog';
 import { useAuth } from '@/lib/auth';
-import { useDepartments } from '@/lib/refdata';
+import { useDepartments, useRoles } from '@/lib/refdata';
 import { newLinkFor } from '@/lib/invite';
 import { dbError } from '@/lib/query';
 import { supabase } from '@/lib/supabase';
 import { useT } from '@/lib/usePrefs';
-import { ROLES, type Profile, type Role } from '@/lib/types';
+import type { Profile } from '@/lib/types';
 import { ShareLink } from './ShareLink';
 
 export function PersonDialog(props: {
@@ -15,11 +15,12 @@ export function PersonDialog(props: {
   onClose: () => void;
   onSaved: () => void;
 }) {
-  const { profile: me } = useAuth();
+  const { profile: me, isAdmin } = useAuth();
   const { t, errText } = useT();
   const departments = useDepartments();
+  const roles = useRoles();
   const p = props.person;
-  const [role, setRole] = useState<Role>('crew');
+  const [role, setRole] = useState('');
   const [dept, setDept] = useState('');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<unknown>(null);
@@ -27,7 +28,7 @@ export function PersonDialog(props: {
 
   useEffect(() => {
     if (!p) return;
-    setRole(p.role);
+    setRole(p.role_id);
     setDept(p.department_id ?? '');
     setError(null);
     setLink(null);
@@ -100,13 +101,15 @@ export function PersonDialog(props: {
             id="p-role"
             value={role}
             disabled={isMe}
-            onChange={(e) => setRole(e.target.value as Role)}
+            onChange={(e) => setRole(e.target.value)}
           >
-            {ROLES.map((r) => (
-              <option key={r} value={r}>
-                {t(`roles.${r}`)}
-              </option>
-            ))}
+            {(roles.data ?? [])
+              .filter((r) => isAdmin || !r.is_admin)
+              .map((r) => (
+                <option key={r.id} value={r.id}>
+                  {r.name}
+                </option>
+              ))}
           </select>
         </div>
       </div>

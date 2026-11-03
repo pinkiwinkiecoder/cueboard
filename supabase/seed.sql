@@ -1,26 +1,30 @@
 -- Seed voor lokale ontwikkeling (supabase db reset). Wordt NIET naar productie gestuurd.
 
--- Standaardafdelingen (geen demo: ook in productie aan te maken via Instellingen).
-insert into public.departments (name, sort_order) values
-  ('Stage', 1), ('Licht', 2), ('Audio', 3), ('Video', 4),
-  ('Backline', 5), ('Productie', 6), ('Artist liaison', 7), ('Runners', 8)
+update public.event set name = 'Art of Faith';
+
+insert into public.departments (name, color, sort_order) values
+  ('Stage', 'violet', 1), ('Lighting', 'gold', 2), ('Audio', 'sky', 3), ('Video', 'pink', 4),
+  ('Backline', 'peach', 5), ('Production', 'mint', 6), ('Artist liaison', 'rose', 7), ('Runners', 'lime', 8)
+on conflict (name) do nothing;
+
+insert into public.locations (name, sort_order) values ('Main Stage', 1)
 on conflict (name) do nothing;
 
 -- -- DEMO -------------------------------------------------------------------
 -- Demo-accounts, enkel lokaal. Wachtwoord voor allemaal: DemoDemo2026
--- beheerder@demo.test, hoofd.audio@demo.test, crew.audio@demo.test,
--- crew.licht@demo.test, gast@demo.test
+-- admin@demo.test, lead.audio@demo.test, crew.audio@demo.test,
+-- crew.lighting@demo.test, guest@demo.test
 do $$
 declare
   u record;
 begin
   for u in
     select * from (values
-      ('00000000-0000-0000-0000-00000000000a'::uuid, 'beheerder@demo.test', 'Demo Beheerder', 'beheerder', null),
-      ('00000000-0000-0000-0000-00000000000b'::uuid, 'hoofd.audio@demo.test', 'Demo Hoofd Audio', 'afdelingshoofd', 'Audio'),
-      ('00000000-0000-0000-0000-00000000000c'::uuid, 'crew.audio@demo.test', 'Demo Crew Audio', 'crew', 'Audio'),
-      ('00000000-0000-0000-0000-00000000000d'::uuid, 'crew.licht@demo.test', 'Demo Crew Licht', 'crew', 'Licht'),
-      ('00000000-0000-0000-0000-00000000000e'::uuid, 'gast@demo.test', 'Demo Gast', 'gast', null)
+      ('00000000-0000-0000-0000-00000000000a'::uuid, 'admin@demo.test', 'Demo Admin', 'Admin', null),
+      ('00000000-0000-0000-0000-00000000000b'::uuid, 'lead.audio@demo.test', 'Demo Lead Audio', 'Team lead', 'Audio'),
+      ('00000000-0000-0000-0000-00000000000c'::uuid, 'crew.audio@demo.test', 'Demo Crew Audio', 'Crew', 'Audio'),
+      ('00000000-0000-0000-0000-00000000000d'::uuid, 'crew.lighting@demo.test', 'Demo Crew Lighting', 'Crew', 'Lighting'),
+      ('00000000-0000-0000-0000-00000000000e'::uuid, 'guest@demo.test', 'Demo Guest', 'Guest', null)
     ) as t(id, email, name, role, dept)
   loop
     insert into auth.users (
@@ -31,7 +35,8 @@ begin
       '00000000-0000-0000-0000-000000000000', u.id, 'authenticated', 'authenticated', u.email,
       crypt('DemoDemo2026', gen_salt('bf')), now(),
       jsonb_build_object(
-        'provider', 'email', 'providers', jsonb_build_array('email'), 'role', u.role,
+        'provider', 'email', 'providers', jsonb_build_array('email'),
+        'role_id', (select id from public.roles where name = u.role),
         'department_id', (select id from public.departments where name = u.dept)
       ),
       jsonb_build_object('full_name', u.name), now(), now(), '', '', '', ''

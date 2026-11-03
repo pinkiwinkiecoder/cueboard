@@ -1,4 +1,4 @@
-// Edge Function "invite": een beheerder nodigt iemand uit, of maakt een nieuwe
+// Edge Function "invite": iemand met het recht people.manage nodigt iemand uit, of maakt een nieuwe
 // eenmalige link voor iemand die al bestaat (bv. mail niet ontvangen).
 //
 // De service-role key bestaat ENKEL hier (Supabase-secret), nooit in de app.
@@ -6,8 +6,6 @@ import { createClient } from 'jsr:@supabase/supabase-js@2';
 import { corsHeaders, json, siteUrl } from '../_shared/cors.ts';
 
 const MAX_PER_HOUR = 30;
-const ROLES = ['beheerder', 'afdelingshoofd', 'crew', 'gast'] as const;
-type Role = (typeof ROLES)[number];
 
 interface NewPerson {
   action: 'invite';
@@ -15,7 +13,7 @@ interface NewPerson {
   email: string;
   phone?: string | null;
   department_id?: string | null;
-  role: Role;
+  role_id: string;
   send_email: boolean;
 }
 interface NewLink {
@@ -43,14 +41,14 @@ function validate(body: unknown): NewPerson | NewLink | string {
   if (!EMAIL.test(email) || email.length > 200) return 'invalid_email';
   if (phone && !/^\+?[0-9 ()-]{6,20}$/.test(phone)) return 'invalid_phone';
   if (dept && !UUID.test(dept)) return 'unknown_department';
-  if (!ROLES.includes(b.role as Role)) return 'unknown_role';
+  if (typeof b.role_id !== 'string' || !UUID.test(b.role_id)) return 'unknown_role';
   return {
     action: 'invite',
     full_name: name,
     email,
     phone,
     department_id: dept,
-    role: b.role as Role,
+    role_id: b.role_id,
     send_email: b.send_email === true,
   };
 }
@@ -68,8 +66,9 @@ Deno.serve(async (req) => {
   const asCaller = createClient(url, anon, { global: { headers: { Authorization: authHeader } } });
   const { data: caller } = await asCaller.auth.getUser();
   if (!caller.user) return json(req, { error: 'not_signed_in' }, 401);
-  const { data: isAdmin } = await asCaller.rpc('is_admin');
-  if (isAdmin !== true) return json(req, { error: 'not_admin' }, 403);
+  const { data: canManage } = await asCaller.rpc('has_perm', { perm: 'people.manage' });
+  if (canManage !== true) return json(req, { error: 'no_permission' }, 403);
+  const { data: callerIsAdmin } = await asCaller.rpc('is_admin');
 
   const admin = createClient(url, service, { auth: { persistSession: false } });
 
@@ -94,6 +93,17 @@ Deno.serve(async (req) => {
   if (typeof input === 'string') return json(req, { error: input }, 400);
 
   const redirectTo = `${siteUrl(req)}/nieuw-wachtwoord`;
+
+  // Enkel een beheerder mag iemand meteen beheerder maken.
+  if (input.action === 'invite') {
+    const { data: role } = await admin
+      .from('roles')
+      .select('is_admin')
+      .eq('id', input.role_id)
+      .maybeSingle();
+    if (!role) return json(req, { error: 'unknown_role' }, 400);
+    if (role.is_admin && callerIsAdmin !== true) return json(req, { error: 'not_admin' }, 403);
+  }
 
   // 3a. Nieuwe link voor een bestaand account.
   if (input.action === 'link') {
@@ -143,7 +153,7 @@ Deno.serve(async (req) => {
   const { error: profErr } = await admin
     .from('profiles')
     .update({
-      role: input.role,
+      role_id: input.role_id,
       department_id: input.department_id,
       phone: input.phone,
       full_name: input.full_name,

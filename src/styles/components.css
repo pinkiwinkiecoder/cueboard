@@ -1,9 +1,13 @@
-/* Herbruikbare bouwstenen. Rustig en duidelijk: geen verlopen, geen beweging. */
+/* Herbruikbare bouwstenen. Vriendelijk, rustig en duidelijk. */
 
 .stack {
   display: grid;
   gap: var(--space-4);
   align-content: start;
+}
+.stack-sm {
+  display: grid;
+  gap: var(--space-2);
 }
 .stack > h1,
 .stack > h2,
@@ -16,11 +20,13 @@
   gap: var(--space-2);
   align-items: center;
 }
-.spacer {
+.spacer,
+.grow {
   flex: 1;
+  min-width: 0;
 }
 
-/* Achtergrondfoto: altijd sterk gedimd, panelen blijven ondoorzichtig. */
+/* Achtergrondfoto: altijd sterk gedimd, kaarten blijven ondoorzichtig. */
 .bg-photo {
   position: fixed;
   inset: 0;
@@ -38,11 +44,8 @@
 :root[data-bg-strength='zichtbaar'] .bg-photo::after {
   opacity: 0.72;
 }
-.shell:has(.bg-photo) {
-  background: transparent;
-}
-body:has(.bg-photo) {
-  background: var(--bg);
+.shell:has(.bg-photo) .sidebar {
+  background: color-mix(in srgb, var(--bg-elev) 85%, transparent);
 }
 
 .bg-preview {
@@ -51,7 +54,6 @@ body:has(.bg-photo) {
   aspect-ratio: 16 / 10;
   object-fit: cover;
   border-radius: var(--radius);
-  border: 1px solid var(--border);
 }
 
 /* Bovenbalk met klok */
@@ -68,7 +70,7 @@ body:has(.bg-photo) {
   flex-wrap: wrap;
 }
 .topbar-time {
-  font-size: 2.2rem;
+  font-size: 2.1rem;
   line-height: 1;
 }
 .topbar .chip {
@@ -78,25 +80,34 @@ body:has(.bg-photo) {
 .chip {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-1);
-  min-height: 32px;
-  padding: 0 var(--space-3);
+  gap: 6px;
+  min-height: 36px;
+  padding: 0 14px;
   border-radius: 999px;
   border: 1px solid var(--border);
   background: var(--surface);
   color: var(--muted);
-  font-size: 0.85rem;
-  font-weight: 600;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 650;
   text-decoration: none;
   white-space: nowrap;
 }
 button.chip {
   cursor: pointer;
-  font-family: inherit;
+  min-height: var(--tap);
 }
 .chip[aria-pressed='true'] {
-  border-color: var(--accent);
+  background: color-mix(in srgb, var(--c, var(--accent)) var(--tint), var(--surface));
+  border-color: color-mix(in srgb, var(--c, var(--accent)) 45%, transparent);
   color: var(--text);
+}
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--c, var(--accent));
+  flex: none;
 }
 
 /* Segmentknoppen (radiogroep) */
@@ -105,11 +116,10 @@ button.chip {
   flex-wrap: wrap;
   gap: var(--space-2);
 }
-.segmented [aria-checked='true'],
-.segmented [aria-pressed='true'] {
-  border-color: var(--accent);
-  box-shadow: inset 0 0 0 1px var(--accent);
-  color: var(--accent);
+.segmented .btn[aria-checked='true'],
+.segmented .btn[aria-pressed='true'] {
+  background: color-mix(in srgb, var(--accent) var(--tint), var(--surface));
+  box-shadow: inset 0 0 0 2px var(--accent);
 }
 
 /* Kleurstalen */
@@ -136,13 +146,11 @@ button.chip {
   width: var(--tap);
   height: var(--tap);
   border-radius: 50%;
-  border: 2px solid var(--border);
   color: #14112a;
 }
 .swatch[aria-checked='true'] .swatch-dot {
-  border-color: var(--text);
-  outline: 2px solid var(--text);
-  outline-offset: 2px;
+  outline: 3px solid var(--text);
+  outline-offset: 3px;
 }
 
 /* Schakelaar-rij */
@@ -157,38 +165,44 @@ button.chip {
 .switch-row > span {
   display: grid;
 }
-.switch-row input[type='checkbox'] {
+.switch-row input[type='checkbox'],
+.switch {
   appearance: none;
   flex: none;
   width: 52px;
   height: 32px;
   border-radius: 999px;
-  background: var(--surface-2);
-  border: 1px solid var(--border);
+  background: var(--surface-3);
+  border: 0;
   position: relative;
   cursor: pointer;
+  margin: 0;
 }
-.switch-row input[type='checkbox']::after {
+.switch-row input[type='checkbox']::after,
+.switch::after {
   content: '';
   position: absolute;
-  top: 3px;
-  left: 3px;
+  top: 4px;
+  left: 4px;
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: var(--muted);
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.25);
   transition: transform 0.15s;
 }
-.switch-row input[type='checkbox']:checked {
-  background: var(--accent);
-  border-color: var(--accent);
+.switch-row input[type='checkbox']:checked,
+.switch:checked {
+  background: var(--success);
 }
-.switch-row input[type='checkbox']:checked::after {
+.switch-row input[type='checkbox']:checked::after,
+.switch:checked::after {
   transform: translateX(20px);
-  background: var(--accent-text);
 }
-.switch-row input:disabled {
+.switch-row input:disabled,
+.switch:disabled {
   opacity: 0.4;
+  cursor: default;
 }
 
 .hint {
@@ -211,20 +225,17 @@ button.chip {
   display: flex;
   align-items: center;
   gap: var(--space-3);
-  min-height: var(--tap-lg);
+  min-height: 60px;
   padding: var(--space-2) var(--space-3);
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
 }
-.list-item .grow {
-  flex: 1;
-  min-width: 0;
-}
 .list-item .title {
   font-weight: 700;
 }
-.list-item .sub {
+.list-item .sub,
+.sub {
   color: var(--muted);
   font-size: 0.9rem;
 }
@@ -233,33 +244,32 @@ button.chip {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 2px 8px;
-  border-radius: 6px;
-  font-size: 0.8rem;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
   font-weight: 700;
-  background: var(--surface-2);
-  color: var(--muted);
+  background: color-mix(in srgb, var(--c, var(--muted)) var(--tint), transparent);
+  color: var(--c, var(--muted));
   white-space: nowrap;
 }
-.badge-accent {
-  color: var(--accent);
-}
 .badge-danger {
-  color: var(--danger);
+  --c: var(--danger);
 }
 
 /* Dialoogvenster */
 dialog.sheet {
-  width: min(100% - 2 * var(--space-4), 34rem);
+  width: min(100% - 2 * var(--space-4), 36rem);
   max-height: calc(100dvh - 2 * var(--space-4));
   padding: var(--space-5);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--radius-xl);
   background: var(--surface);
   color: var(--text);
+  box-shadow: var(--shadow);
 }
 dialog.sheet::backdrop {
-  background: rgb(0 0 0 / 0.6);
+  background: rgb(10 8 25 / 0.55);
+  backdrop-filter: blur(3px);
 }
 
 .grid-2 {
@@ -273,44 +283,39 @@ dialog.sheet::backdrop {
   }
 }
 
+.cards {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+}
+
 .icon-btn {
   display: inline-grid;
   place-items: center;
   min-width: var(--tap);
   min-height: var(--tap);
-  border-radius: var(--radius);
-  border: 1px solid transparent;
+  border-radius: 12px;
+  border: 0;
   background: none;
   color: var(--text);
   cursor: pointer;
 }
 .icon-btn:hover {
-  border-color: var(--border);
+  background: var(--surface-2);
 }
-
-/* Losse invoervelden (buiten .field) */
-.input {
-  min-height: var(--tap);
-  padding: var(--space-2) var(--space-3);
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
-  background: var(--bg);
-  color: var(--text);
-  font: inherit;
-  min-width: 0;
-}
-.grow {
-  flex: 1;
-  min-width: 0;
+.icon-btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+  background: none;
 }
 
 .search {
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  padding: 0 var(--space-3);
-  min-height: var(--tap);
-  border-radius: var(--radius);
+  padding: 0 var(--space-4);
+  min-height: 48px;
+  border-radius: 999px;
   border: 1px solid var(--border);
   background: var(--surface);
   color: var(--muted);
@@ -318,7 +323,7 @@ dialog.sheet::backdrop {
 .search input {
   flex: 1;
   min-width: 0;
-  min-height: var(--tap);
+  min-height: 46px;
   border: 0;
   background: transparent;
   color: var(--text);
@@ -326,12 +331,14 @@ dialog.sheet::backdrop {
   outline: none;
 }
 .search:focus-within {
-  outline: 3px solid var(--focus);
-  outline-offset: 2px;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);
 }
 
 .person-btn {
-  display: grid;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
   text-align: left;
   background: none;
   border: 0;
@@ -340,14 +347,12 @@ dialog.sheet::backdrop {
   padding: 0;
   cursor: pointer;
   min-height: var(--tap);
-  align-content: center;
+}
+.person-btn > span:last-child {
+  display: grid;
+  min-width: 0;
 }
 .person-btn:disabled {
-  cursor: default;
-  opacity: 1;
-}
-.icon-btn:disabled {
-  opacity: 0.35;
   cursor: default;
 }
 
@@ -359,10 +364,261 @@ dialog.sheet::backdrop {
 }
 .lang-compact select {
   min-height: var(--tap);
-  background: transparent;
+  background: var(--surface-2);
   color: var(--text);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 0 var(--space-2);
+  border: 0;
+  border-radius: 999px;
+  padding: 0 var(--space-3);
   font: inherit;
+}
+
+/* Tabs binnen een pagina (bv. Instellingen) */
+.tabs {
+  display: flex;
+  gap: var(--space-1);
+  padding: 4px;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.tabs::-webkit-scrollbar {
+  display: none;
+}
+.tabs [role='tab'] {
+  flex: none;
+  min-height: 40px;
+  padding: 0 var(--space-4);
+  border-radius: 999px;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  font-weight: 650;
+  cursor: pointer;
+}
+.tabs [role='tab'][aria-selected='true'] {
+  background: var(--surface-3);
+  color: var(--text);
+}
+
+/* Voortgangsbalk */
+.progress {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--surface-3);
+  overflow: hidden;
+}
+.progress > span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--c, var(--success));
+  transition: width 0.3s;
+}
+
+/* Rechten-rij in de rollen-editor */
+.perm-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 56px;
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+}
+.perm-row:last-child {
+  border-bottom: 0;
+}
+.perm-row > span {
+  display: grid;
+  flex: 1;
+}
+
+/* Taken */
+.task-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 2px;
+}
+.task {
+  border-radius: var(--radius);
+}
+.task + .task {
+  border-top: 1px solid var(--border);
+}
+.task-main {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 60px;
+  padding: var(--space-2) 0;
+}
+.status-btn {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid color-mix(in srgb, var(--c) 55%, transparent);
+  background: color-mix(in srgb, var(--c) var(--tint), transparent);
+  color: var(--c);
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+.status-btn:active {
+  transform: scale(0.92);
+}
+.status-btn:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+.task-done .status-btn {
+  background: var(--c);
+  color: var(--accent-text);
+  border-color: var(--c);
+}
+.task-body {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+  text-align: left;
+  background: none;
+  border: 0;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.task-title {
+  font-weight: 650;
+}
+.task-done .task-title {
+  color: var(--muted);
+  text-decoration: line-through;
+}
+.task-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.task-detail {
+  padding: 0 0 var(--space-3) calc(44px + var(--space-3));
+}
+.avatars {
+  display: flex;
+}
+.avatars .avatar + .avatar {
+  margin-left: -8px;
+  box-shadow: 0 0 0 2px var(--surface);
+}
+.chev {
+  flex: none;
+  color: var(--muted);
+  transition: transform 0.15s;
+}
+.checklist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 2px;
+}
+.checklist label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--tap);
+  cursor: pointer;
+}
+.checklist input {
+  width: 22px;
+  height: 22px;
+  accent-color: var(--success);
+}
+
+.group-card {
+  display: grid;
+  gap: var(--space-3);
+  border-top: 4px solid var(--c);
+}
+.group-head {
+  display: grid;
+  text-align: left;
+  background: none;
+  border: 0;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  min-height: var(--tap);
+  align-content: center;
+}
+.group-head .title {
+  font-weight: 750;
+  font-size: 1.05rem;
+}
+
+.pkg-card {
+  border-top: 4px solid var(--c);
+}
+.pkg-preview {
+  margin: 0;
+  padding-left: 1.1rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+  display: grid;
+  gap: 2px;
+}
+.pkg-items {
+  list-style: none;
+  margin: 0 0 var(--space-3);
+  padding: 0;
+  display: grid;
+  gap: var(--space-3);
+}
+.pkg-items li {
+  display: grid;
+  gap: var(--space-2);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--border);
+}
+
+.link-card {
+  color: inherit;
+  text-decoration: none;
+}
+.link-card:hover {
+  border-color: var(--border-strong);
+}
+
+/* Vandaag */
+.hero {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      color-mix(in srgb, var(--c) 22%, transparent),
+      transparent 60%
+    ),
+    var(--surface);
+}
+.hero-stat {
+  display: grid;
+  justify-items: center;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--c) var(--tint), transparent);
+}
+.hero-num {
+  font-size: 2.4rem;
+  line-height: 1;
+  color: var(--c);
 }

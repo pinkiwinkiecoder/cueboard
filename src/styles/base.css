@@ -17,6 +17,7 @@ body {
   font-size: var(--base-font, 17px);
   line-height: 1.45;
   -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
 }
 
 h1,
@@ -25,23 +26,26 @@ h3,
 .display {
   font-family: var(--font-display);
   line-height: 1.15;
+  letter-spacing: -0.01em;
   margin: 0 0 var(--space-3);
 }
-
 h1 {
-  font-size: 1.75rem;
+  font-size: 1.9rem;
+  font-weight: 700;
 }
 h2 {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
+  font-weight: 700;
 }
 h3 {
-  font-size: 1.1rem;
+  font-size: 1.05rem;
+  font-weight: 700;
 }
 
 .time {
   font-family: var(--font-display);
   font-variant-numeric: tabular-nums;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 a {
@@ -78,81 +82,116 @@ a {
   align-items: center;
   justify-content: center;
   gap: var(--space-2);
-  min-height: var(--tap);
+  min-height: 48px;
   padding: 0 var(--space-4);
   border-radius: var(--radius);
-  border: 1px solid var(--border);
+  border: 0;
   background: var(--surface-2);
   color: var(--text);
   font: inherit;
-  font-weight: 600;
+  font-weight: 650;
   cursor: pointer;
   text-decoration: none;
+  transition:
+    background 0.15s,
+    transform 0.1s;
+}
+.btn:hover {
+  background: var(--surface-3);
+}
+.btn:active {
+  transform: scale(0.98);
 }
 .btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+  transform: none;
 }
 .btn-primary {
   background: var(--accent);
-  border-color: var(--accent);
   color: var(--accent-text);
+  box-shadow: var(--shadow-soft);
+}
+.btn-primary:hover {
+  background: color-mix(in srgb, var(--accent) 88%, var(--text));
 }
 .btn-ghost {
   background: transparent;
-  border-color: transparent;
 }
 .btn-block {
   width: 100%;
+}
+.btn-sm {
+  min-height: var(--tap);
+  padding: 0 var(--space-3);
+  font-size: 0.92rem;
 }
 
 /* Formulieren */
 .field {
   display: grid;
-  gap: var(--space-1);
+  gap: 6px;
   margin-bottom: var(--space-4);
 }
-.field label {
-  font-weight: 600;
+.field label,
+.field .label {
+  font-weight: 650;
+  font-size: 0.92rem;
 }
 .field input,
 .field select,
-.field textarea {
-  min-height: var(--tap);
+.field textarea,
+.input {
+  min-height: 48px;
   padding: var(--space-2) var(--space-3);
   border-radius: var(--radius);
   border: 1px solid var(--border);
-  background: var(--bg);
+  background: var(--surface-2);
   color: var(--text);
   font: inherit;
+  min-width: 0;
+}
+.field textarea {
+  min-height: 96px;
+  resize: vertical;
+}
+.field input:focus,
+.field select:focus,
+.field textarea:focus,
+.input:focus {
+  border-color: var(--accent);
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);
 }
 .field .hint {
   color: var(--muted);
-  font-size: 0.9rem;
+  font-size: 0.88rem;
 }
 
 .alert {
   padding: var(--space-3) var(--space-4);
   border-radius: var(--radius);
-  border: 1px solid var(--border);
-  background: var(--surface);
+  background: var(--surface-2);
+  border-left: 4px solid var(--border-strong);
   margin-bottom: var(--space-4);
 }
 .alert-error {
-  border-color: var(--danger);
+  border-left-color: var(--danger);
 }
 .alert-warning {
-  border-color: var(--warning);
+  border-left-color: var(--warning);
 }
 .alert-success {
-  border-color: var(--success);
+  border-left-color: var(--success);
 }
 
-.panel {
+.panel,
+.card {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4) var(--space-5);
+  box-shadow: var(--shadow-soft);
 }
 
 .muted {

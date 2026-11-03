@@ -54,6 +54,14 @@ create function finish() returns setof text language sql as
 grant execute on all functions in schema public to public;
 `;
 
+// Toon bij een SQL-fout enkel de melding en de plaats, niet de hele PGlite-broncode.
+process.on('unhandledRejection', (e) => {
+  console.error(
+    `\nSQL-fout: ${e?.message ?? e}${e?.where ? `\n  waar: ${e.where}` : ''}${e?.position ? `\n  positie: ${e.position}` : ''}`,
+  );
+  process.exit(1);
+});
+
 await db.exec(stub);
 const migDir = join(root, 'supabase', 'migrations');
 for (const f of readdirSync(migDir).sort()) {

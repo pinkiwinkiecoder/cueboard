@@ -1,14 +1,13 @@
 import { FunctionsHttpError } from '@supabase/supabase-js';
 import { AppError, type MsgKey } from '@/i18n';
 import { supabase } from './supabase';
-import type { Role } from './types';
 
 export interface InviteInput {
   full_name: string;
   email: string;
   phone: string | null;
   department_id: string | null;
-  role: Role;
+  role_id: string;
   send_email: boolean;
 }
 
@@ -16,6 +15,7 @@ export interface InviteInput {
 const CODES: Record<string, MsgKey> = {
   not_signed_in: 'errors.notSignedIn',
   not_admin: 'errors.notAdmin',
+  no_permission: 'errors.noPermission',
   rate_limited: 'errors.rateLimited',
   invalid_request: 'errors.invalidRequest',
   invalid_name: 'errors.invalidName',

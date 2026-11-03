@@ -1,25 +1,29 @@
 import { supabase } from './supabase';
 import { must, useCachedQuery } from './query';
-import type { Profile } from './types';
+import type { Profile, RoleRow } from './types';
+import type { ModuleKey, PaletteColor } from './permissions';
 
 export interface Department {
   id: string;
   name: string;
+  color: PaletteColor;
   sort_order: number;
 }
-export interface Stage {
+export interface Location {
   id: string;
   name: string;
+  color: PaletteColor;
   sort_order: number;
 }
-export interface FestivalDay {
+export interface EventDay {
   id: string;
   date: string;
   label: string;
 }
-export interface Festival {
+export interface EventInfo {
   name: string;
   venue: string | null;
+  modules: ModuleKey[];
   retention_until: string | null;
   max_pdf_mb: number;
 }
@@ -31,7 +35,7 @@ export function useDepartments() {
       must(
         await supabase
           .from('departments')
-          .select('id, name, sort_order')
+          .select('id, name, color, sort_order')
           .order('sort_order')
           .order('name'),
       ) as Department[],
@@ -39,40 +43,66 @@ export function useDepartments() {
   );
 }
 
-export function useStages() {
+export function useLocations() {
   return useCachedQuery(
-    'stages',
+    'locations',
     async () =>
       must(
         await supabase
-          .from('stages')
-          .select('id, name, sort_order')
+          .from('locations')
+          .select('id, name, color, sort_order')
           .order('sort_order')
           .order('name'),
-      ) as Stage[],
-    { realtime: ['stages'] },
+      ) as Location[],
+    { realtime: ['locations'] },
   );
 }
 
-export function useFestivalDays() {
+export function useEventDays() {
   return useCachedQuery(
-    'festival_days',
+    'event_days',
     async () =>
-      must(
-        await supabase.from('festival_days').select('id, date, label').order('date'),
-      ) as FestivalDay[],
-    { realtime: ['festival_days'] },
+      must(await supabase.from('event_days').select('id, date, label').order('date')) as EventDay[],
+    { realtime: ['event_days'] },
   );
 }
 
-export function useFestival() {
+const DEMO_EVENT: EventInfo = {
+  name: 'Art of Faith',
+  venue: null,
+  modules: ['schedule', 'tasks', 'artists', 'documents', 'people', 'issues', 'dashboard'],
+  retention_until: null,
+  max_pdf_mb: 15,
+};
+
+export function useEvent() {
   return useCachedQuery(
-    'festival',
+    'event',
+    async () => {
+      if (import.meta.env.DEV && import.meta.env.VITE_DEMO_LOGIN === '1') return DEMO_EVENT;
+      return must(
+        await supabase
+          .from('event')
+          .select('name, venue, modules, retention_until, max_pdf_mb')
+          .single(),
+      ) as EventInfo;
+    },
+    { realtime: ['event'] },
+  );
+}
+
+export function useRoles() {
+  return useCachedQuery(
+    'roles',
     async () =>
       must(
-        await supabase.from('festival').select('name, venue, retention_until, max_pdf_mb').single(),
-      ) as Festival,
-    { realtime: ['festival'] },
+        await supabase
+          .from('roles')
+          .select('id, name, description, color, is_admin, is_default, permissions, sort_order')
+          .order('sort_order')
+          .order('name'),
+      ) as RoleRow[],
+    { realtime: ['roles'] },
   );
 }
 
@@ -83,7 +113,7 @@ export function usePeople() {
       must(
         await supabase
           .from('profiles')
-          .select('id, full_name, email, phone, department_id, role, active')
+          .select('id, full_name, email, phone, department_id, role_id, active')
           .order('full_name'),
       ) as Profile[],
     { realtime: ['profiles'] },

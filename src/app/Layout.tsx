@@ -1,24 +1,29 @@
 import { Suspense, useState } from 'react';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
-import { LogOut, Menu, Moon, Palette, SunMedium, X } from 'lucide-react';
-import { navFor } from './nav';
+import { LogOut, Menu, Moon, Palette, Sparkles, SunMedium, X } from 'lucide-react';
+import { visibleNav } from './nav';
 import { useAuth } from '@/lib/auth';
+import { useEvent } from '@/lib/refdata';
 import { usePrefs } from '@/lib/usePrefs';
 import { ConnectionBanner } from './ConnectionBanner';
 import { TopBar } from './TopBar';
+import { Avatar } from './Avatar';
 
 export function Layout() {
-  const { profile, signOut } = useAuth();
+  const { profile, access, can, isAdmin, signOut } = useAuth();
+  const event = useEvent();
   const { prefs, toggleTheme, backgroundUrl, t } = usePrefs();
   const [moreOpen, setMoreOpen] = useState(false);
   const location = useLocation();
-  const items = navFor(profile?.role === 'beheerder');
-  const tabItems = items.filter((i) => i.inTabbar);
-  const moreItems = items.filter((i) => !i.inTabbar);
+  const items = visibleNav(can, event.data?.modules, isAdmin);
+  // Tabbalk: max. 4 vaste onderdelen + "Meer".
+  const tabItems = items.filter((i) => i.inTabbar).slice(0, 4);
+  const moreItems = items.filter((i) => !tabItems.includes(i));
   const moreActive =
     location.pathname === '/weergave' || moreItems.some((i) => location.pathname.startsWith(i.to));
   const ThemeIcon = prefs.theme === 'dark' ? SunMedium : Moon;
   const themeLabel = t(prefs.theme === 'dark' ? 'nav.lightTheme' : 'nav.darkTheme');
+  const eventName = event.data?.name ?? t('app.name');
 
   return (
     <div className="shell">
@@ -34,27 +39,50 @@ export function Layout() {
       </a>
 
       <aside className="sidebar" aria-label={t('nav.mainNav')}>
-        <div className="brand display">{t('app.name')}</div>
+        <div className="brand">
+          <span className="bubble bubble-lg" data-color="gold" aria-hidden>
+            <Sparkles size={24} />
+          </span>
+          <span className="brand-name">{eventName}</span>
+        </div>
         <nav>
-          {items.map(({ to, label, icon: Icon }) => (
+          {items.map(({ to, label, icon: Icon, color }) => (
             <NavLink key={to} to={to} end={to === '/'} className="nav-link">
-              <Icon aria-hidden size={22} />
+              <span className="bubble" data-color={color} aria-hidden>
+                <Icon size={20} />
+              </span>
               <span>{t(label)}</span>
             </NavLink>
           ))}
         </nav>
         <div className="sidebar-foot">
-          <div className="muted small">{profile?.full_name}</div>
+          {profile && (
+            <div className="me-card">
+              <Avatar name={profile.full_name} />
+              <span className="grow">
+                <span className="title" style={{ display: 'block' }}>
+                  {profile.full_name}
+                </span>
+                <span className="sub">{access?.role_name}</span>
+              </span>
+            </div>
+          )}
           <NavLink to="/weergave" className="nav-link">
-            <Palette aria-hidden size={20} />
+            <span className="bubble" data-color="violet" aria-hidden>
+              <Palette size={20} />
+            </span>
             <span>{t('nav.appearance')}</span>
           </NavLink>
           <button type="button" className="nav-link" onClick={toggleTheme}>
-            <ThemeIcon aria-hidden size={20} />
+            <span className="bubble" data-color="sky" aria-hidden>
+              <ThemeIcon size={20} />
+            </span>
             <span>{themeLabel}</span>
           </button>
           <button type="button" className="nav-link" onClick={() => void signOut()}>
-            <LogOut aria-hidden size={20} />
+            <span className="bubble" data-color="rose" aria-hidden>
+              <LogOut size={20} />
+            </span>
             <span>{t('nav.signOut')}</span>
           </button>
         </div>
@@ -71,9 +99,11 @@ export function Layout() {
       </div>
 
       <nav className="tabbar" aria-label={t('nav.mainNav')}>
-        {tabItems.map(({ to, label, icon: Icon }) => (
-          <NavLink key={to} to={to} end={to === '/'} className="tab-link">
-            <Icon aria-hidden size={24} />
+        {tabItems.map(({ to, label, icon: Icon, color }) => (
+          <NavLink key={to} to={to} end={to === '/'} className="tab-link" data-color={color}>
+            <span className="tab-icon" aria-hidden>
+              <Icon size={22} />
+            </span>
             <span>{t(label)}</span>
           </NavLink>
         ))}
@@ -84,29 +114,39 @@ export function Layout() {
           aria-controls="more-sheet"
           onClick={() => setMoreOpen((v) => !v)}
         >
-          {moreOpen ? <X aria-hidden size={24} /> : <Menu aria-hidden size={24} />}
+          <span className="tab-icon" aria-hidden>
+            {moreOpen ? <X size={22} /> : <Menu size={22} />}
+          </span>
           <span>{t('nav.more')}</span>
         </button>
       </nav>
 
       {moreOpen && (
         <div id="more-sheet" className="more-sheet" role="dialog" aria-label={t('nav.more')}>
-          {moreItems.map(({ to, label, icon: Icon }) => (
+          {moreItems.map(({ to, label, icon: Icon, color }) => (
             <NavLink key={to} to={to} className="nav-link" onClick={() => setMoreOpen(false)}>
-              <Icon aria-hidden size={22} />
+              <span className="bubble" data-color={color} aria-hidden>
+                <Icon size={20} />
+              </span>
               <span>{t(label)}</span>
             </NavLink>
           ))}
           <NavLink to="/weergave" className="nav-link" onClick={() => setMoreOpen(false)}>
-            <Palette aria-hidden size={22} />
+            <span className="bubble" data-color="violet" aria-hidden>
+              <Palette size={20} />
+            </span>
             <span>{t('nav.appearance')}</span>
           </NavLink>
           <button type="button" className="nav-link" onClick={toggleTheme}>
-            <ThemeIcon aria-hidden size={22} />
+            <span className="bubble" data-color="sky" aria-hidden>
+              <ThemeIcon size={20} />
+            </span>
             <span>{themeLabel}</span>
           </button>
           <button type="button" className="nav-link" onClick={() => void signOut()}>
-            <LogOut aria-hidden size={22} />
+            <span className="bubble" data-color="rose" aria-hidden>
+              <LogOut size={20} />
+            </span>
             <span>{t('nav.signOut')}</span>
           </button>
         </div>

@@ -1,28 +1,34 @@
 import { useState, type FormEvent } from 'react';
 import { ArrowDown, ArrowUp, Check, Pencil, Plus, Trash2, X } from 'lucide-react';
+import { ColorPicker } from '@/app/ColorPicker';
 import { supabase } from '@/lib/supabase';
 import { dbError } from '@/lib/query';
 import { useT } from '@/lib/usePrefs';
+import { PALETTE, type PaletteColor } from '@/lib/permissions';
 import type { MsgKey } from '@/i18n';
 
 interface Row {
   id: string;
   name: string;
+  color: PaletteColor;
   sort_order: number;
 }
 
-/** Editor for a simple ordered list of names (stages, departments). */
+/** Editor for an ordered list of named, coloured items (locations, departments). */
 export function NamedListEditor(props: {
-  table: 'stages' | 'departments';
+  table: 'locations' | 'departments';
   rows: Row[] | undefined;
   title: MsgKey;
+  hint: MsgKey;
   fieldLabel: MsgKey;
   addLabel: MsgKey;
   onChanged: () => void;
 }) {
   const { t, errText } = useT();
   const [name, setName] = useState('');
-  const [editing, setEditing] = useState<{ id: string; name: string } | null>(null);
+  const [editing, setEditing] = useState<{ id: string; name: string; color: PaletteColor } | null>(
+    null,
+  );
   const [error, setError] = useState<unknown>(null);
   const rows = props.rows ?? [];
 
@@ -42,16 +48,20 @@ export function NamedListEditor(props: {
     const clean = name.trim();
     if (!clean) return;
     const next = Math.max(0, ...rows.map((r) => r.sort_order)) + 1;
-    if (await run(supabase.from(props.table).insert({ name: clean, sort_order: next })))
+    const color = PALETTE[rows.length % PALETTE.length] ?? 'violet';
+    if (await run(supabase.from(props.table).insert({ name: clean, sort_order: next, color })))
       setName('');
   }
 
-  async function rename(e: FormEvent) {
+  async function saveEdit(e: FormEvent) {
     e.preventDefault();
     if (!editing?.name.trim()) return;
     if (
       await run(
-        supabase.from(props.table).update({ name: editing.name.trim() }).eq('id', editing.id),
+        supabase
+          .from(props.table)
+          .update({ name: editing.name.trim(), color: editing.color })
+          .eq('id', editing.id),
       )
     )
       setEditing(null);
@@ -61,7 +71,6 @@ export function NamedListEditor(props: {
     const a = rows[index];
     const b = rows[index + dir];
     if (!a || !b) return;
-    // Wissel de volgorde; twee kleine updates zijn genoeg voor een handvol rijen.
     await run(supabase.from(props.table).update({ sort_order: b.sort_order }).eq('id', a.id));
     await run(supabase.from(props.table).update({ sort_order: a.sort_order }).eq('id', b.id));
   }
@@ -73,8 +82,15 @@ export function NamedListEditor(props: {
 
   const inputId = `${props.table}-new`;
   return (
-    <section className="panel stack" aria-labelledby={`h-${props.table}`}>
-      <h2 id={`h-${props.table}`}>{t(props.title)}</h2>
+    <section className="stack" aria-labelledby={`h-${props.table}`}>
+      <div>
+        <h2 id={`h-${props.table}`} style={{ margin: 0 }}>
+          {t(props.title)}
+        </h2>
+        <p className="sub" style={{ margin: '2px 0 0' }}>
+          {t(props.hint)}
+        </p>
+      </div>
       {error !== null && (
         <div className="alert alert-error" role="alert">
           {errText(error)}
@@ -82,33 +98,41 @@ export function NamedListEditor(props: {
       )}
       <ul className="list">
         {rows.map((row, i) => (
-          <li key={row.id} className="list-item">
+          <li key={row.id} className="list-item" data-color={row.color}>
             {editing?.id === row.id ? (
-              <form className="row grow" onSubmit={(e) => void rename(e)}>
-                <label className="visually-hidden" htmlFor={`edit-${row.id}`}>
-                  {t(props.fieldLabel)}
-                </label>
-                <input
-                  id={`edit-${row.id}`}
-                  className="input grow"
-                  value={editing.name}
-                  autoFocus
-                  onChange={(e) => setEditing({ id: row.id, name: e.target.value })}
+              <form className="stack grow" onSubmit={(e) => void saveEdit(e)}>
+                <div className="row">
+                  <label className="visually-hidden" htmlFor={`edit-${row.id}`}>
+                    {t(props.fieldLabel)}
+                  </label>
+                  <input
+                    id={`edit-${row.id}`}
+                    className="input grow"
+                    value={editing.name}
+                    maxLength={60}
+                    autoFocus
+                    onChange={(e) => setEditing({ ...editing, name: e.target.value })}
+                  />
+                  <button type="submit" className="icon-btn" aria-label={t('common.save')}>
+                    <Check aria-hidden size={20} />
+                  </button>
+                  <button
+                    type="button"
+                    className="icon-btn"
+                    aria-label={t('common.cancel')}
+                    onClick={() => setEditing(null)}
+                  >
+                    <X aria-hidden size={20} />
+                  </button>
+                </div>
+                <ColorPicker
+                  value={editing.color}
+                  onChange={(c) => setEditing({ ...editing, color: c })}
                 />
-                <button type="submit" className="icon-btn" aria-label={t('common.save')}>
-                  <Check aria-hidden size={20} />
-                </button>
-                <button
-                  type="button"
-                  className="icon-btn"
-                  aria-label={t('common.cancel')}
-                  onClick={() => setEditing(null)}
-                >
-                  <X aria-hidden size={20} />
-                </button>
               </form>
             ) : (
               <>
+                <span className="dot" aria-hidden />
                 <span className="grow title">{row.name}</span>
                 <button
                   type="button"
@@ -131,8 +155,8 @@ export function NamedListEditor(props: {
                 <button
                   type="button"
                   className="icon-btn"
-                  aria-label={`${t('common.rename')}: ${row.name}`}
-                  onClick={() => setEditing({ id: row.id, name: row.name })}
+                  aria-label={`${t('common.edit')}: ${row.name}`}
+                  onClick={() => setEditing({ id: row.id, name: row.name, color: row.color })}
                 >
                   <Pencil aria-hidden size={20} />
                 </button>
