@@ -83,7 +83,9 @@ export function LoginPage() {
           <Link to="/wachtwoord-vergeten">{t('auth.forgotLink')}</Link>
         </p>
         <p className="muted small">
-          {t('auth.noAccount')} <Link to="/privacy">{t('auth.privacyLink')}</Link>
+          {t('auth.noAccount')} <Link to="/">{t('auth.whatIs')}</Link> ·{' '}
+          <Link to="/help">{t('nav.help')}</Link> ·{' '}
+          <Link to="/privacy">{t('auth.privacyLink')}</Link>
         </p>
       </form>
     </div>

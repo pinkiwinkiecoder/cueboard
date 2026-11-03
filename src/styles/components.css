@@ -1095,3 +1095,319 @@ button.timeline-block {
   min-height: 36px;
   border-bottom: 1px solid var(--border);
 }
+
+/* ============================================================================
+   Publieke pagina's (showcase, over, help)
+   ========================================================================== */
+.public {
+  min-height: 100dvh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+.public-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: max(var(--space-3), env(safe-area-inset-top)) var(--space-5) var(--space-3);
+  background: color-mix(in srgb, var(--bg) 85%, transparent);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+}
+.public-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--text);
+  text-decoration: none;
+  font-family: var(--font-display);
+  font-weight: 750;
+  font-size: 1.1rem;
+}
+.public-brand img {
+  border-radius: 22%;
+}
+.public-nav {
+  display: flex;
+  gap: var(--space-1);
+  margin-left: var(--space-3);
+}
+.public-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap);
+  padding: 0 var(--space-3);
+  border-radius: 999px;
+  color: var(--muted);
+  text-decoration: none;
+  font-weight: 650;
+}
+.public-nav a:hover,
+.public-nav a.active {
+  color: var(--text);
+  background: var(--surface);
+}
+@media (max-width: 640px) {
+  .public-header {
+    padding-left: var(--space-4);
+    padding-right: var(--space-4);
+  }
+  .public-nav {
+    display: none;
+  }
+  .public-brand span {
+    display: none;
+  }
+}
+.public main {
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 var(--space-4) var(--space-6);
+}
+.public main:focus {
+  outline: none;
+}
+.public-footer {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-2);
+  padding: var(--space-6) var(--space-4) max(var(--space-6), env(safe-area-inset-bottom));
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+.public-footer nav a {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: var(--tap);
+  padding: 0 var(--space-2);
+  color: var(--muted);
+}
+
+.lead {
+  font-size: 1.15rem;
+  line-height: 1.55;
+  color: var(--muted);
+}
+.kicker {
+  display: inline-flex;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) var(--tint), var(--surface));
+  color: var(--accent);
+  font-weight: 750;
+  font-size: 0.9rem;
+  margin: 0 0 var(--space-4);
+}
+
+.hero-public {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  padding: clamp(3rem, 9vw, 6rem) 0 var(--space-6);
+  max-width: 52rem;
+  margin: 0 auto;
+}
+.hero-public h1 {
+  font-size: clamp(2.2rem, 6vw, 3.8rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-4);
+}
+.hero-public .lead {
+  max-width: 40rem;
+  margin: 0 0 var(--space-5);
+}
+.hero-ctas {
+  justify-content: center;
+  margin-bottom: var(--space-3);
+}
+
+.showcase {
+  display: grid;
+  gap: var(--space-5);
+  padding: var(--space-5) 0 var(--space-6);
+}
+.showcase-text {
+  text-align: center;
+  max-width: 40rem;
+  margin: 0 auto;
+}
+.showcase-text h2,
+.public-section h2 {
+  font-size: clamp(1.6rem, 4vw, 2.3rem);
+}
+.showcase-grid {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+  align-items: start;
+  pointer-events: none;
+  user-select: none;
+}
+.mock {
+  box-shadow: var(--shadow);
+}
+
+.public-section {
+  padding: var(--space-6) 0;
+}
+.feature-grid {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+}
+.feature h3 {
+  margin: var(--space-3) 0 var(--space-2);
+}
+
+.how-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+}
+.how-num {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--accent-text);
+  font-size: 1.2rem;
+}
+.how-steps h3 {
+  margin: var(--space-3) 0 var(--space-2);
+}
+
+.free {
+  display: grid;
+  gap: var(--space-5);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+  align-items: center;
+}
+.cost-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.cost-table td {
+  padding: var(--space-3) var(--space-2);
+  border-bottom: 1px solid var(--border);
+}
+.cost-table td:last-child {
+  text-align: right;
+}
+.cost-total td {
+  border-bottom: 0;
+  font-weight: 800;
+  font-size: 1.2rem;
+  color: var(--success);
+}
+
+.story {
+  margin: var(--space-6) 0;
+  padding: var(--space-6);
+  background:
+    radial-gradient(
+      circle at 0% 0%,
+      color-mix(in srgb, var(--c) 18%, transparent),
+      transparent 55%
+    ),
+    var(--surface);
+}
+.story .lead {
+  color: var(--text);
+  max-width: 46rem;
+}
+.story-sign {
+  font-family: var(--font-display);
+  font-weight: 750;
+  font-size: 1.1rem;
+}
+
+.faq {
+  display: grid;
+  gap: var(--space-3);
+  max-width: 46rem;
+}
+.faq summary {
+  cursor: pointer;
+  font-weight: 700;
+  min-height: var(--tap);
+  display: flex;
+  align-items: center;
+}
+
+.cta {
+  text-align: center;
+  padding: var(--space-6);
+  margin-top: var(--space-5);
+}
+.cta .lead {
+  margin: 0 auto var(--space-4);
+}
+
+/* Artikels (over, help, privacy) */
+.public-article {
+  max-width: 46rem;
+  margin: 0 auto;
+  padding-top: var(--space-6);
+}
+.public-article.wide {
+  max-width: 1000px;
+}
+.public-article h1 {
+  font-size: clamp(2rem, 5vw, 2.8rem);
+}
+.public-article h2 {
+  margin-top: var(--space-5);
+}
+.public-article p {
+  line-height: 1.65;
+}
+.help-card {
+  display: grid;
+  gap: 4px;
+  border-top: 4px solid var(--c);
+}
+.help-steps,
+.help-list {
+  margin: 0;
+  padding-left: 1.4rem;
+  display: grid;
+  gap: var(--space-2);
+  line-height: 1.55;
+}
+.help-steps li::marker {
+  font-weight: 800;
+  color: var(--accent);
+}
+.help-tip {
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--c) var(--tint), var(--surface));
+  color: var(--text);
+}
+.help-tip svg {
+  flex: none;
+  color: var(--c);
+}
+.back-link {
+  color: var(--muted);
+  text-decoration: none;
+  font-weight: 650;
+  min-height: var(--tap);
+}
+
+.mock-wide {
+  grid-column: 1 / -1;
+}

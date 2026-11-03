@@ -194,12 +194,14 @@ function EventForm(props: {
               </span>
               <span>
                 <strong>{t(nav.label)}</strong>
+                {nav.soon && <span className="sub">{t('settings.comingSoon')}</span>}
               </span>
               <input
                 type="checkbox"
                 role="switch"
                 className="switch"
-                checked={on}
+                disabled={nav.soon}
+                checked={on && !nav.soon}
                 onChange={() => setModules(on ? modules.filter((x) => x !== m) : [...modules, m])}
               />
             </label>

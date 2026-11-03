@@ -1,17 +1,16 @@
-import { Link } from 'react-router-dom';
 import { useT } from '@/lib/usePrefs';
+import { PublicLayout } from '@/features/public/PublicLayout';
 
 export function PrivacyPage() {
   const { t } = useT();
   return (
-    <div className="auth-page">
-      <article className="auth-card panel">
+    <PublicLayout title={t('privacy.title')}>
+      <article className="public-article">
         <h1>{t('privacy.title')}</h1>
-        <p>{t('privacy.p1')}</p>
+        <p className="lead">{t('privacy.p1')}</p>
         <p>{t('privacy.p2')}</p>
         <p>{t('privacy.p3')}</p>
-        <Link to="/">{t('privacy.back')}</Link>
       </article>
-    </div>
+    </PublicLayout>
   );
 }

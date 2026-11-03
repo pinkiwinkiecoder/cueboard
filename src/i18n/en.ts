@@ -24,6 +24,7 @@ export const en = {
     dashboard: 'Dashboard',
     settings: 'Settings',
     appearance: 'Appearance',
+    help: 'Help',
     more: 'More',
     mainNav: 'Main navigation',
     lightTheme: 'Light theme',
@@ -70,6 +71,7 @@ export const en = {
     forgotLink: 'Forgot your password?',
     noAccount: 'No account yet? The admin will send you an invite by email or WhatsApp.',
     privacyLink: 'Privacy statement',
+    whatIs: 'What is Backstage Hub?',
     errTooMany: 'Too many attempts. Wait a few minutes and try again.',
     errInvalid: 'Email address or password is incorrect. Check both and try again.',
     errNetwork: 'No connection to the server. Check your internet or try again later.',
@@ -103,9 +105,9 @@ export const en = {
   },
   privacy: {
     title: 'Privacy statement',
-    p1: 'The Art of Faith Production Hub only stores what is needed to run the festival: your name, department, phone number and email address, plus what you do in the app (tasks, sign-offs, issues).',
-    p2: 'The data is stored by Supabase in a data centre in Frankfurt (EU). It is not shared with third parties and not used for advertising.',
-    p3: 'After the festival the admin deletes all personal data. Want to see your data or have it deleted sooner? Ask the festival admin.',
+    p1: 'Backstage Hub only stores what is needed to run the event: your name, team, phone number and email address, plus what you do in the app (tasks, sign-offs, messages).',
+    p2: 'Every organisation runs its own copy of Backstage Hub. Your data is stored in that organisation’s own database at Supabase, in an EU region. It is not shared with third parties and never used for advertising.',
+    p3: 'The organisation that invited you is responsible for your data. Want to see your data or have it deleted? Ask the admin of your event.',
     back: 'Back',
   },
   errors: {
@@ -277,6 +279,7 @@ export const en = {
     addDepartment: 'Add department',
     confirmDelete: 'Delete "{name}"?',
     saved: 'Saved',
+    comingSoon: 'Coming soon',
   },
   roles: {
     title: 'Roles & rights',

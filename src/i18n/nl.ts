@@ -22,6 +22,7 @@ export const nl: Dictionary = {
     dashboard: 'Dashboard',
     settings: 'Instellingen',
     appearance: 'Weergave',
+    help: 'Help',
     more: 'Meer',
     mainNav: 'Hoofdnavigatie',
     lightTheme: 'Licht thema',
@@ -69,6 +70,7 @@ export const nl: Dictionary = {
     noAccount:
       'Nog geen account? Je krijgt een uitnodiging van de beheerder via e-mail of WhatsApp.',
     privacyLink: 'Privacyverklaring',
+    whatIs: 'Wat is Backstage Hub?',
     errTooMany: 'Te veel pogingen. Wacht een paar minuten en probeer opnieuw.',
     errInvalid: 'E-mailadres of wachtwoord klopt niet. Controleer beide en probeer opnieuw.',
     errNetwork: 'Geen verbinding met de server. Controleer je internet of probeer later opnieuw.',
@@ -102,9 +104,9 @@ export const nl: Dictionary = {
   },
   privacy: {
     title: 'Privacyverklaring',
-    p1: 'De Art of Faith Production Hub bewaart enkel wat nodig is om het festival te organiseren: je naam, afdeling, telefoonnummer en e-mailadres, plus wat je zelf in de app doet (taken, aftekeningen, meldingen).',
-    p2: 'De gegevens staan bij Supabase in een datacenter in Frankfurt (EU). Ze worden niet gedeeld met derden en niet gebruikt voor reclame.',
-    p3: 'Na het festival wist de beheerder alle persoonsgegevens. Wil je inzage of eerder gewist worden? Vraag het aan de beheerder van het festival.',
+    p1: 'Backstage Hub bewaart enkel wat nodig is om het evenement te organiseren: je naam, team, telefoonnummer en e-mailadres, plus wat je zelf in de app doet (taken, aftekeningen, berichten).',
+    p2: 'Elke organisatie draait haar eigen kopie van Backstage Hub. Je gegevens staan in de eigen database van die organisatie bij Supabase, in een EU-regio. Ze worden niet gedeeld met derden en nooit gebruikt voor reclame.',
+    p3: 'De organisatie die je uitnodigde, is verantwoordelijk voor je gegevens. Wil je je gegevens inkijken of laten wissen? Vraag het aan de beheerder van je evenement.',
     back: 'Terug',
   },
   errors: {
@@ -278,6 +280,7 @@ export const nl: Dictionary = {
     addDepartment: 'Afdeling toevoegen',
     confirmDelete: '"{name}" verwijderen?',
     saved: 'Opgeslagen',
+    comingSoon: 'Binnenkort',
   },
   roles: {
     title: 'Rollen & rechten',

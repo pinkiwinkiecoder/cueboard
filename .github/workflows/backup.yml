@@ -3,7 +3,7 @@ name: Nachtelijke database-back-up
 # Het gratis Supabase-plan maakt geen back-ups. Deze workflow maakt elke nacht
 # een dump van de database en bewaart die 14 dagen als artefact in deze (privé!)
 # repository. Bestanden (riders, call sheets) zitten er NIET in: gebruik daarvoor
-# "Exporteer alles" in de app (zie README, hoofdstuk Back-ups).
+# "Exporteer alles" (volgt later). Draait enkel in een privé-repository.
 on:
   schedule:
     - cron: '41 2 * * *' # 02:41 UTC
@@ -11,6 +11,8 @@ on:
 
 jobs:
   dump:
+    # Back-ups bevatten persoonsgegevens: enkel in een privé-repository draaien.
+    if: github.event.repository.private
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:

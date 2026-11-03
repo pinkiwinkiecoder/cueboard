@@ -1,6 +1,6 @@
 import { Suspense, useEffect, useState } from 'react';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
-import { LogOut, Menu, Moon, Palette, SunMedium, X } from 'lucide-react';
+import { LifeBuoy, LogOut, Menu, Moon, Palette, SunMedium, X } from 'lucide-react';
 import { APP_NAME, EventLogo } from '@/lib/branding';
 import { visibleNav } from './nav';
 import { useAuth } from '@/lib/auth';
@@ -82,6 +82,12 @@ export function Layout() {
               </span>
             </div>
           )}
+          <NavLink to="/help" className="nav-link">
+            <span className="bubble" data-color="gold" aria-hidden>
+              <LifeBuoy size={20} />
+            </span>
+            <span>{t('nav.help')}</span>
+          </NavLink>
           <NavLink to="/weergave" className="nav-link">
             <span className="bubble" data-color="violet" aria-hidden>
               <Palette size={20} />
@@ -148,6 +154,12 @@ export function Layout() {
               <span>{t(label)}</span>
             </NavLink>
           ))}
+          <NavLink to="/help" className="nav-link" onClick={() => setMoreOpen(false)}>
+            <span className="bubble" data-color="gold" aria-hidden>
+              <LifeBuoy size={20} />
+            </span>
+            <span>{t('nav.help')}</span>
+          </NavLink>
           <NavLink to="/weergave" className="nav-link" onClick={() => setMoreOpen(false)}>
             <span className="bubble" data-color="violet" aria-hidden>
               <Palette size={20} />

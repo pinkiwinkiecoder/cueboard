@@ -1,4 +1,4 @@
-import { lazy, type ReactElement, type ReactNode } from 'react';
+import { lazy, Suspense, type ReactElement, type ReactNode } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { useAuth } from '@/lib/auth';
 import { AnnouncementsProvider } from '@/lib/announcements';
@@ -12,7 +12,6 @@ import { PlaceholderPage } from '@/features/placeholders';
 import { LoginPage } from '@/features/auth/LoginPage';
 import { ForgotPasswordPage } from '@/features/auth/ForgotPasswordPage';
 import { SetPasswordPage } from '@/features/auth/SetPasswordPage';
-import { PrivacyPage } from '@/features/auth/PrivacyPage';
 
 // Grotere schermen pas laden als je ze opent: de eerste lading blijft klein.
 const AppearancePage = lazy(() =>
@@ -38,6 +37,24 @@ const SchedulePage = lazy(() =>
 const ShowcallerPage = lazy(() =>
   import('@/features/schedule/ShowcallerPage').then((m) => ({ default: m.ShowcallerPage })),
 );
+const PrivacyPage = lazy(() =>
+  import('@/features/auth/PrivacyPage').then((m) => ({ default: m.PrivacyPage })),
+);
+const LandingPage = lazy(() =>
+  import('@/features/public/LandingPage').then((m) => ({ default: m.LandingPage })),
+);
+const AboutPage = lazy(() =>
+  import('@/features/public/AboutPage').then((m) => ({ default: m.AboutPage })),
+);
+const HelpIndexPage = lazy(() =>
+  import('@/features/public/HelpPages').then((m) => ({ default: m.HelpIndexPage })),
+);
+const HelpArticlePage = lazy(() =>
+  import('@/features/public/HelpPages').then((m) => ({ default: m.HelpArticlePage })),
+);
+const NotFoundPage = lazy(() =>
+  import('@/features/public/NotFoundPage').then((m) => ({ default: m.NotFoundPage })),
+);
 const TodayPage = lazy(() =>
   import('@/features/today/TodayPage').then((m) => ({ default: m.TodayPage })),
 );
@@ -57,7 +74,11 @@ function RequireAuth({ children }: { children: ReactNode }) {
   const { t } = useT();
   const location = useLocation();
   if (loading) return <div className="auth-page">{t('app.loading')}</div>;
-  if (!session || !profile) return <Navigate to="/inloggen" replace state={{ from: location }} />;
+  if (!session || !profile) {
+    // Niet ingelogd op de startpagina: toon de publieke showcase.
+    if (location.pathname === '/') return <LandingPage />;
+    return <Navigate to="/inloggen" replace state={{ from: location }} />;
+  }
   return children;
 }
 
@@ -91,51 +112,56 @@ export function App() {
   }
 
   return (
-    <Routes>
-      <Route
-        path="/inloggen"
-        element={
-          session && profile ? (
-            <Navigate to={recovery ? '/nieuw-wachtwoord' : '/'} replace />
-          ) : (
-            <LoginPage />
-          )
-        }
-      />
-      <Route path="/wachtwoord-vergeten" element={<ForgotPasswordPage />} />
-      <Route path="/nieuw-wachtwoord" element={<SetPasswordPage />} />
-      <Route path="/privacy" element={<PrivacyPage />} />
-      <Route
-        element={
-          <RequireAuth>
-            <AnnouncementsProvider>
-              <Layout />
-            </AnnouncementsProvider>
-          </RequireAuth>
-        }
-      >
-        <Route path="/weergave" element={<AppearancePage />} />
+    <Suspense fallback={<div className="auth-page">{t('app.loading')}</div>}>
+      <Routes>
         <Route
-          path="/planning/showcaller"
+          path="/inloggen"
           element={
-            <RequirePerm perm="schedule.manage">
-              <ShowcallerPage />
-            </RequirePerm>
+            session && profile ? (
+              <Navigate to={recovery ? '/nieuw-wachtwoord' : '/'} replace />
+            ) : (
+              <LoginPage />
+            )
           }
         />
-        {NAV_ITEMS.map((item) => (
+        <Route path="/wachtwoord-vergeten" element={<ForgotPasswordPage />} />
+        <Route path="/nieuw-wachtwoord" element={<SetPasswordPage />} />
+        <Route path="/privacy" element={<PrivacyPage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/help" element={<HelpIndexPage />} />
+        <Route path="/help/:slug" element={<HelpArticlePage />} />
+        <Route
+          element={
+            <RequireAuth>
+              <AnnouncementsProvider>
+                <Layout />
+              </AnnouncementsProvider>
+            </RequireAuth>
+          }
+        >
+          <Route path="/weergave" element={<AppearancePage />} />
           <Route
-            key={item.to}
-            path={item.to}
+            path="/planning/showcaller"
             element={
-              <RequireNav item={item}>
-                {PAGES[item.to] ?? <PlaceholderPage path={item.to} />}
-              </RequireNav>
+              <RequirePerm perm="schedule.manage">
+                <ShowcallerPage />
+              </RequirePerm>
             }
           />
-        ))}
-      </Route>
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
+          {NAV_ITEMS.map((item) => (
+            <Route
+              key={item.to}
+              path={item.to}
+              element={
+                <RequireNav item={item}>
+                  {PAGES[item.to] ?? <PlaceholderPage path={item.to} />}
+                </RequireNav>
+              }
+            />
+          ))}
+        </Route>
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </Suspense>
   );
 }

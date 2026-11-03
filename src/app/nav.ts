@@ -26,6 +26,8 @@ export interface NavItem {
   perm?: Permission;
   /** Zichtbaar in de tabbalk onderaan (telefoon/staand). De rest zit onder "Meer". */
   inTabbar?: boolean;
+  /** Nog niet gebouwd: verborgen in het menu, "binnenkort" in Instellingen. */
+  soon?: boolean;
 }
 
 export const NAV_ITEMS: readonly NavItem[] = [
@@ -62,6 +64,7 @@ export const NAV_ITEMS: readonly NavItem[] = [
     icon: Mic2,
     color: 'pink',
     module: 'artists',
+    soon: true,
     perm: 'view.artists',
   },
   {
@@ -70,6 +73,7 @@ export const NAV_ITEMS: readonly NavItem[] = [
     icon: FileText,
     color: 'sky',
     module: 'documents',
+    soon: true,
     perm: 'view.documents',
   },
   {
@@ -86,6 +90,7 @@ export const NAV_ITEMS: readonly NavItem[] = [
     icon: Siren,
     color: 'rose',
     module: 'issues',
+    soon: true,
     perm: 'view.issues',
   },
   {
@@ -94,6 +99,7 @@ export const NAV_ITEMS: readonly NavItem[] = [
     icon: LayoutDashboard,
     color: 'lime',
     module: 'dashboard',
+    soon: true,
     perm: 'view.dashboard',
   },
   {
@@ -114,6 +120,7 @@ export function visibleNav(
   return NAV_ITEMS.filter((item) => {
     // Instellingen: ook voor de beheerder (rollen beheren), zelfs zonder settings.manage.
     if (item.to === '/instellingen') return isAdmin || can('settings.manage');
+    if (item.soon) return false;
     if (item.module && modules && !modules.includes(item.module)) return false;
     return !item.perm || can(item.perm);
   });
