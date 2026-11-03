@@ -51,10 +51,10 @@ export const CATEGORIES: { id: CategoryId; title: Text; icon: string; color: str
 export const ARTICLES: Article[] = [
   // ---------------------------------------------------------------- Aan de slag
   {
-    slug: 'what-is-backstage-hub',
+    slug: 'what-is-cueboard',
     category: 'start',
     audience: 'everyone',
-    title: L('What is Backstage Hub?', 'Wat is Backstage Hub?'),
+    title: L('What is Cueboard?', 'Wat is Cueboard?'),
     summary: L(
       'One place for what, who, where and when during your event.',
       'Eén plek voor wat, wie, waar en wanneer tijdens je evenement.',
@@ -63,8 +63,8 @@ export const ARTICLES: Article[] = [
       {
         type: 'p',
         text: L(
-          'Backstage Hub replaces the mix of Trello boards, PDFs and group chats that most productions use. Everyone on the team sees their own day: what is happening now, what is next, which tasks are theirs and what the team needs to know.',
-          'Backstage Hub vervangt de mix van Trello-borden, pdf’s en groepschats die de meeste producties gebruiken. Iedereen in het team ziet de eigen dag: wat er nu gebeurt, wat er komt, welke taken van jou zijn en wat het team moet weten.',
+          'Cueboard replaces the mix of Trello boards, PDFs and group chats that most productions use. Everyone on the team sees their own day: what is happening now, what is next, which tasks are theirs and what the team needs to know.',
+          'Cueboard vervangt de mix van Trello-borden, pdf’s en groepschats die de meeste producties gebruiken. Iedereen in het team ziet de eigen dag: wat er nu gebeurt, wat er komt, welke taken van jou zijn en wat het team moet weten.',
         ),
       },
       { type: 'h', text: L('The parts', 'De onderdelen') },
@@ -809,8 +809,8 @@ export const ARTICLES: Article[] = [
     audience: 'admins',
     title: L('Set up your own free copy', 'Je eigen gratis kopie opzetten'),
     summary: L(
-      'Your own Backstage Hub on free plans, in about an hour.',
-      'Je eigen Backstage Hub op gratis plannen, in ongeveer een uur.',
+      'Your own Cueboard on free plans, in about an hour.',
+      'Je eigen Cueboard op gratis plannen, in ongeveer een uur.',
     ),
     blocks: [
       {

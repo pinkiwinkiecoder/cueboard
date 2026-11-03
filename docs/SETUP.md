@@ -1,4 +1,4 @@
-# Set up your own Backstage Hub
+# Set up your own Cueboard
 
 You do this once per organisation. It takes about an hour, and everything runs on **free plans, without a credit card**. Keep passwords and keys in a password manager, **never** in a file in the code.
 
@@ -9,7 +9,7 @@ You need a laptop (Windows or Mac) with [Node.js](https://nodejs.org) 20+ and [G
 ## 1. Your own private copy (GitHub)
 
 1. Create a free account at <https://github.com/signup>.
-2. Open the Backstage Hub repository and click **Use this template** → **Create a new repository**.
+2. Open the Cueboard repository and click **Use this template** → **Create a new repository**.
 3. Choose a name and select **Private**. This matters: the nightly backups contain personal data, and artifacts of a public repository can be downloaded by anyone.
 4. Clone it and install:
 
@@ -99,7 +99,7 @@ Add three repository secrets (**Settings** → **Secrets and variables** → **A
 ## Updating
 
 ```bash
-git remote add upstream https://github.com/ORIGINAL/backstage-hub.git
+git remote add upstream https://github.com/ORIGINAL/cueboard.git
 ```
 
 ```bash

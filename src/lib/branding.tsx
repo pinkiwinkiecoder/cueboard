@@ -4,7 +4,7 @@ import { compressImage } from './image';
 import { AppError } from '@/i18n';
 
 /** Naam van de app zelf. Het evenement heeft daarnaast een eigen naam en logo. */
-export const APP_NAME = 'Backstage Hub';
+export const APP_NAME = 'Cueboard';
 export const APP_LOGO = '/logo.svg';
 
 export function logoUrl(path: string | null | undefined): string | null {

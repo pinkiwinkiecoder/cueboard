@@ -2,12 +2,18 @@ import { useState } from 'react';
 import { Check, Copy, MessageCircle } from 'lucide-react';
 import { whatsappUrl } from '@/lib/invite';
 import { useT } from '@/lib/usePrefs';
+import { useEvent } from '@/lib/refdata';
 
 /** Shows a one-time link with buttons to copy it or share it via WhatsApp. */
 export function ShareLink({ name, link }: { name: string; link: string }) {
   const { t } = useT();
+  const event = useEvent();
   const [copied, setCopied] = useState(false);
-  const message = t('people.whatsappText', { first: name.split(' ')[0] ?? name, link });
+  const message = t('people.whatsappText', {
+    first: name.split(' ')[0] ?? name,
+    event: event.data?.name ?? 'Cueboard',
+    link,
+  });
 
   async function copy() {
     try {

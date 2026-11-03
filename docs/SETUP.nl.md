@@ -1,4 +1,4 @@
-# Je eigen Backstage Hub opzetten (Nederlands)
+# Je eigen Cueboard opzetten (Nederlands)
 
 Je doet dit één keer per organisatie. Reken op ongeveer een uur. Alles gebeurt op **gratis plannen zonder creditcard**. Noteer wachtwoorden en sleutels in een wachtwoordmanager, **nooit** in een bestand in de code.
 
@@ -11,7 +11,7 @@ Je hebt nodig: een laptop (Windows of Mac) met [Node.js](https://nodejs.org) (ve
 ## Stap 1: Je eigen privé-kopie van de code (GitHub)
 
 1. Maak een gratis account op <https://github.com/signup>. Vul **geen** betaalgegevens in.
-2. Open de repository van Backstage Hub en klik **Use this template** → **Create a new repository**.
+2. Open de repository van Cueboard en klik **Use this template** → **Create a new repository**.
 3. Kies een naam (bv. `ons-festival-hub`) en kies **Private**. Dat is belangrijk: de nachtelijke back-ups met persoonsgegevens komen in deze repository, en artefacten van een publieke repository zijn voor iedereen te downloaden.
 4. Haal je kopie naar je laptop (vervang `JOUWNAAM` en de naam):
 
@@ -62,7 +62,7 @@ Supabase stuurt zelf alleen mails naar jezelf (max. 2 per uur). Voor uitnodiging
 3. **SMTP & API** → tab **SMTP** → **Generate a new SMTP key**. Kopieer de sleutel.
 4. In Supabase: **Authentication** → **Emails** → **SMTP Settings** → zet **Enable custom SMTP** aan:
    - Sender email: je geverifieerde adres uit punt 2
-   - Sender name: `Backstage Hub` (of de naam van je evenement)
+   - Sender name: `Cueboard` (of de naam van je evenement)
    - Host: `smtp-relay.brevo.com`, poort: `587`
    - Username: de login die Brevo toont bij SMTP
    - Password: de SMTP-sleutel uit punt 3
@@ -151,10 +151,10 @@ Test ze: tab **Actions** → **Keep-alive Supabase** → **Run workflow**. Een g
 
 ## Updates binnenhalen
 
-Nieuwe versies van Backstage Hub haal je binnen door de originele repository als `upstream` toe te voegen en te mergen:
+Nieuwe versies van Cueboard haal je binnen door de originele repository als `upstream` toe te voegen en te mergen:
 
 ```bash
-git remote add upstream https://github.com/ORIGINEEL/backstage-hub.git
+git remote add upstream https://github.com/ORIGINEEL/cueboard.git
 ```
 
 ```bash

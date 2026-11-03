@@ -160,8 +160,8 @@ export const LANDING = {
   free: {
     title: L('Free. Really.', 'Gratis. Echt.'),
     body: L(
-      'Backstage Hub runs entirely on free plans. You never pay a subscription, and the code is open source, so nobody can take it away from you.',
-      'Backstage Hub draait volledig op gratis plannen. Je betaalt nooit een abonnement, en de code is open source, dus niemand kan het van je afpakken.',
+      'Cueboard runs entirely on free plans. You never pay a subscription, and the code is open source, so nobody can take it away from you.',
+      'Cueboard draait volledig op gratis plannen. Je betaalt nooit een abonnement, en de code is open source, dus niemand kan het van je afpakken.',
     ),
     rows: [
       {
@@ -233,8 +233,8 @@ export const LANDING = {
   cta: {
     title: L('Ready for your next show?', 'Klaar voor je volgende show?'),
     body: L(
-      'Set up your own Backstage Hub in an afternoon, for free.',
-      'Zet in een namiddag je eigen Backstage Hub op, gratis.',
+      'Set up your own Cueboard in an afternoon, for free.',
+      'Zet in een namiddag je eigen Cueboard op, gratis.',
     ),
   },
   footer: {
@@ -247,31 +247,31 @@ export const LANDING = {
 };
 
 export const ABOUT = {
-  title: L('About Backstage Hub', 'Over Backstage Hub'),
+  title: L('About Cueboard', 'Over Cueboard'),
   intro: L(
-    'Backstage Hub is a free, open-source production platform for festivals and events. It was made by {name}, a young stage manager.',
-    'Backstage Hub is een gratis, open-source productieplatform voor festivals en evenementen. Het is gemaakt door {name}, een jonge stage manager.',
+    'Cueboard is a free, open-source production platform for festivals and events. It was made by {name}, a young stage manager.',
+    'Cueboard is een gratis, open-source productieplatform voor festivals en evenementen. Het is gemaakt door {name}, een jonge stage manager.',
   ),
   sections: [
     {
       title: L('Why it exists', 'Waarom het bestaat'),
       body: L(
-        'On show day, the information a crew needs is everywhere: a Trello board, a few PDFs, three group chats and a printed run of show that is already outdated. The professional tools that solve this cost a lot of money every month, or are built for an office instead of a dark backstage. I wanted one place for what, who, where and when, that works with one hand, in bad signal, and that every festival can use for free. Backstage Hub is that place.',
-        'Op de showdag staat de informatie die een crew nodig heeft overal: een Trello-bord, een paar pdf’s, drie groepschats en een afgedrukte run of show die al niet meer klopt. De professionele tools die dat oplossen kosten elke maand veel geld, of zijn gemaakt voor een kantoor in plaats van een donkere backstage. Ik wilde één plek voor wat, wie, waar en wanneer, die werkt met één hand, bij slecht bereik, en die elk festival gratis kan gebruiken. Backstage Hub is die plek.',
+        'On show day, the information a crew needs is everywhere: a Trello board, a few PDFs, three group chats and a printed run of show that is already outdated. The professional tools that solve this cost a lot of money every month, or are built for an office instead of a dark backstage. I wanted one place for what, who, where and when, that works with one hand, in bad signal, and that every festival can use for free. Cueboard is that place.',
+        'Op de showdag staat de informatie die een crew nodig heeft overal: een Trello-bord, een paar pdf’s, drie groepschats en een afgedrukte run of show die al niet meer klopt. De professionele tools die dat oplossen kosten elke maand veel geld, of zijn gemaakt voor een kantoor in plaats van een donkere backstage. Ik wilde één plek voor wat, wie, waar en wanneer, die werkt met één hand, bij slecht bereik, en die elk festival gratis kan gebruiken. Cueboard is die plek.',
       ),
     },
     {
       title: L('Made with Art of Faith', 'Gemaakt met Art of Faith'),
       body: L(
-        'The first event to use Backstage Hub is the Art of Faith festival weekend. Their real way of working (a core team, coordinators, production with a team per stage, hospitality, MarCom and programme) shaped the teams, roles and templates. Everything that is specific to one festival became a setting, so any event can use it.',
-        'Het eerste evenement dat Backstage Hub gebruikt is het Art of Faith-festivalweekend. Hun echte manier van werken (een kernteam, coördinatoren, productie met een team per podium, hospitality, MarCom en programma) bepaalde de teams, rollen en sjablonen. Alles wat eigen is aan één festival werd een instelling, zodat elk evenement het kan gebruiken.',
+        'The first event to use Cueboard is the Art of Faith festival weekend. Their real way of working (a core team, coordinators, production with a team per stage, hospitality, MarCom and programme) shaped the teams, roles and templates. Everything that is specific to one festival became a setting, so any event can use it.',
+        'Het eerste evenement dat Cueboard gebruikt is het Art of Faith-festivalweekend. Hun echte manier van werken (een kernteam, coördinatoren, productie met een team per podium, hospitality, MarCom en programma) bepaalde de teams, rollen en sjablonen. Alles wat eigen is aan één festival werd een instelling, zodat elk evenement het kan gebruiken.',
       ),
     },
     {
       title: L('How it is built', 'Hoe het gemaakt is'),
       body: L(
-        'Backstage Hub is a web app (PWA) built with React and TypeScript. The data lives in Supabase (Postgres in Frankfurt, EU), where every table is protected by row-level security: the database itself checks what each role may see. The site is hosted on Cloudflare Pages. I designed and directed it as a stage manager and built it together with Claude, an AI assistant by Anthropic, step by step and with automated tests for every rule that keeps your data safe.',
-        'Backstage Hub is een web-app (PWA), gemaakt met React en TypeScript. De gegevens staan in Supabase (Postgres in Frankfurt, EU), waar elke tabel beschermd is met row-level security: de database controleert zelf wat elke rol mag zien. De site draait op Cloudflare Pages. Ik heb het als stage manager ontworpen en aangestuurd, en het samen met Claude gebouwd, een AI-assistent van Anthropic, stap voor stap en met automatische tests voor elke regel die je gegevens beschermt.',
+        'Cueboard is a web app (PWA) built with React and TypeScript. The data lives in Supabase (Postgres in Frankfurt, EU), where every table is protected by row-level security: the database itself checks what each role may see. The site is hosted on Cloudflare Pages. I designed and directed it as a stage manager and built it together with Claude, an AI assistant by Anthropic, step by step and with automated tests for every rule that keeps your data safe.',
+        'Cueboard is een web-app (PWA), gemaakt met React en TypeScript. De gegevens staan in Supabase (Postgres in Frankfurt, EU), waar elke tabel beschermd is met row-level security: de database controleert zelf wat elke rol mag zien. De site draait op Cloudflare Pages. Ik heb het als stage manager ontworpen en aangestuurd, en het samen met Claude gebouwd, een AI-assistent van Anthropic, stap voor stap en met automatische tests voor elke regel die je gegevens beschermt.',
       ),
     },
     {

@@ -2,7 +2,7 @@
   <img src="public/pwa-192x192.png" alt="" width="96" height="96" />
 </p>
 
-<h1 align="center">Backstage Hub</h1>
+<h1 align="center">Cueboard</h1>
 
 <p align="center">
   <strong>The free production platform for festivals and events.</strong><br />
@@ -12,7 +12,7 @@
 
 ---
 
-Backstage Hub replaces the mix of Trello boards, PDFs and group chats that most productions run on. Everyone on the team sees their own day: what is happening now, what is next, which tasks are theirs and what the team needs to know. It works on iPad, iPhone and laptop, keeps the screen on, and stays readable when the signal on site drops.
+Cueboard replaces the mix of Trello boards, PDFs and group chats that most productions run on. Everyone on the team sees their own day: what is happening now, what is next, which tasks are theirs and what the team needs to know. It works on iPad, iPhone and laptop, keeps the screen on, and stays readable when the signal on site drops.
 
 It is **free and open source**. Every organisation runs its own copy on free plans of Supabase, Cloudflare, Brevo and GitHub: no subscription, no credit card, and your data stays in your own database in the EU.
 
@@ -68,7 +68,7 @@ Adding a language is one file next to `src/i18n/en.ts`; a test checks that no te
 
 ## About
 
-Backstage Hub is made by **Elias Azizov**, a young stage manager who spent years looking for a festival and stage management platform that is good _and_ free. The first event to use it is the Art of Faith festival weekend. It was designed and directed by Elias and built together with Claude, an AI assistant by Anthropic.
+Cueboard is made by **Elias Azizov**, a young stage manager who spent years looking for a festival and stage management platform that is good _and_ free. The first event to use it is the Art of Faith festival weekend. It was designed and directed by Elias and built together with Claude, an AI assistant by Anthropic.
 
 ## Licence
 

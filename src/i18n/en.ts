@@ -4,7 +4,7 @@
 
 export const en = {
   app: {
-    name: 'Backstage Hub',
+    name: 'Cueboard',
     tagline: 'Plan, assign and run your event with your crew.',
     loading: 'Loading…',
     skipToContent: 'Skip to content',
@@ -71,7 +71,7 @@ export const en = {
     forgotLink: 'Forgot your password?',
     noAccount: 'No account yet? The admin will send you an invite by email or WhatsApp.',
     privacyLink: 'Privacy statement',
-    whatIs: 'What is Backstage Hub?',
+    whatIs: 'What is Cueboard?',
     errTooMany: 'Too many attempts. Wait a few minutes and try again.',
     errInvalid: 'Email address or password is incorrect. Check both and try again.',
     errNetwork: 'No connection to the server. Check your internet or try again later.',
@@ -105,8 +105,8 @@ export const en = {
   },
   privacy: {
     title: 'Privacy statement',
-    p1: 'Backstage Hub only stores what is needed to run the event: your name, team, phone number and email address, plus what you do in the app (tasks, sign-offs, messages).',
-    p2: 'Every organisation runs its own copy of Backstage Hub. Your data is stored in that organisation’s own database at Supabase, in an EU region. It is not shared with third parties and never used for advertising.',
+    p1: 'Cueboard only stores what is needed to run the event: your name, team, phone number and email address, plus what you do in the app (tasks, sign-offs, messages).',
+    p2: 'Every organisation runs its own copy of Cueboard. Your data is stored in that organisation’s own database at Supabase, in an EU region. It is not shared with third parties and never used for advertising.',
     p3: 'The organisation that invited you is responsible for your data. Want to see your data or have it deleted? Ask the admin of your event.',
     back: 'Back',
   },
@@ -234,7 +234,7 @@ export const en = {
     copied: 'Copied',
     copyPrompt: 'Copy this link:',
     whatsappText:
-      'Hi {first}! You have been invited to the Art of Faith Production Hub. Open this link on your own device and choose a password (the link works once): {link}',
+      'Hi {first}! You have been invited to {event} on Cueboard. Open this link on your own device and choose a password (the link works once): {link}',
     deactivate: 'Deactivate',
     reactivate: 'Reactivate',
     confirmDeactivate: 'Deactivate {name}? Access is removed immediately.',
@@ -563,7 +563,7 @@ export const en = {
   setup: {
     claimTitle: 'Welcome! You are the first one here',
     claimBody:
-      'Nobody manages this Backstage Hub yet. Become the admin to set up your event, invite your team and build the schedule.',
+      'Nobody manages this Cueboard yet. Become the admin to set up your event, invite your team and build the schedule.',
     claimButton: 'Become admin',
     title: 'Set up your event',
     progress: '{done} of {total} steps done',

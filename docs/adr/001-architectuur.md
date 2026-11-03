@@ -1,4 +1,4 @@
-# ADR-001: Architectuur Art of Faith Production Hub
+# ADR-001: Architectuur Cueboard
 
 - **Status:** aanvaard
 - **Datum:** 03-11-2026

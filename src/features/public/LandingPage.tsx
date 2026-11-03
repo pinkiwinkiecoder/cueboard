@@ -36,7 +36,7 @@ const FEATURE_ICON: Record<string, { icon: LucideIcon; color: string }> = {
   offline: { icon: Wifi, color: 'rose' },
 };
 
-/** Publieke showcase: wat is Backstage Hub, voor wie, en hoe begin je. */
+/** Publieke showcase: wat is Cueboard, voor wie, en hoe begin je. */
 export function LandingPage() {
   const tx = useTx();
   const s = LANDING.showcase;

@@ -33,8 +33,8 @@ const CAT_ICON: Record<string, LucideIcon> = {
 const T = {
   title: { en: 'Help centre', nl: 'Helpcentrum' },
   subtitle: {
-    en: 'Step-by-step explanations of every part of Backstage Hub.',
-    nl: 'Stap-voor-stap uitleg over elk onderdeel van Backstage Hub.',
+    en: 'Step-by-step explanations of every part of Cueboard.',
+    nl: 'Stap-voor-stap uitleg over elk onderdeel van Cueboard.',
   },
   search: {
     en: 'Search, for example "import" or "radio"',

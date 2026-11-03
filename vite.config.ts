@@ -14,8 +14,8 @@ export default defineConfig({
       registerType: 'prompt',
       includeAssets: ['logo.svg', 'favicon.ico', 'apple-touch-icon-180x180.png'],
       manifest: {
-        name: 'Backstage Hub',
-        short_name: 'Backstage Hub',
+        name: 'Cueboard',
+        short_name: 'Cueboard',
         description: 'Plan, assign and run your event with your crew.',
         lang: 'en',
         start_url: '/',

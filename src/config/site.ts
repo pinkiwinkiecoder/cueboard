@@ -1,8 +1,8 @@
-// Publieke gegevens van Backstage Hub. Pas dit bestand aan als je een eigen
+// Publieke gegevens van Cueboard. Pas dit bestand aan als je een eigen
 // kopie opzet: de rest van de site leest alles hieruit.
 
 export const SITE = {
-  name: 'Backstage Hub',
+  name: 'Cueboard',
   creator: {
     name: 'Elias Azizov',
     /** Optionele link (bv. Instagram of LinkedIn). Leeg = geen link. */
@@ -10,7 +10,7 @@ export const SITE = {
   },
   /**
    * Publieke GitHub-repository met de code (open source, MIT).
-   * Vul in zodra de repository bestaat, bv. 'https://github.com/jouwnaam/backstage-hub'.
+   * Vul in zodra de repository bestaat, bv. 'https://github.com/jouwnaam/cueboard'.
    * Leeg = de links naar code en forum worden verborgen.
    */
   repoUrl: '',

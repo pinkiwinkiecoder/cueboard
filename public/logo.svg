@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <title>Backstage Hub</title>
+  <title>Cueboard</title>
   <rect width="512" height="512" rx="116" fill="#5b4bd6"/>
   <!-- koord van de backstagepas -->
   <path d="M196 40 L256 150 L316 40" fill="none" stroke="#b79cff" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/>

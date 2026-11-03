@@ -2,7 +2,7 @@ import type { Dictionary } from './types';
 
 export const nl: Dictionary = {
   app: {
-    name: 'Backstage Hub',
+    name: 'Cueboard',
     tagline: 'Plan, verdeel en draai je evenement samen met je crew.',
     loading: 'Bezig met laden…',
     skipToContent: 'Naar de inhoud',
@@ -70,7 +70,7 @@ export const nl: Dictionary = {
     noAccount:
       'Nog geen account? Je krijgt een uitnodiging van de beheerder via e-mail of WhatsApp.',
     privacyLink: 'Privacyverklaring',
-    whatIs: 'Wat is Backstage Hub?',
+    whatIs: 'Wat is Cueboard?',
     errTooMany: 'Te veel pogingen. Wacht een paar minuten en probeer opnieuw.',
     errInvalid: 'E-mailadres of wachtwoord klopt niet. Controleer beide en probeer opnieuw.',
     errNetwork: 'Geen verbinding met de server. Controleer je internet of probeer later opnieuw.',
@@ -104,8 +104,8 @@ export const nl: Dictionary = {
   },
   privacy: {
     title: 'Privacyverklaring',
-    p1: 'Backstage Hub bewaart enkel wat nodig is om het evenement te organiseren: je naam, team, telefoonnummer en e-mailadres, plus wat je zelf in de app doet (taken, aftekeningen, berichten).',
-    p2: 'Elke organisatie draait haar eigen kopie van Backstage Hub. Je gegevens staan in de eigen database van die organisatie bij Supabase, in een EU-regio. Ze worden niet gedeeld met derden en nooit gebruikt voor reclame.',
+    p1: 'Cueboard bewaart enkel wat nodig is om het evenement te organiseren: je naam, team, telefoonnummer en e-mailadres, plus wat je zelf in de app doet (taken, aftekeningen, berichten).',
+    p2: 'Elke organisatie draait haar eigen kopie van Cueboard. Je gegevens staan in de eigen database van die organisatie bij Supabase, in een EU-regio. Ze worden niet gedeeld met derden en nooit gebruikt voor reclame.',
     p3: 'De organisatie die je uitnodigde, is verantwoordelijk voor je gegevens. Wil je je gegevens inkijken of laten wissen? Vraag het aan de beheerder van je evenement.',
     back: 'Terug',
   },
@@ -233,7 +233,7 @@ export const nl: Dictionary = {
     copied: 'Gekopieerd',
     copyPrompt: 'Kopieer deze link:',
     whatsappText:
-      'Hoi {first}! Je bent uitgenodigd voor de Art of Faith Production Hub. Open deze link op je eigen toestel en kies een wachtwoord (de link werkt één keer): {link}',
+      'Hoi {first}! Je bent uitgenodigd voor {event} op Cueboard. Open deze link op je eigen toestel en kies een wachtwoord (de link werkt één keer): {link}',
     deactivate: 'Deactiveren',
     reactivate: 'Opnieuw activeren',
     confirmDeactivate: '{name} deactiveren? De toegang is meteen weg.',
@@ -566,7 +566,7 @@ export const nl: Dictionary = {
   setup: {
     claimTitle: 'Welkom! Je bent hier de eerste',
     claimBody:
-      'Nog niemand beheert deze Backstage Hub. Word beheerder om je evenement in te stellen, je team uit te nodigen en de planning te maken.',
+      'Nog niemand beheert deze Cueboard. Word beheerder om je evenement in te stellen, je team uit te nodigen en de planning te maken.',
     claimButton: 'Beheerder worden',
     title: 'Je evenement instellen',
     progress: '{done} van {total} stappen klaar',

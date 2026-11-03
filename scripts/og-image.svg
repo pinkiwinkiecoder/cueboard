@@ -15,7 +15,7 @@
     <path d="M256 222 L277 265 L324 271 L290 304 L298 351 L256 329 L214 351 L222 304 L188 271 L235 265 Z" fill="#f0b84f" stroke="#f0b84f" stroke-width="14" stroke-linejoin="round"/>
     <rect x="190" y="384" width="132" height="20" rx="10" fill="#5b4bd6" opacity="0.25"/>
   </g>
-  <text x="90" y="390" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="84" font-weight="800" fill="#f5f2ff">Backstage Hub</text>
+  <text x="90" y="390" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="84" font-weight="800" fill="#f5f2ff">Cueboard</text>
   <text x="90" y="460" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="38" fill="#aaa3d0">The free production platform for festivals and events</text>
   <text x="90" y="540" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="30" font-weight="700" fill="#f0b84f">Run of show · Tasks · Teams · Announcements</text>
 </svg>

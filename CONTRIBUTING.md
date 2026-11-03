@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for helping make Backstage Hub better.
+Thanks for helping make Cueboard better.
 
 - **Questions and ideas:** start a thread in GitHub Discussions. Stage managers, production managers and crew: your experience on the floor is the most valuable input.
 - **Bugs:** open an issue with what you did, what you expected and what happened (screenshots help).
