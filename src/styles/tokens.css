@@ -1,0 +1,69 @@
+/* Ontwerp-tokens. Donker is standaard (backstage); licht via data-theme="light". */
+:root,
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --bg: #14112a;
+  --surface: #1e1a3a;
+  --surface-2: #29244b;
+  --border: #3a3463;
+  --text: #f2effc;
+  --muted: #aaa4cb;
+  --accent: #f0b84f;
+  --accent-text: #14112a;
+  --danger: #ff6b6b;
+  --warning: #ffb547;
+  --success: #5fd68a;
+  --focus: #f0b84f;
+
+  /* Soortkleuren: altijd samen met icoon + label gebruiken. */
+  --kind-arrival: #5fd6cb;
+  --kind-soundcheck: #b79cff;
+  --kind-interview: #ff8cc4;
+  --kind-show: #f0b84f;
+  --kind-changeover: #ff9a5c;
+  --kind-briefing: #7db4ff;
+  --kind-other: #aaa4cb;
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+  --bg: #f6f3fc;
+  --surface: #ffffff;
+  --surface-2: #ece7f8;
+  --border: #d6cfec;
+  --text: #1a1633;
+  --muted: #5d5683;
+  --accent: #4a3db5;
+  --accent-text: #ffffff;
+  --danger: #c62828;
+  --warning: #a05a00;
+  --success: #1e7d45;
+  --focus: #4a3db5;
+
+  --kind-arrival: #0f7f76;
+  --kind-soundcheck: #6a4fd1;
+  --kind-interview: #b8306f;
+  --kind-show: #9a6400;
+  --kind-changeover: #b5501a;
+  --kind-briefing: #2d63b8;
+  --kind-other: #5d5683;
+}
+
+:root {
+  --font-display: 'Bricolage Grotesque Variable', ui-rounded, system-ui, -apple-system, sans-serif;
+  --font-body: 'Figtree Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+
+  --radius: 10px;
+  --tap: 44px; /* minimale hoogte voor elk aanraakdoel */
+  --tap-lg: 56px;
+
+  --sidebar-w: 232px;
+  --tabbar-h: 64px;
+}

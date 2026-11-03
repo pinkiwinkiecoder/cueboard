@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="nl-BE" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#14112a" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="AoF Hub" />
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/icon.svg" />
+    <title>Art of Faith Production Hub</title>
+    <script>
+      // Thema vóór de eerste render zetten, zodat er geen lichte flits is backstage.
+      try {
+        var t = localStorage.getItem('aof-theme');
+        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>Deze app heeft JavaScript nodig. Zet JavaScript aan in Safari-instellingen.</noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
