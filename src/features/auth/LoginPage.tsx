@@ -80,7 +80,7 @@ export function LoginPage() {
           {busy ? t('auth.signingIn') : t('auth.signIn')}
         </button>
         <p>
-          <Link to="/wachtwoord-vergeten">{t('auth.forgotLink')}</Link>
+          <Link to="/forgot-password">{t('auth.forgotLink')}</Link>
         </p>
         <p className="muted small">
           {t('auth.noAccount')} <Link to="/">{t('auth.whatIs')}</Link> ·{' '}

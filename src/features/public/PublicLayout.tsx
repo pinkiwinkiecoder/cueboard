@@ -40,7 +40,7 @@ export function PublicLayout(props: { title?: string; children: ReactNode }) {
         </nav>
         <span className="spacer" />
         <LanguagePicker compact />
-        <Link to={signedIn ? '/' : '/inloggen'} className="btn btn-primary btn-sm">
+        <Link to={signedIn ? '/' : '/sign-in'} className="btn btn-primary btn-sm">
           {tx(signedIn ? LANDING.nav.openApp : LANDING.nav.signIn)}
           <ArrowRight aria-hidden size={16} />
         </Link>

@@ -92,7 +92,7 @@ Deno.serve(async (req) => {
   const input = validate(body);
   if (typeof input === 'string') return json(req, { error: input }, 400);
 
-  const redirectTo = `${siteUrl(req)}/nieuw-wachtwoord`;
+  const redirectTo = `${siteUrl(req)}/new-password`;
 
   // Enkel een beheerder mag iemand meteen beheerder maken.
   if (input.action === 'invite') {

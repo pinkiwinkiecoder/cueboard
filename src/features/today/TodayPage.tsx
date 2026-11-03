@@ -88,7 +88,7 @@ export function TodayPage() {
             <h2 id="h-mine" className="grow" style={{ margin: 0 }}>
               {t('today.myTasks')}
             </h2>
-            <Link to="/taken" className="chip">
+            <Link to="/tasks" className="chip">
               {t('today.allTasks')} <ArrowRight aria-hidden size={14} />
             </Link>
           </div>
@@ -122,7 +122,7 @@ export function TodayPage() {
             {groupStats.map(({ g, p }) => (
               <Link
                 key={g.id}
-                to="/taken"
+                to="/tasks"
                 className="card pkg-card stack-sm link-card"
                 data-color={g.color}
               >

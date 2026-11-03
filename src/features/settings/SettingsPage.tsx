@@ -13,6 +13,7 @@ import { NamedListEditor } from './NamedListEditor';
 import { RolesEditor } from './RolesEditor';
 import { TeamsEditor } from './TeamsEditor';
 import { PresetsPanel } from './PresetsPanel';
+import { OwnTemplates } from './OwnTemplates';
 import { SystemPanel } from './SystemPanel';
 import { LogoUploader } from './LogoUploader';
 
@@ -38,12 +39,18 @@ export function SettingsPage() {
   const visible = tabs.filter((x) => x.show);
   const [tab, setTab] = useState<Tab>(visible[0]?.id ?? 'event');
 
+  const applied = () => {
+    void departments.reload();
+    void locations.reload();
+    void event.reload();
+  };
+
   return (
     <div className="stack">
       <div className="page-head">
         <span className="bubble bubble-lg" data-color="violet" aria-hidden>
           {(() => {
-            const Icon = NAV_ITEMS.find((n) => n.to === '/instellingen')?.icon;
+            const Icon = NAV_ITEMS.find((n) => n.to === '/settings')?.icon;
             return Icon ? <Icon size={24} /> : null;
           })()}
         </span>
@@ -82,13 +89,10 @@ export function SettingsPage() {
         )}
         {tab === 'roles' && <RolesEditor />}
         {tab === 'presets' && (
-          <PresetsPanel
-            onApplied={() => {
-              void departments.reload();
-              void locations.reload();
-              void event.reload();
-            }}
-          />
+          <div className="stack" style={{ gap: 'var(--space-6)' }}>
+            <OwnTemplates onApplied={applied} />
+            <PresetsPanel onApplied={applied} />
+          </div>
         )}
         {tab === 'departments' && <TeamsEditor />}
         {tab === 'system' && <SystemPanel />}

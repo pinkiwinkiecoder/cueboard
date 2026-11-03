@@ -5,10 +5,10 @@ import type { MsgKey } from '@/i18n';
 
 // Temporary screens. Each one is replaced in a later phase.
 const COMING: Record<string, MsgKey> = {
-  '/planning': 'placeholder.schedule',
-  '/artiesten': 'placeholder.artists',
-  '/documenten': 'placeholder.documents',
-  '/meldingen': 'placeholder.issues',
+  '/schedule': 'placeholder.schedule',
+  '/artists': 'placeholder.artists',
+  '/documents': 'placeholder.documents',
+  '/issues': 'placeholder.issues',
   '/dashboard': 'placeholder.dashboard',
 };
 

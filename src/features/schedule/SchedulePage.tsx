@@ -191,7 +191,7 @@ export function SchedulePage() {
         </div>
         {manager && day && (
           <div className="row">
-            <Link to="/planning/showcaller" className="btn">
+            <Link to="/schedule/showcaller" className="btn">
               <Clapperboard aria-hidden size={20} />
               {t('schedule.showcaller')}
             </Link>

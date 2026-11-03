@@ -84,37 +84,37 @@ export function SetupChecklist() {
       done: !!event.data && (event.data.name !== 'My event' || !!event.data.logo_path),
       label: 'setup.stepEvent',
       hint: 'setup.stepEventHint',
-      to: '/instellingen',
+      to: '/settings',
     },
     {
       done: (departments.data?.length ?? 0) > 0,
       label: 'setup.stepTemplate',
       hint: 'setup.stepTemplateHint',
-      to: '/instellingen',
+      to: '/settings',
     },
     {
       done: (days.data?.length ?? 0) > 0,
       label: 'setup.stepDays',
       hint: 'setup.stepDaysHint',
-      to: '/instellingen',
+      to: '/settings',
     },
     {
       done: (locations.data?.length ?? 0) > 0,
       label: 'setup.stepLocations',
       hint: 'setup.stepLocationsHint',
-      to: '/instellingen',
+      to: '/settings',
     },
     {
       done: (people.data?.length ?? 0) > 1,
       label: 'setup.stepPeople',
       hint: 'setup.stepPeopleHint',
-      to: '/mensen',
+      to: '/people',
     },
     {
       done: (published.data?.length ?? 0) > 0,
       label: 'setup.stepSchedule',
       hint: 'setup.stepScheduleHint',
-      to: '/planning',
+      to: '/schedule',
     },
   ];
   const doneCount = steps.filter((s) => s.done).length;

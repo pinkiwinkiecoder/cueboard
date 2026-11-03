@@ -59,7 +59,7 @@ export function AnnouncementAlerts() {
           <span className="bubble" aria-hidden>
             <Megaphone size={20} />
           </span>
-          <Link to="/mededelingen" className="grow toast-link" onClick={dismissFresh}>
+          <Link to="/news" className="grow toast-link" onClick={dismissFresh}>
             <span className="sub">{t('announcements.newOne')}</span>
             <strong>{fresh.title}</strong>
           </Link>

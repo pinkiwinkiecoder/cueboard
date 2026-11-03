@@ -16,7 +16,7 @@ export function ForgotPasswordPage() {
     setBusy(true);
     setTooMany(false);
     const { error: err } = await supabase.auth.resetPasswordForEmail(email.trim(), {
-      redirectTo: `${window.location.origin}/nieuw-wachtwoord`,
+      redirectTo: `${window.location.origin}/new-password`,
     });
     setBusy(false);
     if (err && err.status === 429) return setTooMany(true);
@@ -58,7 +58,7 @@ export function ForgotPasswordPage() {
           </>
         )}
         <p>
-          <Link to="/inloggen">{t('auth.backToSignIn')}</Link>
+          <Link to="/sign-in">{t('auth.backToSignIn')}</Link>
         </p>
       </form>
     </div>

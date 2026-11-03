@@ -33,7 +33,7 @@ export interface NavItem {
 export const NAV_ITEMS: readonly NavItem[] = [
   { to: '/', label: 'nav.today', icon: Sun, color: 'gold', inTabbar: true },
   {
-    to: '/planning',
+    to: '/schedule',
     label: 'nav.schedule',
     icon: CalendarClock,
     color: 'violet',
@@ -42,7 +42,7 @@ export const NAV_ITEMS: readonly NavItem[] = [
     inTabbar: true,
   },
   {
-    to: '/taken',
+    to: '/tasks',
     label: 'nav.tasks',
     icon: ListChecks,
     color: 'mint',
@@ -51,7 +51,7 @@ export const NAV_ITEMS: readonly NavItem[] = [
     inTabbar: true,
   },
   {
-    to: '/mededelingen',
+    to: '/news',
     label: 'nav.announcements',
     icon: Megaphone,
     color: 'peach',
@@ -59,25 +59,23 @@ export const NAV_ITEMS: readonly NavItem[] = [
     inTabbar: true,
   },
   {
-    to: '/artiesten',
+    to: '/artists',
     label: 'nav.artists',
     icon: Mic2,
     color: 'pink',
     module: 'artists',
-    soon: true,
     perm: 'view.artists',
   },
   {
-    to: '/documenten',
+    to: '/documents',
     label: 'nav.documents',
     icon: FileText,
     color: 'sky',
     module: 'documents',
-    soon: true,
     perm: 'view.documents',
   },
   {
-    to: '/mensen',
+    to: '/people',
     label: 'nav.people',
     icon: Users,
     color: 'teal',
@@ -85,12 +83,11 @@ export const NAV_ITEMS: readonly NavItem[] = [
     perm: 'view.people',
   },
   {
-    to: '/meldingen',
+    to: '/issues',
     label: 'nav.issues',
     icon: Siren,
     color: 'rose',
     module: 'issues',
-    soon: true,
     perm: 'view.issues',
   },
   {
@@ -99,11 +96,10 @@ export const NAV_ITEMS: readonly NavItem[] = [
     icon: LayoutDashboard,
     color: 'lime',
     module: 'dashboard',
-    soon: true,
     perm: 'view.dashboard',
   },
   {
-    to: '/instellingen',
+    to: '/settings',
     label: 'nav.settings',
     icon: Settings,
     color: 'violet',
@@ -119,7 +115,7 @@ export function visibleNav(
 ): NavItem[] {
   return NAV_ITEMS.filter((item) => {
     // Instellingen: ook voor de beheerder (rollen beheren), zelfs zonder settings.manage.
-    if (item.to === '/instellingen') return isAdmin || can('settings.manage');
+    if (item.to === '/settings') return isAdmin || can('settings.manage');
     if (item.soon) return false;
     if (item.module && modules && !modules.includes(item.module)) return false;
     return !item.perm || can(item.perm);

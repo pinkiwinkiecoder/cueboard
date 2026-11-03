@@ -25,7 +25,7 @@ export function SetPasswordPage() {
         <div className="auth-card panel">
           <h1>{t('auth.linkExpiredTitle')}</h1>
           <p>{t('auth.linkExpiredBody')}</p>
-          <Link className="btn btn-primary btn-block" to="/wachtwoord-vergeten">
+          <Link className="btn btn-primary btn-block" to="/forgot-password">
             {t('auth.requestNewLink')}
           </Link>
         </div>

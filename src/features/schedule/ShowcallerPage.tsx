@@ -90,7 +90,7 @@ export function ShowcallerPage() {
           ))}
         </div>
         <span className="spacer" />
-        <button type="button" className="btn" onClick={() => navigate('/planning')}>
+        <button type="button" className="btn" onClick={() => navigate('/schedule')}>
           <X aria-hidden size={20} />
           {t('schedule.scExit')}
         </button>

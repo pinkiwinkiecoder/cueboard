@@ -17,7 +17,7 @@ export function Layout() {
   const event = useEvent();
   const { unread } = useAnnouncements();
   const badge = (to: string) =>
-    to === '/mededelingen' && unread > 0 ? (
+    to === '/news' && unread > 0 ? (
       <span className="count-badge" aria-label={t('announcements.unread', { n: unread })}>
         {unread > 9 ? '9+' : unread}
       </span>
@@ -30,7 +30,7 @@ export function Layout() {
   const tabItems = items.filter((i) => i.inTabbar).slice(0, 4);
   const moreItems = items.filter((i) => !tabItems.includes(i));
   const moreActive =
-    location.pathname === '/weergave' || moreItems.some((i) => location.pathname.startsWith(i.to));
+    location.pathname === '/appearance' || moreItems.some((i) => location.pathname.startsWith(i.to));
   const ThemeIcon = prefs.theme === 'dark' ? SunMedium : Moon;
   const themeLabel = t(prefs.theme === 'dark' ? 'nav.lightTheme' : 'nav.darkTheme');
   const eventName = event.data?.name ?? t('app.name');
@@ -88,7 +88,7 @@ export function Layout() {
             </span>
             <span>{t('nav.help')}</span>
           </NavLink>
-          <NavLink to="/weergave" className="nav-link">
+          <NavLink to="/appearance" className="nav-link">
             <span className="bubble" data-color="violet" aria-hidden>
               <Palette size={20} />
             </span>
@@ -160,7 +160,7 @@ export function Layout() {
             </span>
             <span>{t('nav.help')}</span>
           </NavLink>
-          <NavLink to="/weergave" className="nav-link" onClick={() => setMoreOpen(false)}>
+          <NavLink to="/appearance" className="nav-link" onClick={() => setMoreOpen(false)}>
             <span className="bubble" data-color="violet" aria-hidden>
               <Palette size={20} />
             </span>

@@ -85,7 +85,7 @@ Supabase stuurt zelf alleen mails naar jezelf (max. 2 per uur). Voor uitnodiging
 4. Klik **Save and Deploy**. Na een paar minuten krijg je een adres zoals `https://ons-festival-hub.pages.dev`.
 5. Terug in Supabase: **Authentication** → **URL Configuration**:
    - Site URL: je pages.dev-adres
-   - Redirect URLs → **Add URL**: `https://JOUW-ADRES.pages.dev/nieuw-wachtwoord`
+   - Redirect URLs → **Add URL**: `https://JOUW-ADRES.pages.dev/new-password`
 
 ## Stap 6: De uitnodigingsfunctie
 

@@ -18,7 +18,7 @@ export function TopBar() {
         </div>
       )}
       {prefs.wakeLock && wake === 'aan' && (
-        <Link to="/weergave" className="chip">
+        <Link to="/appearance" className="chip">
           <MonitorSmartphone aria-hidden size={16} />
           {t('appearance.keepAwakeChip')}
         </Link>

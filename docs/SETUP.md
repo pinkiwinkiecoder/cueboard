@@ -68,7 +68,7 @@ Supabase only sends email to yourself (2 per hour). For invitations and password
    - `VITE_SUPABASE_URL` = Supabase → Project Settings → Data API → Project URL
    - `VITE_SUPABASE_ANON_KEY` = Supabase → Project Settings → API Keys → the **anon / publishable** key (never the service role or secret key)
 4. **Save and Deploy**. You get an address like `https://your-event-hub.pages.dev`.
-5. In Supabase → **Authentication** → **URL Configuration**: set the Site URL to that address and add `https://YOUR-ADDRESS.pages.dev/nieuw-wachtwoord` as a redirect URL.
+5. In Supabase → **Authentication** → **URL Configuration**: set the Site URL to that address and add `https://YOUR-ADDRESS.pages.dev/new-password` as a redirect URL.
 
 ## 6. The invitation function
 

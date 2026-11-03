@@ -58,18 +58,60 @@ const NotFoundPage = lazy(() =>
 const StageScreen = lazy(() =>
   import('@/features/stage/StageScreen').then((m) => ({ default: m.StageScreen })),
 );
+const ArtistsPage = lazy(() =>
+  import('@/features/artists/ArtistsPage').then((m) => ({ default: m.ArtistsPage })),
+);
+const ArtistPage = lazy(() =>
+  import('@/features/artists/ArtistPage').then((m) => ({ default: m.ArtistPage })),
+);
+const DocumentsPage = lazy(() =>
+  import('@/features/documents/DocumentsPage').then((m) => ({ default: m.DocumentsPage })),
+);
+const IssuesPage = lazy(() =>
+  import('@/features/issues/IssuesPage').then((m) => ({ default: m.IssuesPage })),
+);
+const DashboardPage = lazy(() =>
+  import('@/features/dashboard/DashboardPage').then((m) => ({ default: m.DashboardPage })),
+);
 const TodayPage = lazy(() =>
   import('@/features/today/TodayPage').then((m) => ({ default: m.TodayPage })),
 );
 
+/** Oude (Nederlandse) adressen blijven werken: ze sturen door naar het Engelse adres. */
+const LEGACY: Record<string, string> = {
+  '/inloggen': '/sign-in',
+  '/wachtwoord-vergeten': '/forgot-password',
+  '/nieuw-wachtwoord': '/new-password',
+  '/weergave': '/appearance',
+  '/planning': '/schedule',
+  '/planning/showcaller': '/schedule/showcaller',
+  '/taken': '/tasks',
+  '/mededelingen': '/news',
+  '/mensen': '/people',
+  '/instellingen': '/settings',
+  '/artiesten': '/artists',
+  '/documenten': '/documents',
+  '/meldingen': '/issues',
+};
+
+/** Doorsturen met behoud van ?query en #hash (resetlinks dragen hun token in de hash). */
+function LegacyRedirect({ to }: { to: string }) {
+  const { search, hash } = useLocation();
+  return <Navigate to={{ pathname: to, search, hash }} replace />;
+}
+
 /** Echte schermen; de rest toont voorlopig een "in opbouw"-scherm. */
 const PAGES: Record<string, ReactElement> = {
   '/': <TodayPage />,
-  '/planning': <SchedulePage />,
-  '/taken': <TasksPage />,
-  '/mededelingen': <AnnouncementsPage />,
-  '/mensen': <PeoplePage />,
-  '/instellingen': <SettingsPage />,
+  '/schedule': <SchedulePage />,
+  '/tasks': <TasksPage />,
+  '/news': <AnnouncementsPage />,
+  '/artists': <ArtistsPage />,
+  '/documents': <DocumentsPage />,
+  '/people': <PeoplePage />,
+  '/issues': <IssuesPage />,
+  '/dashboard': <DashboardPage />,
+  '/settings': <SettingsPage />,
 };
 
 function RequireAuth({ children }: { children: ReactNode }) {
@@ -80,7 +122,7 @@ function RequireAuth({ children }: { children: ReactNode }) {
   if (!session || !profile) {
     // Niet ingelogd op de startpagina: toon de publieke showcase.
     if (location.pathname === '/') return <LandingPage />;
-    return <Navigate to="/inloggen" replace state={{ from: location }} />;
+    return <Navigate to="/sign-in" replace state={{ from: location }} />;
   }
   return children;
 }
@@ -118,17 +160,17 @@ export function App() {
     <Suspense fallback={<div className="auth-page">{t('app.loading')}</div>}>
       <Routes>
         <Route
-          path="/inloggen"
+          path="/sign-in"
           element={
             session && profile ? (
-              <Navigate to={recovery ? '/nieuw-wachtwoord' : '/'} replace />
+              <Navigate to={recovery ? '/new-password' : '/'} replace />
             ) : (
               <LoginPage />
             )
           }
         />
-        <Route path="/wachtwoord-vergeten" element={<ForgotPasswordPage />} />
-        <Route path="/nieuw-wachtwoord" element={<SetPasswordPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/new-password" element={<SetPasswordPage />} />
         <Route path="/privacy" element={<PrivacyPage />} />
         <Route path="/screen/:token" element={<StageScreen />} />
         <Route path="/about" element={<AboutPage />} />
@@ -143,13 +185,21 @@ export function App() {
             </RequireAuth>
           }
         >
-          <Route path="/weergave" element={<AppearancePage />} />
+          <Route path="/appearance" element={<AppearancePage />} />
           <Route
-            path="/planning/showcaller"
+            path="/schedule/showcaller"
             element={
               <RequirePerm perm="schedule.manage">
                 <ShowcallerPage />
               </RequirePerm>
+            }
+          />
+          <Route
+            path="/artists/:id"
+            element={
+              <RequireNav item={NAV_ITEMS.find((i) => i.to === '/artists') as NavItem}>
+                <ArtistPage />
+              </RequireNav>
             }
           />
           {NAV_ITEMS.map((item) => (
@@ -164,6 +214,9 @@ export function App() {
             />
           ))}
         </Route>
+        {Object.entries(LEGACY).map(([from, to]) => (
+          <Route key={from} path={from} element={<LegacyRedirect to={to} />} />
+        ))}
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Suspense>
