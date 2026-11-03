@@ -204,6 +204,13 @@ export const es: Dictionary = {
     changePassword: 'Cambiar contraseña',
   },
   people: {
+    setPassword: "Establecer una contraseña nueva",
+    setPasswordHint: "Nadie puede ver las contraseñas existentes: se guardan cifradas. Aquí puedes elegir una nueva. La ves una vez, para dársela tú mismo a la persona.",
+    setPasswordButton: "Establecer esta contraseña",
+    generatePassword: "Generar",
+    passwordSet: "La nueva contraseña de {name} está establecida. Dásela en persona; luego podrá cambiarla en Apariencia.",
+    passwordSetSelf: "Tu nueva contraseña está establecida. Úsala la próxima vez que inicies sesión.",
+    passwordShownOnce: "Esta contraseña solo se muestra ahora. No se guarda en ningún sitio de forma legible.",
     title: 'Personas',
     add: 'Añadir persona',
     search: 'Buscar por nombre o equipo',

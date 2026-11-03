@@ -206,6 +206,13 @@ export const en = {
     changePassword: 'Change password',
   },
   people: {
+    setPassword: "Set a new password",
+    setPasswordHint: "Nobody can see existing passwords: they are stored encrypted. You can choose a new one here. You see it once, so you can give it to the person yourself.",
+    setPasswordButton: "Set this password",
+    generatePassword: "Generate",
+    passwordSet: "New password for {name} is set. Give it to them in person; they can change it later under Appearance.",
+    passwordSetSelf: "Your new password is set. Use it next time you sign in.",
+    passwordShownOnce: "This password is shown only now. It is not stored anywhere readable.",
     title: 'People',
     add: 'Add person',
     search: 'Search by name or department',

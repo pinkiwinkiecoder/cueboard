@@ -205,6 +205,13 @@ export const fr: Dictionary = {
     changePassword: 'Changer le mot de passe',
   },
   people: {
+    setPassword: "Définir un nouveau mot de passe",
+    setPasswordHint: "Personne ne peut voir les mots de passe existants : ils sont stockés chiffrés. Vous pouvez en choisir un nouveau ici. Vous le voyez une fois, pour le transmettre vous-même.",
+    setPasswordButton: "Définir ce mot de passe",
+    generatePassword: "Générer",
+    passwordSet: "Le nouveau mot de passe de {name} est défini. Transmettez-le en personne ; il pourra le changer plus tard dans Apparence.",
+    passwordSetSelf: "Votre nouveau mot de passe est défini. Utilisez-le à votre prochaine connexion.",
+    passwordShownOnce: "Ce mot de passe n’est affiché que maintenant. Il n’est stocké nulle part en clair.",
     title: 'Équipe',
     add: 'Ajouter une personne',
     search: 'Rechercher par nom ou équipe',

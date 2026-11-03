@@ -205,6 +205,13 @@ export const nl: Dictionary = {
     changePassword: 'Wachtwoord wijzigen',
   },
   people: {
+    setPassword: "Nieuw wachtwoord instellen",
+    setPasswordHint: "Bestaande wachtwoorden kan niemand zien: ze worden versleuteld bewaard. Je kan hier een nieuw kiezen. Je ziet het één keer, zodat je het zelf aan de persoon kan geven.",
+    setPasswordButton: "Dit wachtwoord instellen",
+    generatePassword: "Genereer",
+    passwordSet: "Het nieuwe wachtwoord voor {name} is ingesteld. Geef het persoonlijk door; later kan die het wijzigen onder Weergave.",
+    passwordSetSelf: "Je nieuwe wachtwoord is ingesteld. Gebruik het de volgende keer dat je inlogt.",
+    passwordShownOnce: "Dit wachtwoord zie je enkel nu. Het wordt nergens leesbaar bewaard.",
     title: 'Mensen',
     add: 'Mens toevoegen',
     search: 'Zoek op naam of afdeling',

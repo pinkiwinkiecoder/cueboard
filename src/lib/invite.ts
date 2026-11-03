@@ -30,6 +30,8 @@ const CODES: Record<string, MsgKey> = {
   email_rate_limited: 'errors.emailRateLimited',
   invite_failed: 'errors.inviteFailed',
   role_partial: 'errors.rolePartial',
+  weak_password: 'auth.pwWeak',
+  password_failed: 'auth.pwSaveFailed',
 };
 
 async function call<T>(body: Record<string, unknown>): Promise<T> {
@@ -54,6 +56,31 @@ export function invitePerson(input: InviteInput) {
 
 export function newLinkFor(userId: string) {
   return call<{ link: string }>({ action: 'link', user_id: userId });
+}
+
+/** Beheerder kiest een nieuw wachtwoord voor iemand. */
+export function setPasswordFor(userId: string, password: string) {
+  return call<{ ok: true }>({ action: 'set_password', user_id: userId, password });
+}
+
+/** Sterk, leesbaar wachtwoord (geen 0/O of 1/l) dat aan de regels voldoet. */
+export function generatePassword(length = 14): string {
+  const lower = 'abcdefghijkmnopqrstuvwxyz';
+  const upper = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
+  const digits = '23456789';
+  const all = lower + upper + digits;
+  const rand = (n: number) => (crypto.getRandomValues(new Uint32Array(1))[0] ?? 0) % n;
+  const pick = (set: string) => set.charAt(rand(set.length));
+  const chars = [pick(lower), pick(upper), pick(digits)];
+  while (chars.length < length) chars.push(pick(all));
+  // Schudden, zodat de verplichte tekens niet altijd vooraan staan.
+  for (let i = chars.length - 1; i > 0; i--) {
+    const j = rand(i + 1);
+    const tmp = chars[i] ?? '';
+    chars[i] = chars[j] ?? '';
+    chars[j] = tmp;
+  }
+  return chars.join('');
 }
 
 export function whatsappUrl(text: string): string {

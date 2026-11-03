@@ -204,6 +204,13 @@ export const pt: Dictionary = {
     changePassword: 'Alterar palavra-passe',
   },
   people: {
+    setPassword: "Definir uma nova palavra-passe",
+    setPasswordHint: "Ninguém consegue ver as palavras-passe existentes: são guardadas cifradas. Aqui pode escolher uma nova. Vê-a uma vez, para a entregar pessoalmente.",
+    setPasswordButton: "Definir esta palavra-passe",
+    generatePassword: "Gerar",
+    passwordSet: "A nova palavra-passe de {name} está definida. Entregue-a pessoalmente; mais tarde pode alterá-la em Aspeto.",
+    passwordSetSelf: "A sua nova palavra-passe está definida. Use-a no próximo início de sessão.",
+    passwordShownOnce: "Esta palavra-passe só é mostrada agora. Não fica guardada em lado nenhum de forma legível.",
     title: 'Pessoas',
     add: 'Adicionar pessoa',
     search: 'Pesquisar por nome ou equipa',

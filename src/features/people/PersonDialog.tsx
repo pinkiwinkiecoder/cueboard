@@ -10,6 +10,7 @@ import { useT } from '@/lib/usePrefs';
 import type { Profile } from '@/lib/types';
 import { ShareLink } from './ShareLink';
 import { PersonTeams } from './PersonTeams';
+import { SetPasswordSection } from './SetPasswordSection';
 import { downloadJson, exportPerson } from '@/lib/system';
 
 export function PersonDialog(props: {
@@ -152,6 +153,9 @@ export function PersonDialog(props: {
             {t('people.exportData')}
           </button>
         </div>
+      )}
+      {isAdmin && p.active && (
+        <SetPasswordSection userId={p.id} name={p.full_name} isMe={isMe} />
       )}
       {p.active && !isMe && (
         <section className="stack">

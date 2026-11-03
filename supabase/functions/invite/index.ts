@@ -20,17 +20,33 @@ interface NewLink {
   action: 'link';
   user_id: string;
 }
+/** Beheerder kiest een nieuw wachtwoord voor iemand (bv. als resetmails niet aankomen). */
+interface SetPassword {
+  action: 'set_password';
+  user_id: string;
+  password: string;
+}
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-function validate(body: unknown): NewPerson | NewLink | string {
+/** Zelfde regels als in de app en in Supabase Auth: 10+ tekens, hoofdletter, kleine letter, cijfer. */
+function strongEnough(pw: string): boolean {
+  return pw.length >= 10 && pw.length <= 72 && /[a-z]/.test(pw) && /[A-Z]/.test(pw) && /[0-9]/.test(pw);
+}
+
+function validate(body: unknown): NewPerson | NewLink | SetPassword | string {
   if (typeof body !== 'object' || body === null) return 'invalid_request';
   const b = body as Record<string, unknown>;
   if (b.action === 'link') {
     return typeof b.user_id === 'string' && UUID.test(b.user_id)
       ? { action: 'link', user_id: b.user_id }
       : 'unknown_person';
+  }
+  if (b.action === 'set_password') {
+    if (typeof b.user_id !== 'string' || !UUID.test(b.user_id)) return 'unknown_person';
+    if (typeof b.password !== 'string' || !strongEnough(b.password)) return 'weak_password';
+    return { action: 'set_password', user_id: b.user_id, password: b.password };
   }
   if (b.action !== 'invite') return 'invalid_request';
   const name = typeof b.full_name === 'string' ? b.full_name.trim() : '';
@@ -103,6 +119,31 @@ Deno.serve(async (req) => {
       .maybeSingle();
     if (!role) return json(req, { error: 'unknown_role' }, 400);
     if (role.is_admin && callerIsAdmin !== true) return json(req, { error: 'not_admin' }, 403);
+  }
+
+  // 3. Nieuw wachtwoord instellen: enkel de beheerder. Het wachtwoord wordt nooit bewaard of gelogd.
+  if (input.action === 'set_password') {
+    if (callerIsAdmin !== true) return json(req, { error: 'not_admin' }, 403);
+    const { data: prof } = await admin
+      .from('profiles')
+      .select('id, active')
+      .eq('id', input.user_id)
+      .maybeSingle();
+    if (!prof) return json(req, { error: 'unknown_person' }, 404);
+    if (!prof.active) return json(req, { error: 'activate_first' }, 409);
+    const { error } = await admin.auth.admin.updateUserById(input.user_id, {
+      password: input.password,
+      email_confirm: true,
+    });
+    if (error) return json(req, { error: /weak|pwned|password/i.test(error.message) ? 'weak_password' : 'password_failed' }, 400);
+    await admin.from('audit_log').insert({
+      actor: caller.user.id,
+      table_name: 'profiles',
+      row_id: input.user_id,
+      action: 'UPDATE',
+      detail: { password_set_by_admin: true },
+    });
+    return json(req, { ok: true });
   }
 
   // 3a. Nieuwe link voor een bestaand account.
