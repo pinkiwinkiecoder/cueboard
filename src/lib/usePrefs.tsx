@@ -7,12 +7,15 @@ import {
   useState,
   type ReactNode,
 } from 'react';
+import { AppError, localeFor, translate, type MsgKey, type Vars } from '@/i18n';
 import { applyPrefs, loadPrefs, savePrefs, type Prefs } from './prefs';
 import { kvDelete, kvGet, kvSet } from './localdb';
 import { compressImage } from './image';
 import { useWakeLock, type WakeState } from './wakelock';
 
 const BG_KEY = 'background-photo';
+
+export type TFunction = (key: MsgKey, vars?: Vars) => string;
 
 interface PrefsState {
   prefs: Prefs;
@@ -23,6 +26,10 @@ interface PrefsState {
   setBackground: (file: File) => Promise<void>;
   clearBackground: () => Promise<void>;
   wake: WakeState;
+  t: TFunction;
+  /** Vertaalt elke fout (AppError of onbekend) naar een leesbare zin. */
+  errText: (e: unknown) => string;
+  locale: string;
 }
 
 const PrefsContext = createContext<PrefsState | null>(null);
@@ -64,9 +71,39 @@ export function PrefsProvider({ children }: { children: ReactNode }) {
     setBgBlob(null);
   }, []);
 
+  const lang = prefs.lang;
+  const t = useCallback<TFunction>((key, vars) => translate(lang, key, vars), [lang]);
+  const errText = useCallback(
+    (e: unknown) =>
+      e instanceof AppError ? translate(lang, e.key, e.vars) : translate(lang, 'errors.generic'),
+    [lang],
+  );
+
   const value = useMemo(
-    () => ({ prefs, update, toggleTheme, backgroundUrl, setBackground, clearBackground, wake }),
-    [prefs, update, toggleTheme, backgroundUrl, setBackground, clearBackground, wake],
+    () => ({
+      prefs,
+      update,
+      toggleTheme,
+      backgroundUrl,
+      setBackground,
+      clearBackground,
+      wake,
+      t,
+      errText,
+      locale: localeFor(lang),
+    }),
+    [
+      prefs,
+      update,
+      toggleTheme,
+      backgroundUrl,
+      setBackground,
+      clearBackground,
+      wake,
+      t,
+      errText,
+      lang,
+    ],
   );
   return <PrefsContext.Provider value={value}>{children}</PrefsContext.Provider>;
 }
@@ -75,4 +112,10 @@ export function usePrefs(): PrefsState {
   const ctx = useContext(PrefsContext);
   if (!ctx) throw new Error('usePrefs buiten PrefsProvider');
   return ctx;
+}
+
+/** Kort: const { t } = useT(); */
+export function useT() {
+  const { t, errText, locale } = usePrefs();
+  return { t, errText, locale };
 }

@@ -195,10 +195,10 @@ language plpgsql security definer set search_path = ''
 as $$
 begin
   if not public.is_admin() then
-    raise exception 'Alleen een beheerder mag rollen en afdelingen wijzigen.' using errcode = '42501';
+    raise exception 'AOF:not_admin' using errcode = '42501';
   end if;
   if target = auth.uid() and (new_role <> 'beheerder' or not new_active) then
-    raise exception 'Je kunt jezelf niet degraderen of deactiveren.' using errcode = '42501';
+    raise exception 'AOF:cannot_demote_self' using errcode = '42501';
   end if;
   update public.profiles
      set role = new_role, department_id = new_department, active = new_active

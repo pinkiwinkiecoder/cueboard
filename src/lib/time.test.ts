@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { formatTime, isoToLocal, localToIso, relativeMinutes } from './time';
+import { formatTime, isoToLocal, localToIso, minutesUntil } from './time';
 
 describe('tijd', () => {
   it('rekent zomertijd in Brussel juist om', () => {
@@ -14,13 +14,13 @@ describe('tijd', () => {
       time: '00:15',
     });
   });
-  it('toont 24-uursnotatie', () => {
-    expect(formatTime('2027-07-16T19:30:00Z')).toBe('21:30');
+  it('toont 24-uursnotatie in Engels en Nederlands', () => {
+    expect(formatTime('2027-07-16T19:30:00Z', 'en-GB')).toBe('21:30');
+    expect(formatTime('2027-07-16T19:30:00Z', 'nl-BE')).toBe('21:30');
   });
-  it('relatieve minuten', () => {
+  it('minuten tot een moment', () => {
     const now = new Date('2027-07-16T19:00:00Z');
-    expect(relativeMinutes(new Date('2027-07-16T19:12:00Z'), now)).toBe('over 12 min');
-    expect(relativeMinutes(new Date('2027-07-16T20:30:00Z'), now)).toBe('over 1 u 30 min');
-    expect(relativeMinutes(new Date('2027-07-16T18:57:00Z'), now)).toBe('3 min geleden');
+    expect(minutesUntil(new Date('2027-07-16T19:12:00Z'), now)).toBe(12);
+    expect(minutesUntil(new Date('2027-07-16T18:57:00Z'), now)).toBe(-3);
   });
 });

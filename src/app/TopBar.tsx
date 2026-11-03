@@ -15,21 +15,21 @@ function useNow(intervalMs = 15_000): Date {
 
 /** Bovenbalk: grote klok en of het scherm wakker blijft. In één oogopslag. */
 export function TopBar() {
-  const { prefs, wake } = usePrefs();
+  const { prefs, wake, t, locale } = usePrefs();
   const now = useNow();
   if (!prefs.clock24InHeader && !(prefs.wakeLock && wake === 'aan')) return null;
   return (
     <div className="topbar">
       {prefs.clock24InHeader && (
         <div className="topbar-clock">
-          <span className="time topbar-time">{formatTime(now)}</span>
-          <span className="muted">{formatDayLong(now)}</span>
+          <span className="time topbar-time">{formatTime(now, locale)}</span>
+          <span className="muted">{formatDayLong(now, locale)}</span>
         </div>
       )}
       {prefs.wakeLock && wake === 'aan' && (
-        <Link to="/weergave" className="chip" title="Scherm blijft aan">
+        <Link to="/weergave" className="chip">
           <MonitorSmartphone aria-hidden size={16} />
-          Scherm blijft aan
+          {t('appearance.keepAwakeChip')}
         </Link>
       )}
     </div>

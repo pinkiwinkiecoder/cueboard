@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import { LogOut, Menu, Moon, Palette, SunMedium, X } from 'lucide-react';
 import { navFor } from './nav';
@@ -9,7 +9,7 @@ import { TopBar } from './TopBar';
 
 export function Layout() {
   const { profile, signOut } = useAuth();
-  const { prefs, toggleTheme, backgroundUrl } = usePrefs();
+  const { prefs, toggleTheme, backgroundUrl, t } = usePrefs();
   const [moreOpen, setMoreOpen] = useState(false);
   const location = useLocation();
   const items = navFor(profile?.role === 'beheerder');
@@ -18,7 +18,7 @@ export function Layout() {
   const moreActive =
     location.pathname === '/weergave' || moreItems.some((i) => location.pathname.startsWith(i.to));
   const ThemeIcon = prefs.theme === 'dark' ? SunMedium : Moon;
-  const themeLabel = prefs.theme === 'dark' ? 'Licht thema' : 'Donker thema';
+  const themeLabel = t(prefs.theme === 'dark' ? 'nav.lightTheme' : 'nav.darkTheme');
 
   return (
     <div className="shell">
@@ -30,16 +30,16 @@ export function Layout() {
         />
       )}
       <a className="skip-link" href="#main">
-        Naar de inhoud
+        {t('app.skipToContent')}
       </a>
 
-      <aside className="sidebar" aria-label="Hoofdnavigatie">
-        <div className="brand display">Art of Faith</div>
+      <aside className="sidebar" aria-label={t('nav.mainNav')}>
+        <div className="brand display">{t('app.name')}</div>
         <nav>
           {items.map(({ to, label, icon: Icon }) => (
             <NavLink key={to} to={to} end={to === '/'} className="nav-link">
               <Icon aria-hidden size={22} />
-              <span>{label}</span>
+              <span>{t(label)}</span>
             </NavLink>
           ))}
         </nav>
@@ -47,7 +47,7 @@ export function Layout() {
           <div className="muted small">{profile?.full_name}</div>
           <NavLink to="/weergave" className="nav-link">
             <Palette aria-hidden size={20} />
-            <span>Weergave</span>
+            <span>{t('nav.appearance')}</span>
           </NavLink>
           <button type="button" className="nav-link" onClick={toggleTheme}>
             <ThemeIcon aria-hidden size={20} />
@@ -55,7 +55,7 @@ export function Layout() {
           </button>
           <button type="button" className="nav-link" onClick={() => void signOut()}>
             <LogOut aria-hidden size={20} />
-            <span>Afmelden</span>
+            <span>{t('nav.signOut')}</span>
           </button>
         </div>
       </aside>
@@ -64,15 +64,17 @@ export function Layout() {
         <TopBar />
         <ConnectionBanner />
         <main id="main" tabIndex={-1}>
-          <Outlet />
+          <Suspense fallback={<p className="muted">{t('app.loading')}</p>}>
+            <Outlet />
+          </Suspense>
         </main>
       </div>
 
-      <nav className="tabbar" aria-label="Hoofdnavigatie">
+      <nav className="tabbar" aria-label={t('nav.mainNav')}>
         {tabItems.map(({ to, label, icon: Icon }) => (
           <NavLink key={to} to={to} end={to === '/'} className="tab-link">
             <Icon aria-hidden size={24} />
-            <span>{label}</span>
+            <span>{t(label)}</span>
           </NavLink>
         ))}
         <button
@@ -83,21 +85,21 @@ export function Layout() {
           onClick={() => setMoreOpen((v) => !v)}
         >
           {moreOpen ? <X aria-hidden size={24} /> : <Menu aria-hidden size={24} />}
-          <span>Meer</span>
+          <span>{t('nav.more')}</span>
         </button>
       </nav>
 
       {moreOpen && (
-        <div id="more-sheet" className="more-sheet" role="dialog" aria-label="Meer">
+        <div id="more-sheet" className="more-sheet" role="dialog" aria-label={t('nav.more')}>
           {moreItems.map(({ to, label, icon: Icon }) => (
             <NavLink key={to} to={to} className="nav-link" onClick={() => setMoreOpen(false)}>
               <Icon aria-hidden size={22} />
-              <span>{label}</span>
+              <span>{t(label)}</span>
             </NavLink>
           ))}
           <NavLink to="/weergave" className="nav-link" onClick={() => setMoreOpen(false)}>
             <Palette aria-hidden size={22} />
-            <span>Weergave</span>
+            <span>{t('nav.appearance')}</span>
           </NavLink>
           <button type="button" className="nav-link" onClick={toggleTheme}>
             <ThemeIcon aria-hidden size={22} />
@@ -105,7 +107,7 @@ export function Layout() {
           </button>
           <button type="button" className="nav-link" onClick={() => void signOut()}>
             <LogOut aria-hidden size={22} />
-            <span>Afmelden</span>
+            <span>{t('nav.signOut')}</span>
           </button>
         </div>
       )}

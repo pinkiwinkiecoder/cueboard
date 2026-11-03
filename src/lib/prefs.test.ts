@@ -27,7 +27,7 @@ describe('sanitize', () => {
 describe('accentkleuren', () => {
   // WCAG AA voor grote tekst/knoppen: 3:1 tegen de achtergrond, 4.5:1 voor tekst op de knop.
   for (const a of ACCENTS) {
-    it(`${a.label} is leesbaar in donker en licht`, () => {
+    it(`${a.id} is leesbaar in donker en licht`, () => {
       expect(contrast(a.dark.accent, '#14112a')).toBeGreaterThanOrEqual(4.5);
       expect(contrast(a.dark.accent, a.dark.accentText)).toBeGreaterThanOrEqual(4.5);
       expect(contrast(a.light.accent, '#f6f3fc')).toBeGreaterThanOrEqual(4.5);

@@ -1,11 +1,7 @@
 export type Role = 'beheerder' | 'afdelingshoofd' | 'crew' | 'gast';
 
-export const ROLE_LABELS: Record<Role, string> = {
-  beheerder: 'Beheerder',
-  afdelingshoofd: 'Afdelingshoofd',
-  crew: 'Crew',
-  gast: 'Gast',
-};
+/** In volgorde van meeste naar minste rechten. Labels: t(`roles.${role}`). */
+export const ROLES: readonly Role[] = ['beheerder', 'afdelingshoofd', 'crew', 'gast'];
 
 export interface Profile {
   id: string;

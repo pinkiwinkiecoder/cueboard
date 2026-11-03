@@ -3,13 +3,17 @@ import { Link } from 'react-router-dom';
 import { LogIn } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/lib/auth';
+import { useT } from '@/lib/usePrefs';
+import type { MsgKey } from '@/i18n';
+import { LanguagePicker } from '@/features/me/LanguagePicker';
 
 export function LoginPage() {
   const { problem } = useAuth();
+  const { t } = useT();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<MsgKey | null>(null);
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
@@ -26,16 +30,19 @@ export function LoginPage() {
   return (
     <div className="auth-page">
       <form className="auth-card panel" onSubmit={onSubmit} noValidate>
-        <div className="brand-big display">Art of Faith</div>
-        <h1>Inloggen</h1>
-        {problem && <div className="alert alert-warning">{problem}</div>}
+        <div className="row">
+          <div className="brand-big display spacer">{t('app.name')}</div>
+          <LanguagePicker compact />
+        </div>
+        <h1>{t('auth.signInTitle')}</h1>
+        {problem && <div className="alert alert-warning">{t(problem)}</div>}
         {error && (
           <div className="alert alert-error" role="alert">
-            {error}
+            {t(error)}
           </div>
         )}
         <div className="field">
-          <label htmlFor="email">E-mailadres</label>
+          <label htmlFor="email">{t('auth.email')}</label>
           <input
             id="email"
             type="email"
@@ -47,7 +54,7 @@ export function LoginPage() {
           />
         </div>
         <div className="field">
-          <label htmlFor="password">Wachtwoord</label>
+          <label htmlFor="password">{t('auth.password')}</label>
           <input
             id="password"
             type="password"
@@ -59,25 +66,22 @@ export function LoginPage() {
         </div>
         <button className="btn btn-primary btn-block" type="submit" disabled={busy}>
           <LogIn aria-hidden size={20} />
-          {busy ? 'Bezig met inloggen…' : 'Inloggen'}
+          {busy ? t('auth.signingIn') : t('auth.signIn')}
         </button>
         <p>
-          <Link to="/wachtwoord-vergeten">Wachtwoord vergeten?</Link>
+          <Link to="/wachtwoord-vergeten">{t('auth.forgotLink')}</Link>
         </p>
         <p className="muted small">
-          Nog geen account? Je krijgt een uitnodiging van de beheerder via e-mail of WhatsApp.{' '}
-          <Link to="/privacy">Privacyverklaring</Link>
+          {t('auth.noAccount')} <Link to="/privacy">{t('auth.privacyLink')}</Link>
         </p>
       </form>
     </div>
   );
 }
 
-function loginError(message: string, status?: number): string {
-  if (status === 429) return 'Te veel pogingen. Wacht een paar minuten en probeer opnieuw.';
-  if (/invalid login credentials/i.test(message))
-    return 'E-mailadres of wachtwoord klopt niet. Controleer beide en probeer opnieuw.';
-  if (/fetch|network/i.test(message))
-    return 'Geen verbinding met de server. Controleer je internet of probeer later opnieuw.';
-  return 'Inloggen lukte niet. Probeer opnieuw of vraag de beheerder om hulp.';
+function loginError(message: string, status?: number): MsgKey {
+  if (status === 429) return 'auth.errTooMany';
+  if (/invalid login credentials/i.test(message)) return 'auth.errInvalid';
+  if (/fetch|network/i.test(message)) return 'auth.errNetwork';
+  return 'auth.errGeneric';
 }

@@ -10,13 +10,14 @@ import {
 import type { Session } from '@supabase/supabase-js';
 import { supabase } from './supabase';
 import type { Profile } from './types';
+import type { MsgKey } from '@/i18n';
 
 interface AuthState {
   session: Session | null;
   profile: Profile | null;
   loading: boolean;
   /** Uitleg als iemand ingelogd is maar geen (actief) profiel heeft. */
-  problem: string | null;
+  problem: MsgKey | null;
   /** True kort na het openen van een uitnodigings- of resetlink. */
   recovery: boolean;
   signOut: () => Promise<void>;
@@ -29,7 +30,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
-  const [problem, setProblem] = useState<string | null>(null);
+  const [problem, setProblem] = useState<MsgKey | null>(null);
   const [recovery, setRecovery] = useState(false);
 
   const loadProfile = useCallback(async (s: Session | null) => {
@@ -44,18 +45,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       .eq('id', s.user.id)
       .maybeSingle<Profile>();
     if (error) {
-      setProblem(
-        'Je profiel kon niet geladen worden. Controleer je verbinding en probeer opnieuw.',
-      );
+      setProblem('auth.profileLoadFailed');
       return;
     }
     if (!data) {
-      setProblem('Er is geen profiel voor dit account. Vraag de beheerder om je uit te nodigen.');
+      setProblem('auth.noProfile');
       setProfile(null);
       return;
     }
     if (!data.active) {
-      setProblem('Je account is gedeactiveerd. Neem contact op met de beheerder.');
+      setProblem('auth.deactivated');
       setProfile(null);
       await supabase.auth.signOut();
       return;

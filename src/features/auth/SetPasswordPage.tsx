@@ -3,30 +3,30 @@ import { Link, useNavigate } from 'react-router-dom';
 import { KeyRound } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/lib/auth';
+import { useT } from '@/lib/usePrefs';
 import { MIN_PASSWORD_LENGTH, passwordProblem } from '@/lib/password';
+import type { MsgKey } from '@/i18n';
 
 /** Gebruikt na een uitnodigingslink én na een resetlink. */
 export function SetPasswordPage() {
   const { session, loading } = useAuth();
+  const { t } = useT();
   const navigate = useNavigate();
   const [pw, setPw] = useState('');
   const [pw2, setPw2] = useState('');
   const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<MsgKey | null>(null);
 
-  if (loading) return <div className="auth-page">Bezig met laden…</div>;
+  if (loading) return <div className="auth-page">{t('app.loading')}</div>;
 
   if (!session) {
     return (
       <div className="auth-page">
         <div className="auth-card panel">
-          <h1>Link verlopen of al gebruikt</h1>
-          <p>
-            Deze link werkt niet (meer). Links zijn eenmalig en een beperkte tijd geldig. Vraag de
-            beheerder om een nieuwe uitnodiging, of vraag zelf een nieuwe resetlink aan.
-          </p>
+          <h1>{t('auth.linkExpiredTitle')}</h1>
+          <p>{t('auth.linkExpiredBody')}</p>
           <Link className="btn btn-primary btn-block" to="/wachtwoord-vergeten">
-            Nieuwe resetlink aanvragen
+            {t('auth.requestNewLink')}
           </Link>
         </div>
       </div>
@@ -37,17 +37,13 @@ export function SetPasswordPage() {
     e.preventDefault();
     const problem = passwordProblem(pw);
     if (problem) return setError(problem);
-    if (pw !== pw2) return setError('De twee wachtwoorden zijn niet gelijk.');
+    if (pw !== pw2) return setError('auth.pwMismatch');
     setBusy(true);
     setError(null);
     const { error: err } = await supabase.auth.updateUser({ password: pw });
     setBusy(false);
     if (err) {
-      setError(
-        /weak|pwned|length/i.test(err.message)
-          ? 'Dit wachtwoord is te zwak. Kies een langer wachtwoord met hoofdletters en cijfers.'
-          : 'Opslaan lukte niet. Controleer je verbinding en probeer opnieuw.',
-      );
+      setError(/weak|pwned|length/i.test(err.message) ? 'auth.pwWeak' : 'auth.pwSaveFailed');
       return;
     }
     navigate('/', { replace: true });
@@ -56,15 +52,15 @@ export function SetPasswordPage() {
   return (
     <div className="auth-page">
       <form className="auth-card panel" onSubmit={onSubmit} noValidate>
-        <h1>Kies je wachtwoord</h1>
-        <p className="muted">Account: {session.user.email}</p>
+        <h1>{t('auth.setTitle')}</h1>
+        <p className="muted">{t('auth.account', { email: session.user.email ?? '' })}</p>
         {error && (
           <div className="alert alert-error" role="alert">
-            {error}
+            {t(error, { min: MIN_PASSWORD_LENGTH })}
           </div>
         )}
         <div className="field">
-          <label htmlFor="pw">Nieuw wachtwoord</label>
+          <label htmlFor="pw">{t('auth.newPassword')}</label>
           <input
             id="pw"
             type="password"
@@ -76,11 +72,11 @@ export function SetPasswordPage() {
             onChange={(e) => setPw(e.target.value)}
           />
           <span id="pw-hint" className="hint">
-            Minstens {MIN_PASSWORD_LENGTH} tekens, met hoofdletters, kleine letters en een cijfer.
+            {t('auth.passwordHint', { min: MIN_PASSWORD_LENGTH })}
           </span>
         </div>
         <div className="field">
-          <label htmlFor="pw2">Herhaal wachtwoord</label>
+          <label htmlFor="pw2">{t('auth.repeatPassword')}</label>
           <input
             id="pw2"
             type="password"
@@ -92,7 +88,7 @@ export function SetPasswordPage() {
         </div>
         <button className="btn btn-primary btn-block" type="submit" disabled={busy}>
           <KeyRound aria-hidden size={20} />
-          {busy ? 'Bezig met opslaan…' : 'Wachtwoord opslaan'}
+          {busy ? t('common.saving') : t('auth.savePassword')}
         </button>
       </form>
     </div>

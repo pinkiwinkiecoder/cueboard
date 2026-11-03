@@ -10,10 +10,11 @@ import {
   Sun,
   Users,
 } from 'lucide-react';
+import type { MsgKey } from '@/i18n';
 
 export interface NavItem {
   to: string;
-  label: string;
+  label: MsgKey;
   icon: LucideIcon;
   adminOnly?: boolean;
   /** Zichtbaar in de tabbalk onderaan (telefoon/staand). De rest zit onder "Meer". */
@@ -21,15 +22,15 @@ export interface NavItem {
 }
 
 export const NAV_ITEMS: readonly NavItem[] = [
-  { to: '/', label: 'Vandaag', icon: Sun, inTabbar: true },
-  { to: '/planning', label: 'Planning', icon: CalendarClock, inTabbar: true },
-  { to: '/taken', label: 'Taken', icon: ListChecks, inTabbar: true },
-  { to: '/artiesten', label: 'Artiesten', icon: Mic2 },
-  { to: '/documenten', label: 'Documenten', icon: FileText },
-  { to: '/mensen', label: 'Mensen', icon: Users },
-  { to: '/meldingen', label: 'Meldingen', icon: Siren, inTabbar: true },
-  { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, adminOnly: true },
-  { to: '/instellingen', label: 'Instellingen', icon: Settings, adminOnly: true },
+  { to: '/', label: 'nav.today', icon: Sun, inTabbar: true },
+  { to: '/planning', label: 'nav.schedule', icon: CalendarClock, inTabbar: true },
+  { to: '/taken', label: 'nav.tasks', icon: ListChecks, inTabbar: true },
+  { to: '/artiesten', label: 'nav.artists', icon: Mic2 },
+  { to: '/documenten', label: 'nav.documents', icon: FileText },
+  { to: '/mensen', label: 'nav.people', icon: Users },
+  { to: '/meldingen', label: 'nav.issues', icon: Siren, inTabbar: true },
+  { to: '/dashboard', label: 'nav.dashboard', icon: LayoutDashboard, adminOnly: true },
+  { to: '/instellingen', label: 'nav.settings', icon: Settings, adminOnly: true },
 ];
 
 export function navFor(isAdmin: boolean): NavItem[] {

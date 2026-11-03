@@ -3,13 +3,13 @@ import { passwordProblem } from './password';
 
 describe('passwordProblem', () => {
   it('weigert te korte wachtwoorden', () => {
-    expect(passwordProblem('Abc12')).toMatch(/minstens 10/);
+    expect(passwordProblem('Abc12')).toBe('auth.pwTooShort');
   });
   it('vraagt hoofd- en kleine letters', () => {
-    expect(passwordProblem('abcdefgh12')).toMatch(/hoofdletters/);
+    expect(passwordProblem('abcdefgh12')).toBe('auth.pwCase');
   });
   it('vraagt een cijfer', () => {
-    expect(passwordProblem('Abcdefghijk')).toMatch(/cijfer/);
+    expect(passwordProblem('Abcdefghijk')).toBe('auth.pwDigit');
   });
   it('aanvaardt een sterk wachtwoord', () => {
     expect(passwordProblem('Podium2026Main')).toBeNull();

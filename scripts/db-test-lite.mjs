@@ -21,7 +21,7 @@ create table auth.users (
   created_at timestamptz default now()
 );
 create function auth.uid() returns uuid language sql stable as
-  $$ select nullif(current_setting('request.jwt.claims', true)::jsonb ->> 'sub', '')::uuid $$;
+  $$ select nullif(nullif(current_setting('request.jwt.claims', true), '')::jsonb ->> 'sub', '')::uuid $$;
 grant execute on function auth.uid() to public;
 
 -- Mini-pgTAP: enkel de functies die onze tests gebruiken.

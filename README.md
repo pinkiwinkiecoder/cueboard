@@ -2,7 +2,9 @@
 
 Eén plek voor wat, wie, waar en wanneer tijdens het Art of Faith-festivalweekend. De app werkt op iPad, iPhone en laptop, ook met een slechte verbinding.
 
-> **Stand van zaken:** fase 0 (skelet, inloggen, rollen, database met beveiliging, CI, keep-alive, back-up). De modules (planning, taken, …) volgen in fase 1 tot en met 4. Zie [docs/adr/001-architectuur.md](docs/adr/001-architectuur.md) voor de keuzes en de gratis limieten.
+> **Stand van zaken:** fase 0 is klaar (skelet, inloggen, rollen, database met beveiliging, CI, keep-alive, back-up). Van fase 1 werken nu Mensen (uitnodigen via WhatsApp-link of e-mail, rollen, deactiveren), Instellingen (festival, dagen, podia, afdelingen) en Weergave (taal, thema, accentkleur, achtergrondfoto, tekstgrootte, scherm blijft aan). Planning, taken en de andere modules volgen.
+>
+> **Talen:** de app is standaard in het **Engels**, en elke gebruiker kan in _Appearance_ overschakelen naar **Nederlands**. Een taal toevoegen (bv. Frans) = één bestand `src/i18n/fr.ts` naast `en.ts`; de test controleert dat geen enkele tekst ontbreekt. Zie [docs/adr/001-architectuur.md](docs/adr/001-architectuur.md) voor de keuzes en de gratis limieten.
 
 Alles draait op **gratis plannen zonder creditcard**: Supabase (database, in Frankfurt), Cloudflare Pages (website), Brevo (e-mail) en GitHub (code en automatische taken).
 
@@ -98,6 +100,20 @@ Supabase stuurt zelf alleen mails naar jezelf (max. 2 per uur). Voor uitnodiging
 5. Terug in Supabase: **Authentication** → **URL Configuration**:
    - Site URL: je pages.dev-adres
    - Redirect URLs → **Add URL**: `https://JOUW-ADRES.pages.dev/nieuw-wachtwoord`
+
+### Stap 5b: Uitnodigingsfunctie op Supabase zetten
+
+Deze functie maakt uitnodigingen en WhatsApp-links. Ze is de enige plek waar de geheime service-role key gebruikt wordt (Supabase zet die zelf klaar, jij hoeft hem nergens in te vullen). Voer uit in deze map:
+
+```bash
+npx supabase functions deploy invite
+```
+
+```bash
+npx supabase secrets set SITE_URL=https://JOUW-ADRES.pages.dev
+```
+
+`SITE_URL` zorgt dat uitnodigingslinks naar jouw app wijzen en dat alleen jouw app de functie mag aanroepen.
 
 ### Stap 6: Beveiliging van accounts (Supabase)
 

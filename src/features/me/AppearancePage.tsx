@@ -2,31 +2,29 @@ import { useRef, useState, type ChangeEvent } from 'react';
 import { Check, ImagePlus, Lightbulb, Trash2 } from 'lucide-react';
 import { usePrefs } from '@/lib/usePrefs';
 import { ACCENTS, type TextSize } from '@/lib/prefs';
+import type { MsgKey } from '@/i18n';
+import { LanguagePicker } from './LanguagePicker';
 
-const TEXT_SIZES: { id: TextSize; label: string }[] = [
-  { id: 'normaal', label: 'Normaal' },
-  { id: 'groot', label: 'Groot' },
-  { id: 'extra', label: 'Extra groot' },
-];
+const TEXT_SIZES: TextSize[] = ['normaal', 'groot', 'extra'];
 
-/** Persoonlijke weergave. Alles wordt enkel op dit toestel bewaard. */
+/** Personal appearance. Everything is stored on this device only. */
 export function AppearancePage() {
-  const { prefs, update, backgroundUrl, setBackground, clearBackground, wake } = usePrefs();
+  const { prefs, update, backgroundUrl, setBackground, clearBackground, wake, t } = usePrefs();
   const fileRef = useRef<HTMLInputElement>(null);
   const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<MsgKey | null>(null);
 
   async function onFile(e: ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     e.target.value = '';
     if (!file) return;
-    if (!file.type.startsWith('image/')) return setError('Kies een foto (JPG, PNG of HEIC).');
+    if (!file.type.startsWith('image/')) return setError('errors.photoInvalid');
     setBusy(true);
     setError(null);
     try {
       await setBackground(file);
     } catch {
-      setError('Deze foto kon niet gebruikt worden. Probeer een andere foto.');
+      setError('errors.photoFailed');
     } finally {
       setBusy(false);
     }
@@ -34,18 +32,25 @@ export function AppearancePage() {
 
   return (
     <div className="stack">
-      <h1>Weergave</h1>
-      <p className="muted">Deze keuzes gelden enkel op dit toestel.</p>
+      <h1>{t('appearance.title')}</h1>
+      <p className="muted">{t('appearance.deviceOnly')}</p>
+
+      <section className="panel stack" aria-labelledby="h-lang">
+        <h2 id="h-lang">{t('appearance.language')}</h2>
+        <LanguagePicker />
+      </section>
 
       <section className="panel stack" aria-labelledby="h-screen">
-        <h2 id="h-screen">Scherm</h2>
+        <h2 id="h-screen">{t('appearance.screen')}</h2>
         <label className="switch-row">
           <span>
-            <strong>Scherm blijft aan</strong>
+            <strong>{t('appearance.keepAwake')}</strong>
             <span className="hint">
-              {wake === 'niet-ondersteund'
-                ? 'Dit toestel ondersteunt dit niet. Update iOS of gebruik Safari/Chrome.'
-                : 'Het scherm gaat niet op slot zolang de app open is.'}
+              {t(
+                wake === 'niet-ondersteund'
+                  ? 'appearance.keepAwakeUnsupported'
+                  : 'appearance.keepAwakeHint',
+              )}
             </span>
           </span>
           <input
@@ -58,14 +63,13 @@ export function AppearancePage() {
         </label>
         {prefs.wakeLock && wake === 'aan' && (
           <p className="hint">
-            <Lightbulb aria-hidden size={16} /> Actief. Tip: zet de helderheid wat lager om batterij
-            te sparen.
+            <Lightbulb aria-hidden size={16} /> {t('appearance.keepAwakeActive')}
           </p>
         )}
         <label className="switch-row">
           <span>
-            <strong>Klok bovenaan</strong>
-            <span className="hint">Grote 24-uursklok met de dag erbij.</span>
+            <strong>{t('appearance.clock')}</strong>
+            <span className="hint">{t('appearance.clockHint')}</span>
           </span>
           <input
             type="checkbox"
@@ -77,24 +81,24 @@ export function AppearancePage() {
       </section>
 
       <section className="panel stack" aria-labelledby="h-theme">
-        <h2 id="h-theme">Thema en kleur</h2>
-        <div className="segmented" role="radiogroup" aria-label="Thema">
-          {(['dark', 'light'] as const).map((t) => (
+        <h2 id="h-theme">{t('appearance.themeAndColour')}</h2>
+        <div className="segmented" role="radiogroup" aria-label={t('appearance.theme')}>
+          {(['dark', 'light'] as const).map((th) => (
             <button
-              key={t}
+              key={th}
               type="button"
               role="radio"
-              aria-checked={prefs.theme === t}
+              aria-checked={prefs.theme === th}
               className="btn"
-              onClick={() => update({ theme: t })}
+              onClick={() => update({ theme: th })}
             >
-              {t === 'dark' ? 'Donker' : 'Licht'}
+              {t(th === 'dark' ? 'appearance.dark' : 'appearance.light')}
             </button>
           ))}
         </div>
-        <div className="swatches" role="radiogroup" aria-label="Accentkleur">
+        <div className="swatches" role="radiogroup" aria-label={t('appearance.accent')}>
           <Swatch
-            label="Standaard"
+            label={t('appearance.accentDefault')}
             color={prefs.theme === 'dark' ? '#f0b84f' : '#4a3db5'}
             selected={prefs.accent === null}
             onSelect={() => update({ accent: null })}
@@ -102,7 +106,7 @@ export function AppearancePage() {
           {ACCENTS.map((a) => (
             <Swatch
               key={a.id}
-              label={a.label}
+              label={t(`appearance.accents.${a.id}` as MsgKey)}
               color={a[prefs.theme].accent}
               selected={prefs.accent === a.id}
               onSelect={() => update({ accent: a.id })}
@@ -112,18 +116,15 @@ export function AppearancePage() {
       </section>
 
       <section className="panel stack" aria-labelledby="h-bg">
-        <h2 id="h-bg">Achtergrondfoto</h2>
-        <p className="hint">
-          De foto blijft gedimd achter de inhoud, zodat alles leesbaar blijft. Hij wordt verkleind
-          en enkel op dit toestel bewaard.
-        </p>
+        <h2 id="h-bg">{t('appearance.background')}</h2>
+        <p className="hint">{t('appearance.backgroundHint')}</p>
         {error && (
           <div className="alert alert-error" role="alert">
-            {error}
+            {t(error)}
           </div>
         )}
         {backgroundUrl && (
-          <img className="bg-preview" src={backgroundUrl} alt="Huidige achtergrondfoto" />
+          <img className="bg-preview" src={backgroundUrl} alt={t('appearance.currentPhoto')} />
         )}
         <div className="row">
           <button
@@ -133,18 +134,20 @@ export function AppearancePage() {
             onClick={() => fileRef.current?.click()}
           >
             <ImagePlus aria-hidden size={20} />
-            {busy ? 'Bezig…' : backgroundUrl ? 'Andere foto kiezen' : 'Foto kiezen'}
+            {busy
+              ? t('common.busy')
+              : t(backgroundUrl ? 'appearance.otherPhoto' : 'appearance.choosePhoto')}
           </button>
           {backgroundUrl && (
             <button type="button" className="btn" onClick={() => void clearBackground()}>
               <Trash2 aria-hidden size={20} />
-              Foto verwijderen
+              {t('appearance.removePhoto')}
             </button>
           )}
         </div>
         <input ref={fileRef} type="file" accept="image/*" hidden onChange={onFile} />
         {backgroundUrl && (
-          <div className="segmented" role="radiogroup" aria-label="Sterkte van de foto">
+          <div className="segmented" role="radiogroup" aria-label={t('appearance.strength')}>
             {(['subtiel', 'zichtbaar'] as const).map((s) => (
               <button
                 key={s}
@@ -154,7 +157,7 @@ export function AppearancePage() {
                 className="btn"
                 onClick={() => update({ background: s })}
               >
-                {s === 'subtiel' ? 'Subtiel' : 'Meer zichtbaar'}
+                {t(s === 'subtiel' ? 'appearance.subtle' : 'appearance.visible')}
               </button>
             ))}
           </div>
@@ -162,18 +165,18 @@ export function AppearancePage() {
       </section>
 
       <section className="panel stack" aria-labelledby="h-text">
-        <h2 id="h-text">Tekstgrootte</h2>
-        <div className="segmented" role="radiogroup" aria-label="Tekstgrootte">
+        <h2 id="h-text">{t('appearance.textSize')}</h2>
+        <div className="segmented" role="radiogroup" aria-label={t('appearance.textSize')}>
           {TEXT_SIZES.map((s) => (
             <button
-              key={s.id}
+              key={s}
               type="button"
               role="radio"
-              aria-checked={prefs.textSize === s.id}
+              aria-checked={prefs.textSize === s}
               className="btn"
-              onClick={() => update({ textSize: s.id })}
+              onClick={() => update({ textSize: s })}
             >
-              {s.label}
+              {t(`appearance.sizes.${s}`)}
             </button>
           ))}
         </div>

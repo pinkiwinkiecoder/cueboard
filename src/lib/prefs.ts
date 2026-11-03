@@ -1,3 +1,5 @@
+import { isLang, localeFor, type Lang } from '@/i18n';
+
 // Persoonlijke weergave-instellingen, per toestel. Bewust beperkt: elke keuze
 // blijft goed leesbaar (accentkleuren zijn vooraf gecontroleerd op contrast).
 
@@ -7,7 +9,6 @@ export type BackgroundStrength = 'subtiel' | 'zichtbaar';
 
 export interface AccentPreset {
   id: string;
-  label: string;
   dark: { accent: string; accentText: string };
   light: { accent: string; accentText: string };
 }
@@ -15,37 +16,31 @@ export interface AccentPreset {
 export const ACCENTS: readonly AccentPreset[] = [
   {
     id: 'goud',
-    label: 'Goud',
     dark: { accent: '#f0b84f', accentText: '#14112a' },
     light: { accent: '#8a5a00', accentText: '#ffffff' },
   },
   {
     id: 'paars',
-    label: 'Paars',
     dark: { accent: '#b79cff', accentText: '#14112a' },
     light: { accent: '#4a3db5', accentText: '#ffffff' },
   },
   {
     id: 'turkoois',
-    label: 'Turkoois',
     dark: { accent: '#5fd6cb', accentText: '#14112a' },
     light: { accent: '#0f6f67', accentText: '#ffffff' },
   },
   {
     id: 'roze',
-    label: 'Roze',
     dark: { accent: '#ff8cc4', accentText: '#14112a' },
     light: { accent: '#a8285f', accentText: '#ffffff' },
   },
   {
     id: 'oranje',
-    label: 'Oranje',
     dark: { accent: '#ff9a5c', accentText: '#14112a' },
     light: { accent: '#a5410f', accentText: '#ffffff' },
   },
   {
     id: 'blauw',
-    label: 'Blauw',
     dark: { accent: '#7db4ff', accentText: '#14112a' },
     light: { accent: '#1f56a8', accentText: '#ffffff' },
   },
@@ -59,6 +54,7 @@ export interface Prefs {
   wakeLock: boolean;
   background: BackgroundStrength;
   clock24InHeader: boolean;
+  lang: Lang;
 }
 
 export const DEFAULT_PREFS: Prefs = {
@@ -68,6 +64,7 @@ export const DEFAULT_PREFS: Prefs = {
   wakeLock: true,
   background: 'subtiel',
   clock24InHeader: true,
+  lang: 'en',
 };
 
 const KEY = 'aof-prefs';
@@ -108,6 +105,7 @@ export function sanitize(p: Prefs): Prefs {
     wakeLock: typeof p.wakeLock === 'boolean' ? p.wakeLock : true,
     background: p.background === 'zichtbaar' ? 'zichtbaar' : 'subtiel',
     clock24InHeader: typeof p.clock24InHeader === 'boolean' ? p.clock24InHeader : true,
+    lang: isLang(p.lang) ? p.lang : 'en',
   };
 }
 
@@ -116,6 +114,7 @@ const TEXT_SCALE: Record<TextSize, string> = { normaal: '17px', groot: '19px', e
 /** Zet de voorkeuren om naar attributen en CSS-variabelen op <html>. */
 export function applyPrefs(p: Prefs, root: HTMLElement = document.documentElement): void {
   root.dataset.theme = p.theme;
+  root.lang = localeFor(p.lang);
   root.style.setProperty('--base-font', TEXT_SCALE[p.textSize]);
   const preset = ACCENTS.find((a) => a.id === p.accent);
   if (preset) {

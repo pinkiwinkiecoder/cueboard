@@ -1,4 +1,6 @@
 import { Component, type ErrorInfo, type ReactNode } from 'react';
+import { translate } from '@/i18n';
+import { loadPrefs } from '@/lib/prefs';
 
 interface State {
   failed: boolean;
@@ -19,16 +21,15 @@ export class ErrorBoundary extends Component<{ children: ReactNode }, State> {
 
   override render() {
     if (!this.state.failed) return this.props.children;
+    // Buiten de providers: taal rechtstreeks uit de opgeslagen voorkeuren.
+    const { lang } = loadPrefs();
     return (
       <div className="auth-page">
         <div className="auth-card panel" role="alert">
-          <h1>Er ging iets mis</h1>
-          <p>
-            Dit scherm kon niet getoond worden. Je gegevens zijn niet verloren. Herlaad de app.
-            Blijft het misgaan, meld het dan aan de beheerder.
-          </p>
+          <h1>{translate(lang, 'errors.boundaryTitle')}</h1>
+          <p>{translate(lang, 'errors.boundaryBody')}</p>
           <button className="btn btn-primary btn-block" onClick={() => window.location.reload()}>
-            App herladen
+            {translate(lang, 'errors.reload')}
           </button>
         </div>
       </div>
