@@ -14,6 +14,7 @@ import {
   useScheduleDraft,
 } from '@/lib/schedule';
 import { KindBadge, useDuration } from './parts';
+import { StageControls } from '@/features/stage/StageControls';
 
 /** Volledig scherm voor de showcaller: grote klok, nu, hierna, Start/Klaar. */
 export function ShowcallerPage() {
@@ -206,6 +207,8 @@ export function ShowcallerPage() {
           <p className="muted">{t('schedule.nothingNext')}</p>
         )}
       </section>
+
+      {loc && <StageControls locationId={loc} currentItemId={current?.id ?? next?.id ?? null} />}
 
       {upcoming.length > 0 && (
         <ul className="sc-upcoming">

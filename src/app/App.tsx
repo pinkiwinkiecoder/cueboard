@@ -55,6 +55,9 @@ const HelpArticlePage = lazy(() =>
 const NotFoundPage = lazy(() =>
   import('@/features/public/NotFoundPage').then((m) => ({ default: m.NotFoundPage })),
 );
+const StageScreen = lazy(() =>
+  import('@/features/stage/StageScreen').then((m) => ({ default: m.StageScreen })),
+);
 const TodayPage = lazy(() =>
   import('@/features/today/TodayPage').then((m) => ({ default: m.TodayPage })),
 );
@@ -127,6 +130,7 @@ export function App() {
         <Route path="/wachtwoord-vergeten" element={<ForgotPasswordPage />} />
         <Route path="/nieuw-wachtwoord" element={<SetPasswordPage />} />
         <Route path="/privacy" element={<PrivacyPage />} />
+        <Route path="/screen/:token" element={<StageScreen />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/help" element={<HelpIndexPage />} />
         <Route path="/help/:slug" element={<HelpArticlePage />} />
