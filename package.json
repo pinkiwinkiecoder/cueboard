@@ -19,7 +19,8 @@
     "db:start": "supabase start",
     "db:reset": "supabase db reset",
     "db:test": "supabase test db",
-    "db:test:lite": "node scripts/db-test-lite.mjs"
+    "db:test:lite": "node scripts/db-test-lite.mjs",
+    "load-test": "node scripts/load-test.mjs"
   },
   "dependencies": {
     "@fontsource-variable/bricolage-grotesque": "^5.1.0",

@@ -1,6 +1,7 @@
 import { Component, type ErrorInfo, type ReactNode } from 'react';
 import { translate } from '@/i18n';
 import { loadPrefs } from '@/lib/prefs';
+import { reportError } from '@/lib/system';
 
 interface State {
   failed: boolean;
@@ -16,7 +17,9 @@ export class ErrorBoundary extends Component<{ children: ReactNode }, State> {
 
   override componentDidCatch(error: Error, info: ErrorInfo) {
     // Geen persoonsgegevens loggen: enkel de foutnaam en de plaats.
-    console.error(error.name, info.componentStack?.split('\n')[1]?.trim());
+    const where = info.componentStack?.split('\n')[1]?.trim();
+    console.error(error.name, where);
+    reportError('render', error, where);
   }
 
   override render() {

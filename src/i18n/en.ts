@@ -150,6 +150,7 @@ export const en = {
     unknownItem: 'This item no longer exists.',
     teamTooDeep: 'A sub-team cannot have sub-teams of its own (max. two levels).',
     adminExists: 'There is already an admin. Ask them to give you the right role.',
+    purgeFailed: 'Wiping failed. Nothing or only part was deleted; try again.',
   },
   placeholder: {
     today: 'Here you will see your call time, your shifts and your tasks for today (phase 1).',
@@ -199,6 +200,9 @@ export const en = {
     visible: 'More visible',
     textSize: 'Text size',
     sizes: { normaal: 'Normal', groot: 'Large', extra: 'Extra large' },
+    myData: 'My data',
+    myDataHint: 'Download everything this event stores about you.',
+    myDataButton: 'Download my data',
   },
   people: {
     title: 'People',
@@ -241,6 +245,7 @@ export const en = {
     loginLink: 'Sign-in link',
     loginLinkHint: 'Email not received or password forgotten? Create a new one-time link.',
     newLink: 'Create new link',
+    exportData: 'Download data (GDPR)',
   },
   settings: {
     title: 'Settings',
@@ -280,6 +285,7 @@ export const en = {
     confirmDelete: 'Delete "{name}"?',
     saved: 'Saved',
     comingSoon: 'Coming soon',
+    tabSystem: 'System',
   },
   roles: {
     title: 'Roles & rights',
@@ -603,6 +609,37 @@ export const en = {
     apply: 'Import {n} items',
     done: '{n} items imported into the draft. Check them and publish.',
     afterHint: 'Tip: items without an end time get 30 minutes.',
+  },
+  system: {
+    title: 'System',
+    hint: 'Usage against the free limits, recent errors, export and privacy',
+    version: 'version {v}',
+    refresh: 'Refresh',
+    database: 'Database',
+    storage: 'File storage',
+    people: 'Active people',
+    peopleHint: '{total} accounts in total',
+    errors24h: 'Errors (24 h)',
+    errorsHint: 'Problems the app ran into on someone’s device.',
+    recentErrors: 'Recent errors',
+    noErrors: 'No errors. All good.',
+    exportTitle: 'Export everything',
+    exportHint:
+      'Download all data of this event as one JSON file: schedule, tasks, teams, roles, people and news. Do this before the event and keep it safe.',
+    exportButton: 'Download export',
+    exported: 'The export has been downloaded.',
+    purgeTitle: 'After the event: wipe all personal data',
+    purgeHint:
+      'Deletes every account except yours. Schedule, tasks and messages stay, but without names. This cannot be undone. Make an export first.',
+    purgeType: 'Type DELETE to confirm',
+    purgeButton: 'Wipe personal data',
+    purgeConfirm: 'Really delete all accounts except yours? This cannot be undone.',
+    purged: '{n} accounts deleted.',
+  },
+  update: {
+    title: 'New version available',
+    body: 'Reload to get the latest improvements.',
+    reload: 'Reload',
   },
   today: {
     morning: 'Good morning, {name}',

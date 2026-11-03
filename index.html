@@ -24,13 +24,7 @@
     />
     <meta property="og:image" content="/og-image.png" />
     <meta name="twitter:card" content="summary_large_image" />
-    <script>
-      // Thema vóór de eerste render zetten, zodat er geen lichte flits is backstage.
-      try {
-        var t = localStorage.getItem('aof-theme');
-        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
-      } catch (e) {}
-    </script>
+    <script src="/theme-init.js"></script>
   </head>
   <body>
     <div id="root"></div>

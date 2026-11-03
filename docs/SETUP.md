@@ -77,6 +77,10 @@ npx supabase functions deploy invite
 ```
 
 ```bash
+npx supabase functions deploy privacy
+```
+
+```bash
 npx supabase secrets set SITE_URL=https://YOUR-ADDRESS.pages.dev
 ```
 

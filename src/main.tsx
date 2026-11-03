@@ -11,9 +11,10 @@ import { App } from './app/App';
 import { AuthProvider } from './lib/auth';
 import { PrefsProvider } from './lib/usePrefs';
 import { ErrorBoundary } from './app/ErrorBoundary';
-import { registerSW } from 'virtual:pwa-register';
+import { UpdateBanner } from './app/UpdateBanner';
+import { installErrorReporting } from './lib/system';
 
-registerSW({ immediate: true });
+installErrorReporting();
 
 const root = document.getElementById('root');
 if (!root) throw new Error('#root ontbreekt in index.html');
@@ -25,6 +26,7 @@ createRoot(root).render(
         <PrefsProvider>
           <AuthProvider>
             <App />
+            <UpdateBanner />
           </AuthProvider>
         </PrefsProvider>
       </BrowserRouter>

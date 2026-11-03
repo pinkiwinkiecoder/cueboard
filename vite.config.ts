@@ -4,7 +4,11 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
+// Versie in de app: pakketversie + commit (Cloudflare Pages zet CF_PAGES_COMMIT_SHA).
+const version = `0.1.0+${(process.env.CF_PAGES_COMMIT_SHA ?? 'local').slice(0, 7)}`;
+
 export default defineConfig({
+  define: { 'import.meta.env.VITE_APP_VERSION': JSON.stringify(version) },
   resolve: {
     alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) },
   },

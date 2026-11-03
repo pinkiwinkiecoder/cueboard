@@ -13,9 +13,10 @@ import { NamedListEditor } from './NamedListEditor';
 import { RolesEditor } from './RolesEditor';
 import { TeamsEditor } from './TeamsEditor';
 import { PresetsPanel } from './PresetsPanel';
+import { SystemPanel } from './SystemPanel';
 import { LogoUploader } from './LogoUploader';
 
-type Tab = 'presets' | 'event' | 'roles' | 'departments' | 'locations' | 'days';
+type Tab = 'presets' | 'event' | 'roles' | 'departments' | 'locations' | 'days' | 'system';
 
 export function SettingsPage() {
   const { t } = useT();
@@ -32,6 +33,7 @@ export function SettingsPage() {
     { id: 'departments', label: 'settings.tabDepartments', show: canSettings },
     { id: 'locations', label: 'settings.tabLocations', show: canSettings },
     { id: 'days', label: 'settings.tabDays', show: canSettings },
+    { id: 'system', label: 'settings.tabSystem', show: isAdmin },
   ];
   const visible = tabs.filter((x) => x.show);
   const [tab, setTab] = useState<Tab>(visible[0]?.id ?? 'event');
@@ -89,6 +91,7 @@ export function SettingsPage() {
           />
         )}
         {tab === 'departments' && <TeamsEditor />}
+        {tab === 'system' && <SystemPanel />}
         {tab === 'locations' && (
           <NamedListEditor
             table="locations"

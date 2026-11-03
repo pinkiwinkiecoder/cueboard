@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link2, Save, UserCheck, UserX } from 'lucide-react';
+import { Download, Link2, Save, UserCheck, UserX } from 'lucide-react';
 import { Dialog } from '@/app/Dialog';
 import { useAuth } from '@/lib/auth';
 import { useDepartments, useRoles } from '@/lib/refdata';
@@ -10,6 +10,7 @@ import { useT } from '@/lib/usePrefs';
 import type { Profile } from '@/lib/types';
 import { ShareLink } from './ShareLink';
 import { PersonTeams } from './PersonTeams';
+import { downloadJson, exportPerson } from '@/lib/system';
 
 export function PersonDialog(props: {
   person: Profile | null;
@@ -138,6 +139,20 @@ export function PersonDialog(props: {
           ))}
       </div>
       <PersonTeams profileId={p.id} primaryId={p.department_id} />
+      {isAdmin && (
+        <div className="row">
+          <button
+            type="button"
+            className="btn btn-sm btn-ghost"
+            onClick={() =>
+              void exportPerson(p.id).then((d) => downloadJson(`data-.json`, d), setError)
+            }
+          >
+            <Download aria-hidden size={18} />
+            {t('people.exportData')}
+          </button>
+        </div>
+      )}
       {p.active && !isMe && (
         <section className="stack">
           <h3>{t('people.loginLink')}</h3>

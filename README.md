@@ -31,6 +31,7 @@ It is **free and open source**. Every organisation runs its own copy on free pla
 ## Get started
 
 - **Use it:** follow the [setup guide](docs/SETUP.md) ([Nederlands](docs/SETUP.nl.md)). About an hour, all free.
+- **Run it:** test environment, monitoring, updates without downtime, emergencies and GDPR in [OPERATIONS.nl.md](docs/OPERATIONS.nl.md); a step-by-step launch checklist in [LANCERING.nl.md](docs/LANCERING.nl.md).
 - **Learn it:** the built-in help centre (`/help`) explains every step and feature.
 - **Ask:** use GitHub Discussions for questions and ideas, and Issues for bugs.
 

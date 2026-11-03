@@ -1,5 +1,6 @@
 import { useRef, useState, type ChangeEvent } from 'react';
-import { Check, ImagePlus, Lightbulb, Trash2 } from 'lucide-react';
+import { Check, Download, ImagePlus, Lightbulb, Trash2 } from 'lucide-react';
+import { downloadJson, exportPerson } from '@/lib/system';
 import { usePrefs } from '@/lib/usePrefs';
 import { ACCENTS, type TextSize } from '@/lib/prefs';
 import type { MsgKey } from '@/i18n';
@@ -34,12 +35,10 @@ export function AppearancePage() {
     <div className="stack">
       <h1>{t('appearance.title')}</h1>
       <p className="muted">{t('appearance.deviceOnly')}</p>
-
       <section className="panel stack" aria-labelledby="h-lang">
         <h2 id="h-lang">{t('appearance.language')}</h2>
         <LanguagePicker />
       </section>
-
       <section className="panel stack" aria-labelledby="h-screen">
         <h2 id="h-screen">{t('appearance.screen')}</h2>
         <label className="switch-row">
@@ -79,7 +78,6 @@ export function AppearancePage() {
           />
         </label>
       </section>
-
       <section className="panel stack" aria-labelledby="h-theme">
         <h2 id="h-theme">{t('appearance.themeAndColour')}</h2>
         <div className="segmented" role="radiogroup" aria-label={t('appearance.theme')}>
@@ -114,7 +112,6 @@ export function AppearancePage() {
           ))}
         </div>
       </section>
-
       <section className="panel stack" aria-labelledby="h-bg">
         <h2 id="h-bg">{t('appearance.background')}</h2>
         <p className="hint">{t('appearance.backgroundHint')}</p>
@@ -163,7 +160,6 @@ export function AppearancePage() {
           </div>
         )}
       </section>
-
       <section className="panel stack" aria-labelledby="h-text">
         <h2 id="h-text">{t('appearance.textSize')}</h2>
         <div className="segmented" role="radiogroup" aria-label={t('appearance.textSize')}>
@@ -181,6 +177,25 @@ export function AppearancePage() {
           ))}
         </div>
       </section>
+      <section className="panel stack" aria-labelledby="h-mydata">
+        <h2 id="h-mydata">{t('appearance.myData')}</h2>
+        <p className="hint">{t('appearance.myDataHint')}</p>
+        <div className="row">
+          <button
+            type="button"
+            className="btn"
+            onClick={() =>
+              void exportPerson().then(
+                (d) => downloadJson('my-data.json', d),
+                () => setError('errors.network'),
+              )
+            }
+          >
+            <Download aria-hidden size={20} />
+            {t('appearance.myDataButton')}
+          </button>
+        </div>
+      </section>{' '}
     </div>
   );
 }

@@ -149,6 +149,7 @@ export const nl: Dictionary = {
     unknownItem: 'Dit item bestaat niet meer.',
     teamTooDeep: 'Een subteam kan zelf geen subteams hebben (max. twee niveaus).',
     adminExists: 'Er is al een beheerder. Vraag om de juiste rol.',
+    purgeFailed: 'Wissen mislukt. Er is niets of maar een deel verwijderd; probeer opnieuw.',
   },
   placeholder: {
     today: 'Hier zie je straks je oproeptijd, je shifts en je taken voor vandaag (fase 1).',
@@ -198,6 +199,9 @@ export const nl: Dictionary = {
     visible: 'Meer zichtbaar',
     textSize: 'Tekstgrootte',
     sizes: { normaal: 'Normaal', groot: 'Groot', extra: 'Extra groot' },
+    myData: 'Mijn gegevens',
+    myDataHint: 'Download alles wat dit evenement over jou bewaart.',
+    myDataButton: 'Mijn gegevens downloaden',
   },
   people: {
     title: 'Mensen',
@@ -240,6 +244,7 @@ export const nl: Dictionary = {
     loginLink: 'Inloglink',
     loginLinkHint: 'Mail niet ontvangen of wachtwoord vergeten? Maak een nieuwe eenmalige link.',
     newLink: 'Nieuwe link maken',
+    exportData: 'Gegevens downloaden (AVG)',
   },
   settings: {
     title: 'Instellingen',
@@ -281,6 +286,7 @@ export const nl: Dictionary = {
     confirmDelete: '"{name}" verwijderen?',
     saved: 'Opgeslagen',
     comingSoon: 'Binnenkort',
+    tabSystem: 'Systeem',
   },
   roles: {
     title: 'Rollen & rechten',
@@ -606,6 +612,37 @@ export const nl: Dictionary = {
     apply: '{n} items importeren',
     done: '{n} items in het concept geïmporteerd. Kijk ze na en publiceer.',
     afterHint: 'Tip: items zonder eindtijd krijgen 30 minuten.',
+  },
+  system: {
+    title: 'Systeem',
+    hint: 'Gebruik t.o.v. de gratis limieten, recente fouten, export en privacy',
+    version: 'versie {v}',
+    refresh: 'Vernieuwen',
+    database: 'Database',
+    storage: 'Bestandsopslag',
+    people: 'Actieve mensen',
+    peopleHint: '{total} accounts in totaal',
+    errors24h: 'Fouten (24 u)',
+    errorsHint: 'Problemen die de app op iemands toestel tegenkwam.',
+    recentErrors: 'Recente fouten',
+    noErrors: 'Geen fouten. Alles in orde.',
+    exportTitle: 'Alles exporteren',
+    exportHint:
+      'Download alle gegevens van dit evenement als één JSON-bestand: planning, taken, teams, rollen, mensen en nieuws. Doe dit voor het evenement en bewaar het veilig.',
+    exportButton: 'Export downloaden',
+    exported: 'De export is gedownload.',
+    purgeTitle: 'Na het evenement: alle persoonsgegevens wissen',
+    purgeHint:
+      'Verwijdert elk account behalve het jouwe. Planning, taken en berichten blijven, maar zonder namen. Dit kan niet ongedaan worden. Maak eerst een export.',
+    purgeType: 'Typ DELETE om te bevestigen',
+    purgeButton: 'Persoonsgegevens wissen',
+    purgeConfirm: 'Echt alle accounts behalve het jouwe verwijderen? Dit kan niet ongedaan worden.',
+    purged: '{n} accounts verwijderd.',
+  },
+  update: {
+    title: 'Nieuwe versie beschikbaar',
+    body: 'Vernieuw om de laatste verbeteringen te krijgen.',
+    reload: 'Vernieuwen',
   },
   today: {
     morning: 'Goeiemorgen, {name}',

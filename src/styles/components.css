@@ -1411,3 +1411,34 @@ button.timeline-block {
 .mock-wide {
   grid-column: 1 / -1;
 }
+
+/* Systeem */
+.error-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.9rem;
+}
+.error-list svg {
+  color: var(--warning);
+  flex: none;
+  margin-top: 3px;
+}
+.danger-zone {
+  border: 1px solid color-mix(in srgb, var(--danger) 45%, transparent);
+}
+.danger-btn {
+  background: color-mix(in srgb, var(--danger) var(--tint), var(--surface));
+  color: var(--danger);
+}
+.update-toast {
+  top: auto;
+  bottom: calc(var(--tabbar-h) + var(--space-5) + env(safe-area-inset-bottom));
+}
+@media (min-width: 1000px) and (orientation: landscape), (min-width: 1200px) {
+  .update-toast {
+    bottom: var(--space-5);
+  }
+}
